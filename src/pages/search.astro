@@ -1,0 +1,96 @@
+---
+import { getCollection } from "astro:content";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Layout from "@/layouts/Layout.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+
+const posts = await getCollection("blog");
+const sortedPosts = getSortedPosts(posts);
+const searchData = sortedPosts.map(({ id, data }) => ({
+  slug: id,
+  title: data.title,
+  description: data.description,
+  tags: data.tags,
+  date: data.pubDatetime.toISOString(),
+}));
+---
+
+<Layout title="Search" description="Search blog posts.">
+  <Header />
+  <main id="main-content">
+    <section class="pt-8 pb-12">
+      <h1 class="mb-6 text-2xl font-bold">Search</h1>
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 opacity-50" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.35-4.35" />
+        </svg>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search posts..."
+          class="w-full rounded-lg border border-border bg-muted/50 py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-subtle outline-none focus:border-accent transition-colors"
+          autofocus
+        />
+      </div>
+      <ul id="search-results" class="mt-6"></ul>
+      <p id="search-empty" class="mt-8 text-center text-subtle hidden">
+        No results found.
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script is:inline define:vars={{ searchData }}>
+  const input = document.getElementById("search-input");
+  const resultsList = document.getElementById("search-results");
+  const emptyMsg = document.getElementById("search-empty");
+
+  function search(query) {
+    if (!query || query.length < 2) {
+      resultsList.innerHTML = "";
+      emptyMsg.classList.add("hidden");
+      return;
+    }
+
+    const q = query.toLowerCase();
+    const results = searchData.filter(
+      (post) =>
+        post.title.toLowerCase().includes(q) ||
+        post.description.toLowerCase().includes(q) ||
+        post.tags.some((tag) => tag.toLowerCase().includes(q))
+    );
+
+    if (results.length === 0) {
+      resultsList.innerHTML = "";
+      emptyMsg.classList.remove("hidden");
+      return;
+    }
+
+    emptyMsg.classList.add("hidden");
+    resultsList.innerHTML = results
+      .map(
+        (post) => `
+      <li class="my-6">
+        <a href="/posts/${post.slug}" class="inline-block text-accent decoration-dashed underline-offset-4 focus-visible:no-underline">
+          <h3 class="text-base font-medium decoration-dashed hover:underline">${post.title}</h3>
+        </a>
+        <p class="mt-1 opacity-80">${post.description}</p>
+      </li>
+    `
+      )
+      .join("");
+  }
+
+  input?.addEventListener("input", (e) => search(e.target.value));
+
+  // Focus search on / key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "/" && document.activeElement !== input) {
+      e.preventDefault();
+      input?.focus();
+    }
+  });
+</script>

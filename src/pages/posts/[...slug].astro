@@ -1,0 +1,137 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Datetime from "@/components/Datetime.astro";
+import { SITE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { calculateReadingTime } from "@/utils/readingTime";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const sortedPosts = getSortedPosts(posts);
+  return sortedPosts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, posts: sortedPosts },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<"blog">;
+  posts: CollectionEntry<"blog">[];
+};
+
+const { post, posts } = Astro.props;
+const { title, description, pubDatetime, modDatetime, tags } = post.data;
+const { Content } = await render(post);
+const readingTime = calculateReadingTime(post.body ?? "");
+
+const allPosts = posts.map(({ id, data: { title } }) => ({ slug: id, title }));
+const currentIndex = allPosts.findIndex((p) => p.slug === post.id);
+const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+---
+
+<Layout
+  title={`${title} | ${SITE.title}`}
+  description={description}
+  pubDatetime={pubDatetime}
+  modDatetime={modDatetime}
+>
+  <Header />
+  <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12 mt-8">
+    <article>
+      <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">
+        {title}
+      </h1>
+      <div class="flex items-center gap-3 mt-2 mb-8">
+        <Datetime {pubDatetime} {modDatetime} size="lg" />
+        {readingTime && (
+          <>
+            <span class="text-foreground/30">&#183;</span>
+            <span class="text-sm opacity-60">{readingTime}</span>
+          </>
+        )}
+      </div>
+
+      <div id="article" class="prose">
+        <Content />
+      </div>
+    </article>
+
+    <hr class="my-8 border-dashed" />
+
+    <ul class="flex flex-wrap gap-2 my-6">
+      {tags.map((tag) => (
+        <li>
+          <span class="text-xs opacity-70">#{tag}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center justify-between">
+      <button
+        id="back-to-top"
+        class="text-sm opacity-70 hover:opacity-100 transition-opacity"
+      >
+        &uarr; Back to Top
+      </button>
+    </div>
+
+    <hr class="my-6 border-dashed" />
+
+    <nav class="flex flex-col sm:flex-row justify-between gap-6">
+      {prevPost ? (
+        <a href={`/posts/${prevPost.slug}`} class="group flex gap-2 items-start hover:opacity-75">
+          <span class="flex-shrink-0 mt-0.5">&larr;</span>
+          <div>
+            <span class="block text-xs opacity-70">Previous Post</span>
+            <span class="text-accent/85">{prevPost.title}</span>
+          </div>
+        </a>
+      ) : <div />}
+      {nextPost && (
+        <a href={`/posts/${nextPost.slug}`} class="group flex gap-2 items-start justify-end text-right ml-auto hover:opacity-75">
+          <div>
+            <span class="block text-xs opacity-70">Next Post</span>
+            <span class="text-accent/85">{nextPost.title}</span>
+          </div>
+          <span class="flex-shrink-0 mt-0.5">&rarr;</span>
+        </a>
+      )}
+    </nav>
+  </main>
+  <Footer />
+</Layout>
+
+<script is:inline>
+  // Copy code buttons
+  document.querySelectorAll("pre").forEach((block) => {
+    const btn = document.createElement("button");
+    btn.className = "copy-code";
+    btn.textContent = "Copy";
+    btn.style.cssText = "position:absolute;top:0.5rem;right:0.5rem;font-size:0.7rem;padding:0.2rem 0.5rem;border-radius:0.25rem;background:var(--muted);color:var(--subtle);border:none;cursor:pointer;opacity:0;transition:opacity 0.2s;font-family:inherit";
+
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+    wrapper.addEventListener("mouseenter", () => btn.style.opacity = "1");
+    wrapper.addEventListener("mouseleave", () => btn.style.opacity = "0");
+
+    block.parentNode?.insertBefore(wrapper, block);
+    wrapper.appendChild(block);
+    wrapper.appendChild(btn);
+
+    btn.addEventListener("click", async () => {
+      const code = block.querySelector("code");
+      await navigator.clipboard.writeText(code?.innerText ?? "");
+      btn.textContent = "Copied";
+      setTimeout(() => btn.textContent = "Copy", 700);
+    });
+  });
+
+  document.querySelector("#back-to-top")?.addEventListener("click", () => {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  });
+</script>

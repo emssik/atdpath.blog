@@ -1,0 +1,22 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="404 - Not Found">
+  <Header />
+  <main id="main-content">
+    <section class="flex flex-col items-center justify-center py-24 text-center">
+      <h1 class="text-6xl font-bold text-accent">404</h1>
+      <p class="mt-4 text-subtle">Page not found.</p>
+      <a
+        href="/"
+        class="mt-8 text-sm text-accent transition-colors hover:text-foreground"
+      >
+        &larr; Go back home
+      </a>
+    </section>
+  </main>
+  <Footer />
+</Layout>

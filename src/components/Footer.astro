@@ -1,0 +1,27 @@
+---
+import { SITE } from "@/config";
+---
+
+<footer class="mt-auto">
+  <hr class="mx-auto max-w-3xl border-border" />
+  <div class="mx-auto flex max-w-3xl flex-col items-center justify-between gap-3 px-4 py-6 text-sm sm:flex-row">
+    <span class="text-subtle">
+      &copy; {new Date().getFullYear()} {SITE.author}
+    </span>
+    <div class="flex items-center gap-4">
+      <a
+        href="/rss.xml"
+        class="text-subtle transition-colors hover:text-accent"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="RSS Feed"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11a9 9 0 0 1 9 9" />
+          <path d="M4 4a16 16 0 0 1 16 16" />
+          <circle cx="5" cy="19" r="1" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>

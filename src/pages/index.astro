@@ -1,0 +1,99 @@
+---
+import { getCollection } from "astro:content";
+import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Socials from "@/components/Socials.astro";
+import { SITE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+
+const posts = await getCollection("blog");
+const sortedPosts = getSortedPosts(posts);
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+---
+
+<Layout>
+  <Header />
+  <main id="main-content">
+    <!-- Hero section -->
+    <section id="hero" class="pt-8 pb-6">
+      <div class="flex flex-col sm:flex-row items-start gap-6">
+        <a href="/about" class="group mx-auto sm:mx-0 flex-shrink-0">
+          <img
+            src="/avatar.jpg"
+            alt={SITE.author}
+            width="140"
+            height="140"
+            class="rounded-full object-cover ring-2 ring-border transition-all duration-300 group-hover:ring-accent group-hover:scale-105 group-hover:shadow-lg"
+          />
+        </a>
+        <div class="flex-1 text-center sm:text-left">
+          <h1 class="font-display text-2xl font-bold sm:text-3xl">
+            Cześć, tutaj {SITE.author}
+            <a
+              href="/rss.xml"
+              target="_blank"
+              class="inline-block ml-1 text-accent hover:scale-110 transition-transform"
+              aria-label="RSS Feed"
+              title="RSS Feed"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="inline -mt-1">
+                <path d="M4 11a9 9 0 0 1 9 9" />
+                <path d="M4 4a16 16 0 0 1 16 16" />
+                <circle cx="5" cy="19" r="1" />
+              </svg>
+            </a>
+          </h1>
+          <p class="mt-2 text-subtle leading-relaxed max-w-md">
+            {SITE.desc}
+          </p>
+          <div class="mt-4">
+            <Socials />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="mx-auto max-w-3xl border-border" />
+
+    {featuredPosts.length > 0 && (
+      <>
+        <section id="featured" class="pt-10 pb-4">
+          <h2 class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-subtle mb-4">
+            Featured
+          </h2>
+          <ul>
+            {featuredPosts.map((post) => (
+              <Card variant="h3" {...post} />
+            ))}
+          </ul>
+        </section>
+        {recentPosts.length > 0 && <hr class="mx-auto max-w-3xl border-border" />}
+      </>
+    )}
+
+    {recentPosts.length > 0 && (
+      <section id="recent-posts" class="pt-10 pb-6">
+        <ul>
+          {recentPosts.map(
+            (post, index) =>
+              index < SITE.postPerIndex && <Card variant="h3" {...post} />,
+          )}
+        </ul>
+      </section>
+    )}
+
+    <div class="my-8 text-center">
+      <a
+        href="/posts"
+        class="inline-flex items-center gap-2 font-body text-sm transition-colors hover:text-accent"
+      >
+        All Posts
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </main>
+  <Footer />
+</Layout>

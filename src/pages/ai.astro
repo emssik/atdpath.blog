@@ -1,0 +1,56 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import { SITE } from "@/config";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="AI" description="Treści przyjazne dla modeli AI.">
+  <Header />
+  <main id="main-content">
+    <section class="pt-8 pb-12">
+      <h1 class="mb-2 font-display text-3xl font-bold">AI</h1>
+      <p class="mb-8 text-subtle text-lg">
+        Treści przyjazne dla modeli AI
+      </p>
+      <div class="prose">
+        <p>
+          Ta strona udostępnia treści w formacie czytelnym dla maszyn, zgodnie ze standardem
+          <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer">llms.txt</a>.
+          Jeśli chcesz wygodnie wykorzystać informacje z tego bloga w modelach AI,
+          skorzystaj z poniższych plików:
+        </p>
+
+        <div class="my-8 grid gap-4 sm:grid-cols-2">
+          <a
+            href="/llms.txt"
+            class="flex flex-col gap-2 rounded-lg border border-border p-5 no-underline transition-colors hover:border-accent hover:bg-muted/30"
+          >
+            <span class="font-display text-lg font-semibold text-accent">llms.txt</span>
+            <span class="text-sm text-subtle">
+              Wersja skrócona - przegląd strony, tytuły postów, opisy i linki.
+            </span>
+          </a>
+
+          <a
+            href="/llms-full.txt"
+            class="flex flex-col gap-2 rounded-lg border border-border p-5 no-underline transition-colors hover:border-accent hover:bg-muted/30"
+          >
+            <span class="font-display text-lg font-semibold text-accent">llms-full.txt</span>
+            <span class="text-sm text-subtle">
+              Wersja pełna - kompletna treść wszystkich postów w formacie tekstowym.
+            </span>
+          </a>
+        </div>
+
+        <h2>Jak używać</h2>
+        <p>
+          Podaj jeden z tych plików do wybranego modelu AI, aby zadawać pytania
+          o treści tego bloga, uzyskiwać podsumowania lub szukać konkretnych informacji.
+        </p>
+        <pre><code>curl {SITE.website}llms.txt</code></pre>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

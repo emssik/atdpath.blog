@@ -1,0 +1,23 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="About" description="About me and this blog.">
+  <Header />
+  <main id="main-content">
+    <section class="pt-8 pb-12">
+      <h1 class="mb-6 text-2xl font-bold">About</h1>
+      <div class="prose">
+        <p>
+          Hi! This is where your bio goes.
+        </p>
+        <p>
+          Edit <code>src/pages/about.astro</code> to add your own content.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

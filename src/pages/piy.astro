@@ -1,0 +1,196 @@
+---
+import { getCollection } from "astro:content";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Datetime from "@/components/Datetime.astro";
+import Layout from "@/layouts/Layout.astro";
+
+const projects = await getCollection("piy");
+const sortedProjects = projects
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
+
+const difficultyLabel: Record<string, string> = {
+  beginner: "Początkujący",
+  intermediate: "Średniozaawansowany",
+  advanced: "Zaawansowany",
+};
+---
+
+<Layout title="PIY - Prompt It Yourself" description="Prompt It Yourself - gotowe pomysły na projekty, które zbudujesz z pomocą AI.">
+  <Header />
+  <main id="main-content" class="relative">
+    <section class="pt-8">
+      <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">PIY — Prompt It Yourself</h1>
+      {sortedProjects.length > 0 && (
+        <div class="flex items-center gap-3 mt-2 mb-8">
+          <Datetime pubDatetime={sortedProjects[0].data.pubDatetime} size="lg" />
+          <span class="text-foreground/30">&#183;</span>
+          <span class="text-sm opacity-60">Ostatnia aktualizacja</span>
+        </div>
+      )}
+
+      <a
+        href="#projects-list"
+        class="mb-6 block text-center text-base text-accent underline xl:hidden"
+      >
+        Skocz do listy projektów PIY
+      </a>
+      <hr class="mb-6 border-border xl:hidden" />
+
+      <div class="prose">
+        <p>
+          Na pewno znasz <strong>DIY</strong> — <em>Do It Yourself</em>.
+        </p>
+        <p>
+          Postanowiłem przenieść to podejście do świata AI.
+        </p>
+        <p>
+          Tak powstało <strong>PIY</strong> — <em>Prompt It Yourself</em>.
+        </p>
+        <p>
+          To zbiór projektów aplikacji, które powstały z pomocą modeli językowych.
+          Każdy z nich naprawdę istnieje — ma działający kod i repozytorium.
+        </p>
+        <p>
+          Jeszcze niedawno takie projekty były użyteczne głównie dla programistów.
+          Osoba, która nie potrafiła programować, mogła co najwyżej spróbować pobrać
+          repozytorium i uruchomić aplikację.
+        </p>
+        <p>
+          Dzisiaj sytuacja wygląda zupełnie inaczej.
+        </p>
+        <p>
+          Dzięki modelom AI nawet gotowe repozytorium może być po prostu punktem wyjścia —
+          inspiracją do stworzenia własnej wersji aplikacji.
+        </p>
+        <p>Możesz wykorzystać:</p>
+        <ul>
+          <li>sam pomysł na projekt,</li>
+          <li>fragmenty rozwiązania,</li>
+          <li>albo cały kod źródłowy jako bazę do własnych eksperymentów.</li>
+        </ul>
+
+        <hr />
+
+        <h2>Jak z tego korzystać?</h2>
+        <ol>
+          <li>
+            <strong>Przeglądaj projekty</strong><br />
+            Każdy wpis opisuje konkretną aplikację wraz z repozytorium i kodem źródłowym.
+          </li>
+          <li>
+            <strong>Potraktuj je jako inspirację</strong><br />
+            Nie chodzi o kopiowanie projektu 1:1. Najlepsze pomysły powstają wtedy,
+            gdy dostosujesz je do własnych potrzeb.
+          </li>
+          <li>
+            <strong>Zajrzyj do kodu (jeśli chcesz)</strong><br />
+            Repozytorium może być dobrą bazą startową albo źródłem pomysłów
+            na rozwiązanie konkretnego problemu.
+          </li>
+          <li>
+            <strong>Zbuduj własną wersję</strong><br />
+            Z pomocą wybranego modelu AI możesz rozwijać projekt w dowolnym kierunku.
+          </li>
+        </ol>
+
+        <hr />
+
+        <h2>Jedna ważna uwaga</h2>
+        <p>
+          Kod tych projektów nie jest czysty ani idealny.
+        </p>
+        <p>
+          Nie pisałem go z myślą o budowaniu dużych systemów produkcyjnych.
+          W wielu przypadkach nawet nie analizowałem dokładnie, jak wygląda jego wnętrze.
+        </p>
+        <p>
+          I szczerze mówiąc — ta wiedza nie jest mi potrzebna.
+        </p>
+        <p>
+          Interesują mnie <strong>rezultaty działania</strong> narzędzi.
+        </p>
+        <p>
+          Te aplikacje mają mi pomagać rozwiązywać konkretne problemy.
+          A to, jak dokładnie wygląda ich wnętrze, ma dla mnie znaczenie tylko o tyle,
+          o ile robią to, czego od nich oczekuję.
+        </p>
+
+        <hr />
+
+        <h2>Dlaczego powstało PIY?</h2>
+        <p>
+          Od lat wprowadzam ludzi w świat IT — programowania, no/low-code, a ostatnio także AI.
+        </p>
+        <p>
+          I przez cały ten czas powtarza się jeden problem.
+        </p>
+        <p>
+          Nie brak wiedzy.<br />
+          Nie brak narzędzi.
+        </p>
+        <p>
+          <strong>Brak pomysłu na pierwszy projekt.</strong>
+        </p>
+        <p>
+          Dlatego powstała ta sekcja.
+        </p>
+
+        <hr />
+
+        <h2>Skąd biorą się projekty?</h2>
+        <p>
+          Między listopadem 2024 a lutym 2026 wygenerowałem z pomocą modeli AI
+          ponad <strong>70 różnych aplikacji</strong> — od bardzo prostych narzędzi po większe projekty.
+        </p>
+        <p>
+          PIY to miejsce, w którym będę się nimi stopniowo dzielił.
+          A oprócz tych gotowych projektów na pewno pojawi się mnóstwo nowych —
+          bo pomysły nie przestają przychodzić. To takie moje małe przekleństwo.
+        </p>
+
+        <hr />
+
+        <h2>Cierpliwości</h2>
+        <p>
+          Ta sekcja będzie rozwijana krok po kroku.
+          Nie pojawi się tutaj od razu opis kilkudziesięciu projektów.
+        </p>
+        <p>
+          Nowe aplikacje będą dodawane regularnie, jedna po drugiej.
+        </p>
+        <p>
+          Jeśli nie chcesz ich przegapić — zaglądaj tu od czasu do czasu
+          albo subskrybuj <a href="/rss.xml">RSS</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ToC sidebar - fixed right on large screens, inline on small -->
+    <aside id="projects-list" class="mx-auto max-w-3xl px-6 mt-8 xl:fixed xl:right-8 xl:top-32 xl:mt-0 xl:w-56 xl:px-0">
+      <nav>
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-subtle mb-4">
+          Projekty ({sortedProjects.length})
+        </h2>
+        {sortedProjects.length === 0 ? (
+          <p class="text-subtle italic text-sm">Wkrótce...</p>
+        ) : (
+          <ul class="space-y-1">
+            {sortedProjects.map((project) => (
+              <li>
+                <a
+                  href={`/piy/${project.id}`}
+                  class="text-sm text-accent hover:underline"
+                >
+                  {project.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </nav>
+    </aside>
+  </main>
+  <Footer />
+</Layout>

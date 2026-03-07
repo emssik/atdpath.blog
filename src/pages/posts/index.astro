@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Layout from "@/layouts/Layout.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+
+const posts = await getCollection("blog");
+const sortedPosts = getSortedPosts(posts);
+---
+
+<Layout title="All Posts" description="All blog posts.">
+  <Header />
+  <main id="main-content">
+    <section class="pt-8 pb-12">
+      <h1 class="mb-6 text-2xl font-bold">All Posts</h1>
+      <ul>
+        {sortedPosts.map((post) => (
+          <Card {...post} />
+        ))}
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</Layout>
