@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-07
+
+### Added
+- Lightbox for prose images: click any image to zoom in with an overlay, close by clicking or pressing ESC
+- First PIY project entry: Top 5 task tracker, with screenshots
+- About page and Posts index now display a "last updated" date
+
+### Changed
+- Extracted `difficultyLabel` into a shared utility module
+- Scroll offset adjusted so anchor links clear the fixed header
+
 ## [0.2.0] - 2026-03-07
 
 ### Added

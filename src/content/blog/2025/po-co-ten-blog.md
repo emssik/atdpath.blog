@@ -1,7 +1,7 @@
 ---
 title: "Po co ten blog?"
 pubDatetime: 2025-03-07
-description: "Dlaczego powstał ten blog, czym jest PIY i skąd pomysł na Prompt It Yourself."
+description: "Dlaczego powstał ten blog, czym jest PIY i skąd pomysł."
 featured: true
 tags:
   - blog

@@ -4,17 +4,12 @@ import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Datetime from "@/components/Datetime.astro";
 import Layout from "@/layouts/Layout.astro";
+import { difficultyLabel } from "@/utils/difficultyLabel";
 
 const projects = await getCollection("piy");
 const sortedProjects = projects
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
-
-const difficultyLabel: Record<string, string> = {
-  beginner: "Początkujący",
-  intermediate: "Średniozaawansowany",
-  advanced: "Zaawansowany",
-};
 ---
 
 <Layout title="PIY - Prompt It Yourself" description="Prompt It Yourself - gotowe pomysły na projekty, które zbudujesz z pomocą AI.">

@@ -4,6 +4,7 @@ import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Datetime from "@/components/Datetime.astro";
 import Layout from "@/layouts/Layout.astro";
+import { difficultyLabel } from "@/utils/difficultyLabel";
 
 export async function getStaticPaths() {
   const projects = await getCollection("piy");
@@ -20,12 +21,6 @@ type Props = { project: CollectionEntry<"piy"> };
 const { project } = Astro.props;
 const { title, description, pubDatetime, repo, tags, difficulty } = project.data;
 const { Content } = await render(project);
-
-const difficultyLabel: Record<string, string> = {
-  beginner: "Początkujący",
-  intermediate: "Średniozaawansowany",
-  advanced: "Zaawansowany",
-};
 ---
 
 <Layout title={`${title} | PIY`} description={description}>

@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Card from "@/components/Card.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
+import Datetime from "@/components/Datetime.astro";
 import Layout from "@/layouts/Layout.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 
@@ -14,7 +15,14 @@ const sortedPosts = getSortedPosts(posts);
   <Header />
   <main id="main-content">
     <section class="pt-8 pb-12">
-      <h1 class="mb-6 text-2xl font-bold">All Posts</h1>
+      <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">All Posts</h1>
+      {sortedPosts.length > 0 && (
+        <div class="flex items-center gap-3 mt-2 mb-8">
+          <Datetime pubDatetime={sortedPosts[0].data.pubDatetime} size="lg" />
+          <span class="text-foreground/30">&#183;</span>
+          <span class="text-sm opacity-60">Ostatnia aktualizacja</span>
+        </div>
+      )}
       <ul>
         {sortedPosts.map((post) => (
           <Card {...post} />
