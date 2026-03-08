@@ -1,41 +1,43 @@
 # atdpath: blog
 
-Blog osobisty o wchodzeniu w świat z AI. Zbudowany z [Astro](https://astro.build/) i [Tailwind CSS](https://tailwindcss.com/).
+> This project is published as part of [PIY — Prompt It Yourself](https://blog.atdpath.com/piy), a personal initiative launched on March 8, 2026, encouraging others to build their own apps with the help of LLMs.
 
-**Strona:** [blog.atdpath.com](https://blog.atdpath.com/)
+A personal blog about entering the world of AI. Built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
 
-## Sekcje
+**Website:** [blog.atdpath.com](https://blog.atdpath.com/)
 
-- **Posts** — wpisy blogowe o AI, programowaniu i technologii
-- **PIY (Prompt It Yourself)** — zbiór projektów zbudowanych z pomocą AI, gotowych do samodzielnego odtworzenia i rozbudowy
-- **ATD** — strona ATD
-- **About** — o autorze
+## Sections
 
-## Funkcjonalności
+- **Posts** — blog posts about AI, programming, and technology
+- **PIY (Prompt It Yourself)** — a collection of projects built with AI, ready to recreate and extend on your own
+- **ATD** — ATD page
+- **About** — about the author
 
-- Ciemny i jasny motyw
-- Kanał RSS
-- Mapa strony (sitemap)
-- Lightbox do powiększania obrazków w treściach
-- Obsługa Markdown i MDX
-- Optymalizacja SEO i Open Graph
+## Features
 
-## Uruchomienie
+- Dark and light theme
+- RSS feed
+- Sitemap
+- Lightbox for enlarging images in content
+- Markdown and MDX support
+- SEO and Open Graph optimization
+
+## Getting started
 
 ```bash
 npm install
 npm run dev
 ```
 
-Strona będzie dostępna pod `http://localhost:4321`.
+The site will be available at `http://localhost:4321`.
 
-## Budowanie
+## Building
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Licencja
+## License
 
 [Commons Clause + MIT](LICENSE) — Daniel Roziecki
