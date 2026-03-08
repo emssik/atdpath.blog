@@ -60,6 +60,16 @@ print(json.dumps(matches[0]) if matches else '')
 
 PULL_ZONE_ID=$(echo "$PULL_ZONE_DATA" | python3 -c "import sys,json;print(json.load(sys.stdin)['Id'])")
 
+# Disable Pull Zone default browser cache (let Edge Rules control it)
+CURRENT_CACHE=$(echo "$PULL_ZONE_DATA" | python3 -c "import sys,json;print(json.load(sys.stdin).get('CacheControlPublicMaxAgeOverride', -999))")
+if [ "$CURRENT_CACHE" != "0" ]; then
+  api POST "/pullzone/${PULL_ZONE_ID}" -d '{"CacheControlPublicMaxAgeOverride": 0}' > /dev/null 2>&1 && \
+    echo "   Set CacheControlPublicMaxAgeOverride to 0 (no default browser cache)" || \
+    echo "   Failed to update CacheControlPublicMaxAgeOverride"
+else
+  echo "   CacheControlPublicMaxAgeOverride already 0"
+fi
+
 # Check if cache rules already exist
 EXISTING_RULES=$(echo "$PULL_ZONE_DATA" | python3 -c "
 import sys, json
@@ -81,8 +91,8 @@ else
     "TriggerMatchingType": 0,
     "Description": "immutable-assets",
     "Enabled": true
-  }' > /dev/null 2>&1 && echo "   Added edge rule: immutable-assets (_astro/* → long cache)" || \
-    echo "   Failed to add immutable-assets rule"
+  }' > /dev/null && echo "   Added edge rule: immutable-assets (_astro/* → long cache)" || \
+    echo "   ERROR: Failed to add immutable-assets rule" >&2
 fi
 
 # Rule 2: charset=utf-8 for .txt files (llms.txt, llms-full.txt)
@@ -97,8 +107,8 @@ else
     "TriggerMatchingType": 0,
     "Description": "charset-utf8-for-txt",
     "Enabled": true
-  }' > /dev/null 2>&1 && echo "   Added edge rule: charset-utf8-for-txt (*.txt → UTF-8)" || \
-    echo "   Failed to add charset-utf8-for-txt rule"
+  }' > /dev/null && echo "   Added edge rule: charset-utf8-for-txt (*.txt → UTF-8)" || \
+    echo "   ERROR: Failed to add charset-utf8-for-txt rule" >&2
 fi
 
 # Rule 3: No browser cache for everything else (HTML pages, sitemap, etc.)
@@ -113,6 +123,6 @@ else
     "TriggerMatchingType": 0,
     "Description": "no-cache-html",
     "Enabled": true
-  }' > /dev/null 2>&1 && echo "   Added edge rule: no-cache-html (non-asset files → revalidate)" || \
-    echo "   Failed to add no-cache-html rule"
+  }' > /dev/null && echo "   Added edge rule: no-cache-html (non-asset files → revalidate)" || \
+    echo "   ERROR: Failed to add no-cache-html rule" >&2
 fi

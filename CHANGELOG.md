@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-03-08
+
+### Added
+- Prose images now render with a visible border for better definition against the page background
+
+### Fixed
+- Build script: CDN Edge Rule failures now report to stderr, preventing silent failure masking
+- Build script: Pull Zone default browser cache explicitly disabled so Edge Rules have full cache control
+
+### Changed
+- PIY project detail header: difficulty and repo link use plain text/link style instead of pill badges
+- PIY project detail header: tags section separated into its own centered row with dividers for cleaner layout
+
 ## [0.9.1] - 2026-03-08
 
 ### Added

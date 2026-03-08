@@ -139,7 +139,7 @@ html[data-theme="dark"] {
   }
 
   .prose img {
-    @apply my-8 rounded-lg cursor-zoom-in;
+    @apply my-8 rounded-lg cursor-zoom-in border border-border;
   }
 
   /* Lightbox */
