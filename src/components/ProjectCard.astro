@@ -1,0 +1,67 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Tag from "@/components/Tag.astro";
+import { difficultyLabel } from "@/utils/difficultyLabel";
+
+interface Props {
+  project: CollectionEntry<"piy">;
+  showDate?: boolean;
+  headingLevel?: "h2" | "h3";
+}
+
+const { project, showDate = false, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("pl-PL", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+const displayDate = project.data.modDatetime ?? project.data.pubDatetime;
+const isModified = project.data.modDatetime && project.data.modDatetime > project.data.pubDatetime;
+---
+
+<li>
+  <a
+    href={`/piy/${project.id}`}
+    class="group block rounded-xl border border-border p-5 sm:p-6 transition-all hover:border-accent/50 hover:bg-accent/[0.03]"
+  >
+    <div class:list={["flex flex-col", showDate && "sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4"]}>
+      <div class="flex-1 min-w-0">
+        <Heading class="font-display text-lg font-semibold tracking-tight text-foreground group-hover:text-accent transition-colors leading-snug">
+          {project.data.title}
+        </Heading>
+        <p class="text-subtle text-sm mt-1.5 leading-relaxed line-clamp-2">
+          {project.data.description}
+        </p>
+        <div class="flex flex-wrap items-center gap-2 mt-3">
+          {project.data.difficulty && (
+            <span class="rounded-full bg-muted px-2.5 py-0.5 text-xs text-subtle">
+              {difficultyLabel[project.data.difficulty] ?? project.data.difficulty}
+            </span>
+          )}
+          {project.data.tags.slice(0, 4).map((tag) => (
+            <Tag tag={tag} linked={false} />
+          ))}
+        </div>
+      </div>
+      {showDate && (
+        <div class="flex-shrink-0 sm:text-right">
+          <time
+            datetime={displayDate.toISOString()}
+            class="text-xs text-subtle whitespace-nowrap"
+            title={isModified ? `Zaktualizowano: ${formatDate(displayDate)}` : `Dodano: ${formatDate(displayDate)}`}
+          >
+            {isModified && (
+              <span class="text-accent/60 mr-0.5">~</span>
+            )}
+            {formatDate(displayDate)}
+          </time>
+        </div>
+      )}
+    </div>
+  </a>
+</li>

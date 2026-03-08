@@ -1,40 +1,45 @@
 ---
-import { getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from "astro:content";
 import Card from "@/components/Card.astro";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import PageHero from "@/components/PageHero.astro";
-import Tag from "@/components/Tag.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
 import Layout from "@/layouts/Layout.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import getSortedProjects from "@/utils/getSortedProjects";
 import getUniqueTags from "@/utils/getUniqueTags";
-import { difficultyLabel } from "@/utils/difficultyLabel";
+import { pluralize } from "@/utils/pluralize";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
   const projects = await getCollection("piy");
   const tags = getUniqueTags(posts, projects);
+  const allSortedPosts = getSortedPosts(posts);
+  const allSortedProjects = getSortedProjects(projects);
 
-  return tags.map(({ tag }) => ({
-    params: { tag },
-    props: { tag },
-  }));
+  return tags.map(({ tag }) => {
+    const tagPosts = allSortedPosts.filter((post) =>
+      post.data.tags.some((t) => t.toLowerCase() === tag)
+    );
+    const tagProjects = allSortedProjects.filter((project) =>
+      project.data.tags.some((t) => t.toLowerCase() === tag)
+    );
+    return {
+      params: { tag },
+      props: { tag, posts: tagPosts, projects: tagProjects },
+    };
+  });
 }
 
-const { tag } = Astro.props;
-const posts = await getCollection("blog");
-const projects = await getCollection("piy");
+type Props = {
+  tag: string;
+  posts: CollectionEntry<"blog">[];
+  projects: CollectionEntry<"piy">[];
+};
 
-const sortedPosts = getSortedPosts(posts).filter((post) =>
-  post.data.tags.some((t) => t.toLowerCase() === tag)
-);
-
-const sortedProjects = getSortedProjects(projects).filter((project) =>
-  project.data.tags.some((t) => t.toLowerCase() === tag)
-);
-
-const totalCount = sortedPosts.length + sortedProjects.length;
+const { tag, posts, projects } = Astro.props;
+const totalCount = posts.length + projects.length;
 ---
 
 <Layout title={`#${tag}`} description={`Treści z tagiem #${tag}.`}>
@@ -45,53 +50,31 @@ const totalCount = sortedPosts.length + sortedProjects.length;
     </PageHero>
     <section class="!pt-0 -mt-4 mb-8">
       <p class="text-subtle text-sm">
-        {totalCount} {totalCount === 1 ? "wpis" : totalCount < 5 ? "wpisy" : "wpisów"}
+        {totalCount} {pluralize(totalCount, "wpis", "wpisy", "wpisów")}
       </p>
     </section>
 
-    {sortedPosts.length > 0 && (
+    {posts.length > 0 && (
       <section class="pb-8">
-        {sortedProjects.length > 0 && (
+        {projects.length > 0 && (
           <h2 class="font-display text-xl font-semibold tracking-tight mb-4">Posty</h2>
         )}
         <ul>
-          {sortedPosts.map((post) => (
+          {posts.map((post) => (
             <Card {...post} />
           ))}
         </ul>
       </section>
     )}
 
-    {sortedProjects.length > 0 && (
+    {projects.length > 0 && (
       <section class="pb-12">
-        {sortedPosts.length > 0 && (
+        {posts.length > 0 && (
           <h2 class="font-display text-xl font-semibold tracking-tight mb-4">Projekty PIY</h2>
         )}
         <ul class="space-y-4">
-          {sortedProjects.map((project) => (
-            <li>
-              <a
-                href={`/piy/${project.id}`}
-                class="group block rounded-xl border border-border p-5 sm:p-6 transition-all hover:border-accent/50 hover:bg-accent/[0.03]"
-              >
-                <h3 class="font-display text-lg font-semibold tracking-tight text-foreground group-hover:text-accent transition-colors">
-                  {project.data.title}
-                </h3>
-                <p class="text-subtle text-sm mt-1.5 leading-relaxed line-clamp-2">
-                  {project.data.description}
-                </p>
-                <div class="flex flex-wrap items-center gap-2 mt-3">
-                  {project.data.difficulty && (
-                    <span class="rounded-full bg-muted px-2.5 py-0.5 text-xs text-subtle">
-                      {difficultyLabel[project.data.difficulty] ?? project.data.difficulty}
-                    </span>
-                  )}
-                  {project.data.tags.slice(0, 4).map((t) => (
-                    <Tag tag={t} linked={false} />
-                  ))}
-                </div>
-              </a>
-            </li>
+          {projects.map((project) => (
+            <ProjectCard project={project} />
           ))}
         </ul>
       </section>

@@ -3,19 +3,11 @@ import { getCollection } from "astro:content";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
-import Tag from "@/components/Tag.astro";
-import { difficultyLabel } from "@/utils/difficultyLabel";
+import ProjectCard from "@/components/ProjectCard.astro";
 import getSortedProjects from "@/utils/getSortedProjects";
+import { pluralize } from "@/utils/pluralize";
 
 const sortedProjects = getSortedProjects(await getCollection("piy"));
-
-function formatDate(date: Date) {
-  return date.toLocaleDateString("pl-PL", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
 ---
 
 <Layout title="Projekty PIY" description="Lista wszystkich projektów PIY — gotowe pomysły na aplikacje, które zbudujesz z pomocą AI.">
@@ -35,7 +27,7 @@ function formatDate(date: Date) {
         </span>
         <div class="pb-1.5">
           <p class="font-display text-xl sm:text-2xl font-semibold tracking-tight text-foreground leading-tight">
-            {sortedProjects.length === 1 ? "projekt" : sortedProjects.length < 5 ? "projekty" : "projektów"}
+            {pluralize(sortedProjects.length, "projekt", "projekty", "projektów")}
           </p>
           <p class="text-subtle text-sm mt-0.5">opublikowanych w sekcji PIY</p>
         </div>
@@ -49,51 +41,9 @@ function formatDate(date: Date) {
         <p class="text-subtle italic text-base">Wkrótce pojawią się pierwsze projekty...</p>
       ) : (
         <ul class="space-y-4">
-          {sortedProjects.map((project) => {
-            const displayDate = project.data.modDatetime ?? project.data.pubDatetime;
-            const isModified = project.data.modDatetime && project.data.modDatetime > project.data.pubDatetime;
-            return (
-              <li>
-                <a
-                  href={`/piy/${project.id}`}
-                  class="group block rounded-xl border border-border p-5 sm:p-6 transition-all hover:border-accent/50 hover:bg-accent/[0.03]"
-                >
-                  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
-                    <div class="flex-1 min-w-0">
-                      <h2 class="font-display text-lg font-semibold tracking-tight text-foreground group-hover:text-accent transition-colors leading-snug">
-                        {project.data.title}
-                      </h2>
-                      <p class="text-subtle text-sm mt-1.5 leading-relaxed line-clamp-2">
-                        {project.data.description}
-                      </p>
-                      <div class="flex flex-wrap items-center gap-2 mt-3">
-                        {project.data.difficulty && (
-                          <span class="rounded-full bg-muted px-2.5 py-0.5 text-xs text-subtle">
-                            {difficultyLabel[project.data.difficulty] ?? project.data.difficulty}
-                          </span>
-                        )}
-                        {project.data.tags.slice(0, 4).map((tag) => (
-                          <Tag tag={tag} linked={false} />
-                        ))}
-                      </div>
-                    </div>
-                    <div class="flex-shrink-0 sm:text-right">
-                      <time
-                        datetime={displayDate.toISOString()}
-                        class="text-xs text-subtle whitespace-nowrap"
-                        title={isModified ? `Zaktualizowano: ${formatDate(displayDate)}` : `Dodano: ${formatDate(displayDate)}`}
-                      >
-                        {isModified && (
-                          <span class="text-accent/60 mr-0.5">~</span>
-                        )}
-                        {formatDate(displayDate)}
-                      </time>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            );
-          })}
+          {sortedProjects.map((project) => (
+            <ProjectCard project={project} showDate headingLevel="h2" />
+          ))}
         </ul>
       )}
     </section>
