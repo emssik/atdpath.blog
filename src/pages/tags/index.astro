@@ -1,0 +1,31 @@
+---
+import { getCollection } from "astro:content";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import PageHero from "@/components/PageHero.astro";
+import Tag from "@/components/Tag.astro";
+import Layout from "@/layouts/Layout.astro";
+import getUniqueTags from "@/utils/getUniqueTags";
+
+const posts = await getCollection("blog");
+const projects = await getCollection("piy");
+const tags = getUniqueTags(posts, projects);
+---
+
+<Layout title="Tagi" description="Wszystkie tagi na blogu.">
+  <Header />
+  <main id="main-content">
+    <PageHero kicker="Tagi">Wszystkie tagi.</PageHero>
+    <section class="pb-12">
+      <ul class="flex flex-wrap gap-3">
+        {tags.map(({ tag, count }) => (
+          <li class="flex items-center gap-1.5">
+            <Tag tag={tag} size="md" />
+            <span class="text-xs text-subtle/50">({count})</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</Layout>

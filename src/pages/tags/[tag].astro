@@ -1,0 +1,107 @@
+---
+import { getCollection } from "astro:content";
+import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import PageHero from "@/components/PageHero.astro";
+import Tag from "@/components/Tag.astro";
+import Layout from "@/layouts/Layout.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import getSortedProjects from "@/utils/getSortedProjects";
+import getUniqueTags from "@/utils/getUniqueTags";
+import { difficultyLabel } from "@/utils/difficultyLabel";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const projects = await getCollection("piy");
+  const tags = getUniqueTags(posts, projects);
+
+  return tags.map(({ tag }) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const posts = await getCollection("blog");
+const projects = await getCollection("piy");
+
+const sortedPosts = getSortedPosts(posts).filter((post) =>
+  post.data.tags.some((t) => t.toLowerCase() === tag)
+);
+
+const sortedProjects = getSortedProjects(projects).filter((project) =>
+  project.data.tags.some((t) => t.toLowerCase() === tag)
+);
+
+const totalCount = sortedPosts.length + sortedProjects.length;
+---
+
+<Layout title={`#${tag}`} description={`Treści z tagiem #${tag}.`}>
+  <Header />
+  <main id="main-content">
+    <PageHero kicker={`Tag`}>
+      #{tag}
+    </PageHero>
+    <section class="!pt-0 -mt-4 mb-8">
+      <p class="text-subtle text-sm">
+        {totalCount} {totalCount === 1 ? "wpis" : totalCount < 5 ? "wpisy" : "wpisów"}
+      </p>
+    </section>
+
+    {sortedPosts.length > 0 && (
+      <section class="pb-8">
+        {sortedProjects.length > 0 && (
+          <h2 class="font-display text-xl font-semibold tracking-tight mb-4">Posty</h2>
+        )}
+        <ul>
+          {sortedPosts.map((post) => (
+            <Card {...post} />
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {sortedProjects.length > 0 && (
+      <section class="pb-12">
+        {sortedPosts.length > 0 && (
+          <h2 class="font-display text-xl font-semibold tracking-tight mb-4">Projekty PIY</h2>
+        )}
+        <ul class="space-y-4">
+          {sortedProjects.map((project) => (
+            <li>
+              <a
+                href={`/piy/${project.id}`}
+                class="group block rounded-xl border border-border p-5 sm:p-6 transition-all hover:border-accent/50 hover:bg-accent/[0.03]"
+              >
+                <h3 class="font-display text-lg font-semibold tracking-tight text-foreground group-hover:text-accent transition-colors">
+                  {project.data.title}
+                </h3>
+                <p class="text-subtle text-sm mt-1.5 leading-relaxed line-clamp-2">
+                  {project.data.description}
+                </p>
+                <div class="flex flex-wrap items-center gap-2 mt-3">
+                  {project.data.difficulty && (
+                    <span class="rounded-full bg-muted px-2.5 py-0.5 text-xs text-subtle">
+                      {difficultyLabel[project.data.difficulty] ?? project.data.difficulty}
+                    </span>
+                  )}
+                  {project.data.tags.slice(0, 4).map((t) => (
+                    <Tag tag={t} linked={false} />
+                  ))}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section class="pb-12">
+      <a href="/tags" class="text-subtle text-sm hover:text-accent transition-colors">
+        &larr; Wszystkie tagi
+      </a>
+    </section>
+  </main>
+  <Footer />
+</Layout>

@@ -85,7 +85,23 @@ else
     echo "   Failed to add immutable-assets rule"
 fi
 
-# Rule 2: No browser cache for everything else (HTML pages, sitemap, etc.)
+# Rule 2: charset=utf-8 for .txt files (llms.txt, llms-full.txt)
+if echo "$EXISTING_RULES" | grep -q "charset-utf8-for-txt"; then
+  echo "   Edge rule 'charset-utf8-for-txt' already exists, skipping"
+else
+  api POST "/pullzone/${PULL_ZONE_ID}/edgerules/addOrUpdate" -d '{
+    "ActionType": 5,
+    "ActionParameter1": "Content-Type",
+    "ActionParameter2": "text/plain; charset=utf-8",
+    "Triggers": [{"Type": 0, "PatternMatches": ["*.txt"], "PatternMatchingType": 0}],
+    "TriggerMatchingType": 0,
+    "Description": "charset-utf8-for-txt",
+    "Enabled": true
+  }' > /dev/null 2>&1 && echo "   Added edge rule: charset-utf8-for-txt (*.txt → UTF-8)" || \
+    echo "   Failed to add charset-utf8-for-txt rule"
+fi
+
+# Rule 3: No browser cache for everything else (HTML pages, sitemap, etc.)
 if echo "$EXISTING_RULES" | grep -q "no-cache-html"; then
   echo "   Edge rule 'no-cache-html' already exists, skipping"
 else

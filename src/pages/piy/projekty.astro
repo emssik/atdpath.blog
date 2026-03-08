@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
+import Tag from "@/components/Tag.astro";
 import { difficultyLabel } from "@/utils/difficultyLabel";
 import getSortedProjects from "@/utils/getSortedProjects";
 
@@ -72,7 +73,7 @@ function formatDate(date: Date) {
                           </span>
                         )}
                         {project.data.tags.slice(0, 4).map((tag) => (
-                          <span class="text-xs text-subtle/70">#{tag}</span>
+                          <Tag tag={tag} linked={false} />
                         ))}
                       </div>
                     </div>

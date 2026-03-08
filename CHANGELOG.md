@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-03-08
+
+### Added
+- Tag system: clickable tag pills on posts and PIY projects linking to `/tags/[tag]` filtered pages
+- `/tags` index page listing all unique tags across blog posts and PIY projects with post counts
+- `/tags/[tag]` detail pages showing matching blog posts and PIY projects under a single tag
+- `Tag` component with hover effects and optional non-linked (display-only) variant
+- `getUniqueTags` utility aggregating and deduplicating tags across blog and PIY content collections
+- Global copy-to-clipboard button for all code blocks, now available on every page via `Layout.astro`
+
+### Fixed
+- Dark mode code blocks now render with the correct Shiki dark theme background and token colors using CSS variable overrides
+
+### Changed
+- Copy-to-clipboard script moved from inline post-only script to global `Layout.astro`, eliminating duplication
+- Bunny CDN edge rules in `build.sh` extended with a charset=utf-8 rule for `.txt` files (llms.txt, llms-full.txt)
+
 ## [0.8.0] - 2026-03-08
 
 ### Added

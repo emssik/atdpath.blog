@@ -5,6 +5,7 @@ import Header from "@/components/Header.astro";
 import Datetime from "@/components/Datetime.astro";
 import PageHero from "@/components/PageHero.astro";
 import Layout from "@/layouts/Layout.astro";
+import Tag from "@/components/Tag.astro";
 import { difficultyLabel } from "@/utils/difficultyLabel";
 
 export async function getStaticPaths() {
@@ -39,7 +40,7 @@ const { Content } = await render(project);
             </span>
           )}
           {tags.map((tag) => (
-            <span class="text-xs text-subtle">#{tag}</span>
+            <Tag tag={tag} />
           ))}
           {repo && (
             <a

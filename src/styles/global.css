@@ -112,11 +112,30 @@ html[data-theme="dark"] {
   }
 
   .prose pre {
-    @apply my-6 overflow-x-auto rounded-lg border border-border p-4;
+    @apply my-6 overflow-x-auto rounded-lg border border-border p-4 relative;
+  }
+
+  html[data-theme="dark"] .prose pre {
+    background-color: var(--shiki-dark-bg, #1a1a1e) !important;
+    color: var(--shiki-dark, #dbd7caee) !important;
+  }
+
+  html[data-theme="dark"] .prose pre span {
+    color: var(--shiki-dark) !important;
   }
 
   .prose pre code {
     @apply bg-transparent p-0;
+  }
+
+  /* Copy button */
+  .prose pre .copy-code {
+    @apply absolute top-2 right-2 rounded border border-border bg-background/80 px-2 py-1 font-mono text-xs text-subtle opacity-60 transition-opacity cursor-pointer;
+    backdrop-filter: blur(4px);
+  }
+
+  .prose pre .copy-code:hover {
+    @apply opacity-100;
   }
 
   .prose img {
