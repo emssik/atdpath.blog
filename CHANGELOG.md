@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-03-08
+
+### Added
+- PIY cover page (`piy-cover.html`) for social/marketing use
+- PIY skill now enforces deploy-time checks on source repos: license (Commons Clause + MIT), blog link in GitHub repo metadata, and PIY quote at the top of README
+
+### Changed
+- PIY skill (`skills/piy/SKILL.md`) fully translated to English and expanded with Phase 3 workflow covering automated repo validation and remediation steps
+- PIY markdown template updated with `Licencja` section using Commons Clause + MIT boilerplate
+
 ## [0.7.0] - 2026-03-08
 
 ### Added
