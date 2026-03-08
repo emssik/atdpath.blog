@@ -1,14 +1,13 @@
 import { getCollection } from "astro:content";
 import { SITE } from "@/config";
 import getSortedPosts from "@/utils/getSortedPosts";
+import getSortedProjects from "@/utils/getSortedProjects";
 
 export async function GET() {
   const posts = await getCollection("blog");
   const sortedPosts = getSortedPosts(posts);
 
-  const piyProjects = (await getCollection("piy"))
-    .filter((p) => !p.data.draft)
-    .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
+  const piyProjects = getSortedProjects(await getCollection("piy"));
 
   const lines: string[] = [
     `# ${SITE.title}`,

@@ -1,4 +1,6 @@
 ---
+import { SITE } from "@/config";
+
 interface Props {
   title: string;
   description: string;
@@ -6,8 +8,7 @@ interface Props {
 }
 
 const { title, description, slug } = Astro.props;
-const siteUrl = "https://blog.atdpath.com";
-const postUrl = `${siteUrl}/posts/${slug}`;
+const postUrl = `${SITE.website}posts/${slug}`;
 const encodedUrl = encodeURIComponent(postUrl);
 const encodedTitle = encodeURIComponent(title);
 const encodedDesc = encodeURIComponent(description);
@@ -91,13 +92,17 @@ const encodedDesc = encodeURIComponent(description);
 </style>
 
 <script is:inline>
-  document.querySelector("#copy-link-btn")?.addEventListener("click", async (e) => {
-    const btn = e.currentTarget;
-    const url = btn.dataset.url;
-    await navigator.clipboard.writeText(url);
-    const svg = btn.querySelector("svg");
-    const origHTML = svg.innerHTML;
-    svg.innerHTML = '<polyline points="20 6 9 17 4 12" />';
-    setTimeout(() => { svg.innerHTML = origHTML; }, 1500);
-  });
+  (function() {
+    var copyTimeout;
+    document.querySelector("#copy-link-btn")?.addEventListener("click", async (e) => {
+      const btn = e.currentTarget;
+      const url = btn.dataset.url;
+      await navigator.clipboard.writeText(url);
+      const svg = btn.querySelector("svg");
+      const origHTML = svg.innerHTML;
+      svg.innerHTML = '<polyline points="20 6 9 17 4 12" />';
+      clearTimeout(copyTimeout);
+      copyTimeout = setTimeout(() => { svg.innerHTML = origHTML; }, 1500);
+    });
+  })();
 </script>

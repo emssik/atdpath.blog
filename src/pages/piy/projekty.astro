@@ -4,11 +4,9 @@ import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
 import { difficultyLabel } from "@/utils/difficultyLabel";
+import getSortedProjects from "@/utils/getSortedProjects";
 
-const projects = await getCollection("piy");
-const sortedProjects = projects
-  .filter((p) => !p.data.draft)
-  .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
+const sortedProjects = getSortedProjects(await getCollection("piy"));
 
 function formatDate(date: Date) {
   return date.toLocaleDateString("pl-PL", {
