@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-03-08
+
+### Added
+- New PIY project entry: atdpath-blog, documenting this blog itself as a project
+- Hero image for the atdpath-blog PIY entry
+- `getSortedProjects` shared utility for consistent project sorting across pages
+
+### Changed
+- PIY landing page, projekty listing, post detail, and search pages simplified and streamlined
+- ShareButtons component refactored for cleaner markup
+- LLM feeds (llms.txt, llms-full.txt) updated to reflect new project content
+- README updated with current project overview
+
 ## [0.5.0] - 2026-03-08
 
 ### Added
