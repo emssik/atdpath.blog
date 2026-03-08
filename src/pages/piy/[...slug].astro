@@ -6,6 +6,8 @@ import Datetime from "@/components/Datetime.astro";
 import PageHero from "@/components/PageHero.astro";
 import Layout from "@/layouts/Layout.astro";
 import Tag from "@/components/Tag.astro";
+import ShareButtons from "@/components/ShareButtons.astro";
+import NewsletterForm from "@/components/NewsletterForm.astro";
 import { difficultyLabel } from "@/utils/difficultyLabel";
 
 export async function getStaticPaths() {
@@ -66,6 +68,21 @@ const { Content } = await render(project);
         <Content />
       </div>
     </article>
+
+    <NewsletterForm />
+
+    <hr class="my-8 border-dashed" />
+
+    <div class="flex items-center justify-between flex-wrap gap-4 my-6">
+      <ul class="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <li>
+            <Tag tag={tag} />
+          </li>
+        ))}
+      </ul>
+      <ShareButtons title={title} description={description} slug={`piy/${project.id}`} prefix="" />
+    </div>
   </main>
   <Footer />
 </Layout>

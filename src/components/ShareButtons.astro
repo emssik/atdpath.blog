@@ -5,10 +5,11 @@ interface Props {
   title: string;
   description: string;
   slug: string;
+  prefix?: string;
 }
 
-const { title, description, slug } = Astro.props;
-const postUrl = `${SITE.website}posts/${slug}`;
+const { title, description, slug, prefix = "posts" } = Astro.props;
+const postUrl = prefix ? `${SITE.website}${prefix}/${slug}` : `${SITE.website}${slug}`;
 const encodedUrl = encodeURIComponent(postUrl);
 const encodedTitle = encodeURIComponent(title);
 const encodedDesc = encodeURIComponent(description);

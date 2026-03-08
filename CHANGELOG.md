@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-03-08
+
+### Added
+- Newsletter subscription form on blog post detail pages and PIY project detail pages
+- Share buttons on PIY project detail pages with correct URL generation
+- Tags displayed at the bottom of PIY project detail pages
+
+### Changed
+- `ShareButtons` component accepts a configurable `prefix` prop instead of hardcoding "posts", enabling reuse across content types
+- `NewsletterForm` wrapper changed from `<section>` to `<div>` for flexible semantic nesting
+- About page newsletter wrapper changed from `<div>` to `<section>` for correct document outline
+- Blog post detail page horizontal padding increased from `px-4` to `px-6`
+
 ## [0.9.2] - 2026-03-08
 
 ### Added
