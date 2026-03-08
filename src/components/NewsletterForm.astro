@@ -1,0 +1,52 @@
+---
+
+---
+
+<section class="my-10">
+  <div class="rounded-xl border border-border bg-muted px-8 py-8">
+    <h2 class="font-display text-xl font-semibold mb-2">Bądź na bieżąco</h2>
+    <p class="text-subtle text-base mb-6">
+      Nowe posty, projekty i&nbsp;przemyślenia — prosto na Twój mail.
+    </p>
+
+    <form
+      action="https://mailer.emssik.net/sendy/subscribe"
+      method="POST"
+      accept-charset="utf-8"
+      class="flex flex-col sm:flex-row gap-3 mb-5"
+    >
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Imię"
+        class="flex-1 rounded-lg border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-subtle/60 focus:outline-none focus:border-accent transition-colors"
+      />
+      <input
+        type="email"
+        name="email"
+        id="email"
+        required
+        placeholder="Adres email"
+        class="flex-1 rounded-lg border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-subtle/60 focus:outline-none focus:border-accent transition-colors"
+      />
+      <div style="display:none;" aria-hidden="true">
+        <input type="text" name="hp" id="hp" tabindex="-1" autocomplete="off" />
+      </div>
+      <input type="hidden" name="list" value="UGC8929zuQ4BeOVJhZJ3763xlg" />
+      <input type="hidden" name="subform" value="yes" />
+      <input type="hidden" name="gdpr" value="true" />
+      <button
+        type="submit"
+        class="rounded-lg bg-accent px-6 py-2.5 text-background font-semibold transition-colors hover:bg-accent/85 cursor-pointer shrink-0"
+      >
+        Subskrybuj
+      </button>
+    </form>
+
+    <p class="text-subtle text-xs leading-relaxed">
+      Zapisując się wyrażasz zgodę na otrzymywanie wiadomości email.
+      W&nbsp;każdej chwili możesz się wypisać linkiem na dole maila.
+    </p>
+  </div>
+</section>

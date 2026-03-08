@@ -6,6 +6,7 @@ import Datetime from "@/components/Datetime.astro";
 import PageHero from "@/components/PageHero.astro";
 import { SITE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
+import ShareButtons from "@/components/ShareButtons.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { calculateReadingTime } from "@/utils/readingTime";
 
@@ -27,6 +28,7 @@ const { post, posts } = Astro.props;
 const { title, description, pubDatetime, modDatetime, tags } = post.data;
 const { Content } = await render(post);
 const readingTime = calculateReadingTime(post.body ?? "");
+const ogImage = `/posts/${post.id}.png`;
 
 const allPosts = posts.map(({ id, data: { title } }) => ({ slug: id, title }));
 const currentIndex = allPosts.findIndex((p) => p.slug === post.id);
@@ -37,6 +39,7 @@ const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1]
 <Layout
   title={`${title} | ${SITE.title}`}
   description={description}
+  ogImage={ogImage}
   pubDatetime={pubDatetime}
   modDatetime={modDatetime}
 >
@@ -63,13 +66,16 @@ const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1]
 
     <hr class="my-8 border-dashed" />
 
-    <ul class="flex flex-wrap gap-2 my-6">
-      {tags.map((tag) => (
-        <li>
-          <span class="text-xs opacity-70">#{tag}</span>
-        </li>
-      ))}
-    </ul>
+    <div class="flex items-center justify-between flex-wrap gap-4 my-6">
+      <ul class="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <li>
+            <span class="text-xs opacity-70">#{tag}</span>
+          </li>
+        ))}
+      </ul>
+      <ShareButtons title={title} description={description} slug={post.id} />
+    </div>
 
     <div class="flex items-center justify-between">
       <button

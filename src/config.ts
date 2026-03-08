@@ -33,6 +33,12 @@ export const SOCIALS = [
     active: true,
   },
   {
+    name: "YouTube",
+    href: "https://www.youtube.com/@FromZeroToJunior",
+    icon: "youtube",
+    active: true,
+  },
+  {
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/daniel-roziecki/",
     icon: "linkedin",

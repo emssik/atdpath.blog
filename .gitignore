@@ -29,6 +29,9 @@ venv/
 .env
 .env.local
 
+# Dev-only
+.dev/
+
 # Build outputs
 dist/
 build/

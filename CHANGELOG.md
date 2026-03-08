@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-03-08
+
+### Added
+- Newsletter subscription form component integrated into the About page
+- Share buttons on blog post pages (copy link, share to social platforms)
+- Dynamic Open Graph image generation per blog post (`/posts/[slug].png`)
+- YouTube added to social links (channel: FromZeroToJunior)
+- Newsletter icon link in site footer pointing to the About page newsletter section
+- `build.sh` script for streamlined production builds
+
+### Changed
+- About page fully rewritten with real author bio, avatar, newsletter section, and social links
+- ATD page content updated with program description and enrollment status notice
+- Post detail page layout updated: tags and share buttons displayed in a flex row
+- `.gitignore` extended to exclude `.dev/` local development directory
+- PIY top5 section heading renamed from "Rozbudowa na własną rękę" to "Pomysły na rozbudowę"
+
 ## [0.4.0] - 2026-03-08
 
 ### Added

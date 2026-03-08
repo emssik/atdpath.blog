@@ -5,17 +5,42 @@ import PageHero from "@/components/PageHero.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
 
-<Layout title="AI Things Done (ATD)" description="AI Things Done (ATD)">
+<Layout title="ATD Path — Twoja ścieżka do tworzenia z AI" description="ATD Path to program edukacyjny, który uczy jak bez programowania tworzyć aplikacje z pomocą sztucznej inteligencji.">
   <Header />
   <main id="main-content">
+
     <PageHero kicker="ATD — AI Things Done">AI Things Done.</PageHero>
-    <section class="pb-12">
+
+    <section class="pb-6">
       <div class="prose">
         <p>
-          Edytuj plik <code>src/pages/atd.astro</code> aby dodac wlasna tresc.
+          ATD Path to projekt edukacyjny, w&nbsp;ramach którego uczę jak
+          <strong>bez umiejętności programowania</strong> tworzyć aplikacje
+          z&nbsp;pomocą sztucznej inteligencji.
+        </p>
+        <p>
+          Cały proces — od zdefiniowania problemu, przez zaprojektowanie rozwiązania,
+          po zbudowanie i&nbsp;wdrożenie — opiera się na współpracy z&nbsp;modelami AI.
+          Kod pisze model. Ty decydujesz, co ma powstać, i&nbsp;weryfikujesz efekty.
+        </p>
+        <p>
+          Program ma formę warsztatów live, regularnych spotkań i&nbsp;aktywnej społeczności
+          na Discordzie. Nie jest to klasyczny kurs z&nbsp;nagranymi lekcjami — wszystko
+          dzieje się na żywo, żeby wiedza była zawsze aktualna.
         </p>
       </div>
     </section>
+
+    <!-- STATUS -->
+    <section class="pt-4 pb-16">
+      <div class="rounded-xl border border-border bg-muted px-8 py-6 text-center leading-[1.8]">
+        <p class="text-subtle">
+          Obecnie nie przyjmujemy nowych uczestników.
+          Gdy zapisy zostaną otwarte, pojawi się tutaj link do strony z&nbsp;informacjami.
+        </p>
+      </div>
+    </section>
+
   </main>
   <Footer />
 </Layout>

@@ -126,7 +126,7 @@ Do tego dochodzi skill do Claude Code — po zainstalowaniu Claude zna struktur�
 
 Projekt udostępniony na licencji MIT z klauzulą [Commons Clause](https://commonsclause.com/). Możesz swobodnie czytać kod, uczyć się z niego, forkować i modyfikować na własne potrzeby — także w firmie. Jedyne ograniczenie: nie możesz sprzedawać tej aplikacji jako własnego produktu ani oferować jej jako płatnej usługi.
 
-## Rozbudowa na własną rękę
+## Pomysły na rozbudowę
 
 - **Widżet systemowy** — miniaturowy wskaźnik na pasku menu pokazujący aktualny focus i czas sesji
 - **Raporty tygodniowe** — podsumowanie z wykresami: ile czasu na który projekt, trendy w seriach

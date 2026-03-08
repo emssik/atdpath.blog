@@ -1,24 +1,43 @@
 ---
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
+import NewsletterForm from "@/components/NewsletterForm.astro";
 import PageHero from "@/components/PageHero.astro";
+import Socials from "@/components/Socials.astro";
 import Layout from "@/layouts/Layout.astro";
 ---
 
-<Layout title="About" description="About me and this blog.">
+<Layout title="O mnie — Daniel Roziecki" description="Programista, mentor, wieczny junior. 30+ lat w IT, budowanie z AI i dzielenie się tym, czego się uczę.">
   <Header />
   <main id="main-content">
+
     <PageHero kicker="O mnie">Daniel Roziecki.</PageHero>
-    <section class="pb-12">
-      <div class="prose">
-        <p>
-          Hi! This is where your bio goes.
-        </p>
-        <p>
-          Edit <code>src/pages/about.astro</code> to add your own content.
-        </p>
+
+    <section class="pb-10">
+      <div class="flex flex-col sm:flex-row gap-8 items-start">
+        <img
+          src="/avatar.jpg"
+          alt="Daniel Roziecki"
+          class="w-full sm:w-64 rounded-xl object-cover shrink-0"
+        />
+        <div class="prose">
+          <p>Ponad 30 lat w&nbsp;IT. Programista, admin, przedsiębiorca.</p>
+          <p>Od kilku lat uczę ludzi, jak wejść do świata technologii — między innymi w&nbsp;programie mentoringowym <a href="https://danielroziecki.com/products/za-raczke/" target="_blank" rel="noopener noreferrer">Za rączkę</a>. Od niedawna skupiam się na budowaniu rzeczy z&nbsp;pomocą AI, bez pisania kodu.</p>
+          <p>Prowadzę ten blog, program <a href="/atd">ATD Path</a> i&nbsp;dokumentuję projekty w&nbsp;sekcji <a href="/piy">PIY</a>.</p>
+          <p>Regularnie publikuję na <a href="https://www.linkedin.com/in/daniel-roziecki/" target="_blank" rel="noopener noreferrer">LinkedIn</a>, raz na 1–2 tygodnie wysyłam <a href="#newsletter">maila</a> z&nbsp;własnymi przemyśleniami o&nbsp;praktycznym wykorzystaniu narzędzi AI, a&nbsp;na <a href="https://www.youtube.com/@FromZeroToJunior" target="_blank" rel="noopener noreferrer">YouTube</a> zapraszam do ponad 200 nagrań — głównie o&nbsp;przebranżowieniu na programistę.</p>
+          <p>Mówię wprost. Nie owijam w&nbsp;bawełnę.</p>
+        </div>
       </div>
     </section>
+
+    <div id="newsletter">
+      <NewsletterForm />
+    </div>
+
+    <section class="pb-16 flex justify-center">
+      <Socials />
+    </section>
+
   </main>
   <Footer />
 </Layout>
