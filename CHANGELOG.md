@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-03-08
+
+### Added
+- `ProjectCard` component extracted from duplicated markup in `projekty.astro` and `tags/[tag].astro`
+- `pluralize` utility with correct Polish grammatical pluralization (handles 22, 23, 24 etc.)
+
+### Fixed
+- Polish tag count labels now use correct plural forms for all numbers via the new `pluralize` utility
+
+### Changed
+- `Tag` component: non-linked (display-only) variant no longer shows hover effects, clarifying interactive vs. passive state
+- `tags/[tag].astro` passes collection data via props from `getStaticPaths`, eliminating redundant `getCollection` calls
+
 ## [0.9.0] - 2026-03-08
 
 ### Added
