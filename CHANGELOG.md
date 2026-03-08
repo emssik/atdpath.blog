@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-03-08
+
+### Added
+- Automated browser cache control via Bunny CDN Edge Rules applied as a post-deploy step in `build.sh`: immutable long-cache for hashed `_astro/*` assets, and `no-cache, must-revalidate` for all other files (HTML, sitemap, etc.)
+- Reference documentation for Bunny CDN Edge Rules API in `static-hosting.md`
+
 ## [0.6.0] - 2026-03-08
 
 ### Added
