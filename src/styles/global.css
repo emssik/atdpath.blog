@@ -44,7 +44,7 @@ html[data-theme="dark"] {
   }
 
   body {
-    @apply flex min-h-svh flex-col bg-background pt-[72px] font-body text-foreground text-base leading-relaxed antialiased selection:bg-accent/20 selection:text-foreground sm:text-lg;
+    @apply flex min-h-svh flex-col bg-background pt-[72px] font-body text-foreground text-base leading-relaxed subpixel-antialiased selection:bg-accent/20 selection:text-foreground sm:text-lg;
   }
 
   h1, h2, h3, h4 {

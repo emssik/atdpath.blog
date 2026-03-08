@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection, render } from "astro:content";
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Datetime from "@/components/Datetime.astro";
+import PageHero from "@/components/PageHero.astro";
 import Layout from "@/layouts/Layout.astro";
 import { difficultyLabel } from "@/utils/difficultyLabel";
 
@@ -25,24 +26,13 @@ const { Content } = await render(project);
 
 <Layout title={`${title} | PIY`} description={description}>
   <Header />
-  <main id="main-content" class="mx-auto w-full max-w-3xl px-6 pb-12 mt-8">
+  <main id="main-content" class="mx-auto w-full max-w-3xl px-6 pb-12">
     <article>
       <header class="mb-10">
-        <a
-          href="/piy"
-          class="mb-6 inline-flex items-center gap-1 text-sm text-subtle transition-colors hover:text-accent"
-        >
-          <span aria-hidden="true">&larr;</span>
-          PIY
-        </a>
-        <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">
+        <PageHero kicker="PIY — Prompt It Yourself" subtitle={description}>
           {title}
-        </h1>
-        <div class="flex items-center gap-3 mt-2">
-          <Datetime {pubDatetime} size="lg" />
-        </div>
-        <p class="mt-3 text-subtle leading-relaxed">{description}</p>
-        <div class="mt-4 flex flex-wrap items-center gap-3">
+        </PageHero>
+        <div class="flex flex-wrap items-center gap-3">
           {difficulty && (
             <span class="rounded-full bg-muted px-3 py-1 text-xs text-subtle">
               {difficultyLabel[difficulty] ?? difficulty}

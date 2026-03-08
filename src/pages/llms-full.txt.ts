@@ -6,6 +6,10 @@ export async function GET() {
   const posts = await getCollection("blog");
   const sortedPosts = getSortedPosts(posts);
 
+  const piyProjects = (await getCollection("piy"))
+    .filter((p) => !p.data.draft)
+    .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
+
   const lines: string[] = [
     `# ${SITE.title}`,
     "",
@@ -34,6 +38,31 @@ export async function GET() {
     lines.push("");
     lines.push("---");
     lines.push("");
+  }
+
+  if (piyProjects.length > 0) {
+    lines.push("# PIY — Prompt It Yourself");
+    lines.push("");
+    lines.push("---");
+    lines.push("");
+
+    for (const project of piyProjects) {
+      const date = project.data.pubDatetime.toISOString().slice(0, 10);
+      const url = `${SITE.website}piy/${project.id}`;
+      const tags = project.data.tags.join(", ");
+
+      lines.push(`## ${project.data.title}`);
+      lines.push("");
+      lines.push(`URL: ${url}`);
+      lines.push(`Date: ${date}`);
+      if (tags) lines.push(`Tags: ${tags}`);
+      lines.push(`Description: ${project.data.description}`);
+      lines.push("");
+      lines.push(project.body ?? "");
+      lines.push("");
+      lines.push("---");
+      lines.push("");
+    }
   }
 
   return new Response(lines.join("\n"), {

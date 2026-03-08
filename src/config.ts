@@ -13,22 +13,22 @@ export const SITE = {
 };
 
 export const NAV_LINKS = [
-  { href: "/posts", label: "Posts" },
+  { href: "/posts", label: "Posty" },
   { href: "/piy", label: "PIY" },
   { href: "/atd", label: "ATD" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "O mnie" },
 ] as const;
 
 export const SOCIALS = [
   {
     name: "GitHub",
-    href: "https://github.com/yourusername",
+    href: "https://github.com/emssik",
     icon: "github",
     active: true,
   },
   {
     name: "X",
-    href: "https://x.com/yourusername",
+    href: "https://x.com/ZeroToJunior",
     icon: "x",
     active: true,
   },

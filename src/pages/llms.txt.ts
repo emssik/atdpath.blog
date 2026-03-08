@@ -6,6 +6,10 @@ export async function GET() {
   const posts = await getCollection("blog");
   const sortedPosts = getSortedPosts(posts);
 
+  const piyProjects = (await getCollection("piy"))
+    .filter((p) => !p.data.draft)
+    .sort((a, b) => b.data.pubDatetime.getTime() - a.data.pubDatetime.getTime());
+
   const lines: string[] = [
     `# ${SITE.title}`,
     "",
@@ -25,6 +29,20 @@ export async function GET() {
     lines.push(`  Date: ${date}`);
     lines.push(`  ${post.data.description}`);
     lines.push("");
+  }
+
+  if (piyProjects.length > 0) {
+    lines.push("## PIY — Prompt It Yourself");
+    lines.push("");
+
+    for (const project of piyProjects) {
+      const date = project.data.pubDatetime.toISOString().slice(0, 10);
+      const url = `${SITE.website}piy/${project.id}`;
+      lines.push(`- [${project.data.title}](${url})`);
+      lines.push(`  Date: ${date}`);
+      lines.push(`  ${project.data.description}`);
+      lines.push("");
+    }
   }
 
   lines.push("## Links");

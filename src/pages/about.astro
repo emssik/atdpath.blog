@@ -1,20 +1,15 @@
 ---
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
-import Datetime from "@/components/Datetime.astro";
+import PageHero from "@/components/PageHero.astro";
 import Layout from "@/layouts/Layout.astro";
-
-const lastUpdated = new Date("2026-03-07");
 ---
 
 <Layout title="About" description="About me and this blog.">
   <Header />
   <main id="main-content">
-    <section class="pt-8 pb-12">
-      <h1 class="inline-block text-2xl font-bold text-accent sm:text-3xl">About</h1>
-      <div class="flex items-center gap-3 mt-2 mb-8">
-        <Datetime pubDatetime={lastUpdated} size="lg" />
-      </div>
+    <PageHero kicker="O mnie">Daniel Roziecki.</PageHero>
+    <section class="pb-12">
       <div class="prose">
         <p>
           Hi! This is where your bio goes.

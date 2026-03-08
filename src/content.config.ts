@@ -26,6 +26,7 @@ const piy = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDatetime: z.coerce.date(),
+    modDatetime: z.date().optional().nullable(),
     draft: z.boolean().optional(),
     repo: z.string().optional(),
     tags: z.array(z.string()).default([]),

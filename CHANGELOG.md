@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-03-08
+
+### Added
+- `PageHero` component for consistent page headers with kicker, headline, and optional subtitle
+- Dedicated `/piy/projekty` page listing all PIY projects with a project counter, dates, difficulty badges, and tags
+- PIY content collection supports an optional `modDatetime` field to track last-modified date per project
+- PIY projects included in both `llms.txt` and `llms-full.txt` LLM-friendly feeds
+
+### Changed
+- PIY landing page redesigned: hero section, two-path cards (build from scratch vs. clone and adapt), highlight strip, and structured prose sections
+- Navigation labels localized to Polish: "Posts" -> "Posty", "About" -> "O mnie"
+- Social links updated to real GitHub (`emssik`) and X (`ZeroToJunior`) profiles
+- All page headers (About, ATD, Posts index, blog post detail, PIY project detail) now use the shared `PageHero` component
+- Text rendering switched from `antialiased` to `subpixel-antialiased` for improved legibility
+
+### Removed
+- Demo placeholder PIY entries (`demo-todo-app`, `demo-weather-dashboard`)
+- Sidebar project list from the PIY landing page (replaced by dedicated `/piy/projekty` route)
+
 ## [0.3.0] - 2026-03-07
 
 ### Added
