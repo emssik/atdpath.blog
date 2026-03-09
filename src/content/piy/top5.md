@@ -13,7 +13,46 @@ tags:
 difficulty: advanced
 ---
 
-## O projekcie
+## Historia
+
+Dotychczas próbowałem ogromnej ilości różnych aplikacji do zarządzania zadaniami. Gdzie przez "dotychczas" weź pod uwagę mój ponad 30-letni staż w IT. Zatem jak rozumiesz... "Trochę" tego było. Zawsze czegoś mi brakowało. Coś było nie do końca zgodne z moim podejściem.
+
+Najbardziej brakowało mi jednej rzeczy. No dobrze. 2 rzeczy. Chciałem mieć:
+
+1. Małe okienko, dostępne zawsze na ekranie, które ma wypisane aktualne zadanie jakie wykonuję, a dodatkowo odpytuje mnie co np. 15 minut, czy je realizowałem. W ten sposób mogę ocenić mój poziom skupienia.
+2. Okienko z zadaniami na dany dzień, całkowicie czyste. Trochę przypominające kartkę z papieru.
+
+Z takim nastawieniem rozpocząłem pracę nad TOP5.
+
+Po 20 minutach. 20 MINUTACH. Miałem gotową pierwszą najprostszą wersję aplikacji.
+
+Lista projektów + "focus window".
+
+I co najważniejsze NATYCHMIAST zacząłem jej używać.
+
+I rozbudowywać. Na bieżąco o to co było dla mnie przydatne.
+
+I tak oto pojawiły się funkcjonalności jakich nie widziałem gdzie indziej:
+
+- Zamiast tworzenia skomplikowanego systemu opisu zadania, mam krótki opis + przycisk kierujący do notatki w Obsidianie, którą mogę sobie już dowolnie formatować
+- Każdy projekt / zadanie ma możliwość przypięcia akcji do wywołania, uruchomienie VSC, iTerma, wejście na stronę itp.
+- Oczywiście mój focus window, które stało się całym centrum zarządzającym
+- Clean window, czyste okienko z zadaniami i ogromem funkcji, które są obrazowane w bardzo dyskretny sposób, np. pojedyncza niebieska kropeczka, lekko pulsująca, oznacza zadanie, które ma aktualnego focusa
+- Ponieważ nie tworzę podzadań, wystarczy mi ogólny opis np: Buduję https://blog.atdpatch.com, jak uznam, że danego dnia mam dosyć pracy nad tym tematem, mogę wybrać opcję "splitu". Z jednej strony aktualne zadanie zostaje oznaczone jako zrealizowane, a z drugiej pojawia się w systemie jego kopia z kolejnym numerem (oczywiście obsidianowa notatka, linki itp. przenosi się automatycznie do nowego zadania)
+- Dodałem system 5 (konfigurowalne) zwycięstw. Można np. rano zablokować okno zadań i tylko je realizować. Jeśli są do wieczora ogarnięte wygrywa się dzień, jeśli nie. No cóż, przegrywa. Wszystko to oczywiście łączy się automatycznie w wygrane tygodnie, miesiące itp.
+- Lubisz tworzyć journaling? Nic prostszego, jedno kliknięcie i jesteś w dynamicznie utworzonej notatce Obsidianowej.
+
+Mogę tak długo.
+
+Ogromna ilość funkcjonalności idealnych DLA mnie. To jest aplikacja tworzona przeze mnie i dla mnie. I dzisiaj niemal każdy tak może.
+
+Wystarczy dać sobie zgodę.
+
+Powodzenia.
+
+## Opis techniczny
+
+### O projekcie
 
 Top5 to desktopowa aplikacja do zarządzania uwagą, nie kolejny menedżer zadań. Główna idea jest prosta — możesz mieć maksymalnie 5 aktywnych projektów (limit konfigurowalny). Reszta czeka w zawieszeniu. To zmusza do podejmowania decyzji, zamiast gromadzenia nieskończonych list.
 
@@ -23,7 +62,7 @@ Aplikacja powstała jako narzędzie codziennej pracy i jest na co dzień używan
 
 Widok dnia to miejsce, w którym zaczyna się każdy poranek. Zadania ułożone w przejrzyste sekcje — od tego, nad czym pracujesz właśnie teraz, przez zaplanowane na dziś, po te czekające w kolejce. Pasek 30 dni na górze pokazuje serię zwycięstw — zielone kropki to dni, w których udało się domknąć zadania.
 
-## Podstawowa funkcjonalność
+### Podstawowa funkcjonalność
 
 - **Limit projektów** — konfigurowalna górna granica aktywnych projektów (1-20), wymusza priorytetyzację
 - **Widok dnia** — strona startowa grupująca zadania w sekcje: skupienie, zaplanowane, w trakcie, następne, nadmiarowe, zrobione
@@ -52,7 +91,7 @@ Z menu focus możesz otworzyć VS Code, notatki w Obsidianie, dodać czas ręczn
 
 Prawy klik w widoku dnia otwiera listę wszystkich aktywnych projektów z ich linkami. Jedno kliknięcie i jesteś w VS Code, terminalu albo przeglądarce. Projekty bez linków też są widoczne — kliknięcie kodu otwiera projekt w aplikacji.
 
-## Stos technologiczny
+### Stos technologiczny
 
 - **Electron 40** + electron-vite 5 — rdzeń aplikacji desktopowej
 - **React 18** + TypeScript — interfejs użytkownika
@@ -61,7 +100,7 @@ Prawy klik w widoku dnia otwiera listę wszystkich aktywnych projektów z ich li
 - **Fastify** — wbudowane HTTP API
 - **YAML + JSONL** — lokalne przechowywanie danych (zero bazy danych)
 
-## Uruchomienie i testowanie
+### Uruchomienie i testowanie
 
 ```bash
 # Sklonuj repozytorium
@@ -84,7 +123,7 @@ npm run test:api  # testy HTTP API (vitest)
 
 Tryb deweloperski automatycznie izoluje dane w `~/.config/top5-dev`, więc nie nadpiszesz swoich produkcyjnych projektów.
 
-## Architektura w skrócie
+### Architektura w skrócie
 
 Projekt dzieli się na cztery warstwy:
 
@@ -107,7 +146,7 @@ Każdy projekt ma własny widok ze wszystkimi zadaniami, linkami do narzędzi i 
 
 Dziennik aktywności zapisuje wszystko: rozpoczęcie focus, utworzenie zadania, ukończenie, zmianę projektu. Kolorowe kropki rozróżniają typy zdarzeń, a filtry pozwalają wyciągnąć tylko to, co akurat potrzebne.
 
-## CLI i integracja z Claude Code
+### CLI i integracja z Claude Code
 
 W pakiecie jest też aplikacja konsolowa `top5` — pełnoprawne narzędzie do zarządzania projektami i zadaniami prosto z terminala. Komunikuje się z działającą aplikacją Electron przez lokalne HTTP API, więc wystarczy wpisać `top5 projects` żeby zobaczyć listę projektów, `top5 add PRJ "Nowe zadanie"` żeby dodać zadanie, albo `top5 focus PRJ-3` żeby włączyć tryb skupienia — bez dotykania myszki.
 
@@ -122,11 +161,11 @@ top5 note PRJ-3            # otwórz notatkę w Obsidianie
 
 Do tego dochodzi skill do Claude Code — po zainstalowaniu Claude zna strukturę Top5 i potrafi sam sprawdzać projekty, dodawać zadania, włączać focus czy zamykać zrobione rzeczy. Wystarczy powiedzieć „pokaż moje projekty" albo „dodaj zadanie do Top5" i Claude obsłuży resztę przez CLI. Skill jest częścią repozytorium, gotowy do skopiowania do `~/.claude/skills/`.
 
-## Licencja
+### Licencja
 
 Projekt udostępniony na licencji MIT z klauzulą [Commons Clause](https://commonsclause.com/). Możesz swobodnie czytać kod, uczyć się z niego, forkować i modyfikować na własne potrzeby — także w firmie. Jedyne ograniczenie: nie możesz sprzedawać tej aplikacji jako własnego produktu ani oferować jej jako płatnej usługi.
 
-## Pomysły na rozbudowę
+### Pomysły na rozbudowę
 
 - **Widżet systemowy** — miniaturowy wskaźnik na pasku menu pokazujący aktualny focus i czas sesji
 - **Raporty tygodniowe** — podsumowanie z wykresami: ile czasu na który projekt, trendy w seriach

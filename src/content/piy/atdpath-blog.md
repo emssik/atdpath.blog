@@ -13,9 +13,33 @@ tags:
 difficulty: intermediate
 ---
 
+## Historia
+
+Moje konto na GitHubie było przeważnie martwe. Co to ze mnie za programista, który nie ma nic na GitHubie? Ktoś mógłby zapytać. Co Ci mam powiedzieć 🤷‍♂️
+
+Jak tworzyłem pierwsze projekty, to nie było jeszcze nawet internetu.
+
+Później koncentrowałem się na kodowaniu dla klientów i nie w głowie były mi własne projekty.
+
+Jednak wszystko się zmieniło, wraz z pojawieniem mocnych LLMów, i drastycznie przyspieszyło przez ostatnich kilkanaście miesięcy.
+
+Modele kodują za mnie. Tak po prostu. Dzięki temu mogę się skoncentrować, na tym, co w tym wszystkim jest najważniejsze, czyli na rozwiązywaniu problemów biznesowych, zamiast technicznych.
+
+Oczywiście, nie zawsze jest różowo, jednak myślę, że wiesz o czym piszę.
+
+Widziałem, też dookoła, że mnóstwo osób chce zacząć swoją przygodę z modelami i własnymi aplikacjami, ale kompletnie nie mają pomysłu od czego zacząć.
+
+Stąd blog. I stąd inicjatywa PIY -> Prompt It Yourself.
+
+Twórz dla siebie. Rozwiązuj własne problemy. Szybko, skutecznie. Ucz się przy okazji pracy z modelami. Kto wie, gdzie Cię to w pewnym momencie doprowadzi.
+
+Mam nadzieję, że będziesz się bawić przynajmniej tak dobrze jak ja :)
+
 ![Strona PIY — sekcja Prompt It Yourself na blogu atdpath](/images/piy/atdpath-blog/piy-hero.png)
 
-## O projekcie
+## Opis techniczny
+
+### O projekcie
 
 atdpath: blog to osobista strona blogowa poświęcona wchodzeniu w świat technologii z pomocą sztucznej inteligencji. Nie jest to kolejny szablon — blog powstał z konkretnej potrzeby dzielenia się doświadczeniami z budowania aplikacji przy pomocy modeli językowych.
 
@@ -23,7 +47,7 @@ Strona składa się z kilku sekcji: wpisów blogowych, katalogu projektów PIY (
 
 Wersja jest dostosowana i na co dzień używana na macOS.
 
-## Podstawowa funkcjonalność
+### Podstawowa funkcjonalność
 
 - **Wpisy blogowe** — treści w Markdown i MDX z automatycznym szacowaniem czasu czytania
 - **PIY (Prompt It Yourself)** — katalog projektów zbudowanych z pomocą AI, z oznaczeniem poziomu trudności i tagami technologii
@@ -36,7 +60,7 @@ Wersja jest dostosowana i na co dzień używana na macOS.
 - **Optymalizacja SEO** — metadane Open Graph, Twitter Cards, kanoniczne adresy URL
 - **View Transitions** — płynne przejścia między podstronami dzięki Astro View Transitions
 
-## Uruchomienie i testowanie
+### Uruchomienie i testowanie
 
 ```bash
 # Sklonuj repozytorium
@@ -59,7 +83,7 @@ npm run build
 npm run preview
 ```
 
-## Stos technologiczny
+### Stos technologiczny
 
 - **Astro 5** — framework do budowania stron statycznych z obsługą kolekcji treści
 - **Tailwind CSS v4** — stylowanie z pluginem Vite
@@ -68,7 +92,7 @@ npm run preview
 - **Satori + Sharp** — generowanie obrazów OG po stronie serwera
 - **Shiki** — podświetlanie składni z motywami Vitesse
 
-## Rozbudowa na własną rękę
+### Rozbudowa na własną rękę
 
 - **Wyszukiwarka** — strona `/search` już istnieje w projekcie, można ją rozbudować o pełnotekstowe przeszukiwanie wpisów
 - **System komentarzy** — integracja z Giscus lub innym rozwiązaniem opartym na GitHub Discussions

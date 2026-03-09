@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-03-09
+
+### Added
+- "Historia" narrative sections to PIY project pages (top5, atdpath-blog) explaining the personal story behind each project
+- New blog post: "Historie są wszystkim" — on why personal stories matter in PIY project descriptions
+
+### Changed
+- PIY project pages restructured with explicit "Opis techniczny" header separating personal story from technical content
+
 ## [0.10.1] - 2026-03-09
 
 ### Fixed
