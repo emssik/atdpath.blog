@@ -9,6 +9,7 @@ import Tag from "@/components/Tag.astro";
 import ShareButtons from "@/components/ShareButtons.astro";
 import NewsletterForm from "@/components/NewsletterForm.astro";
 import { difficultyLabel } from "@/utils/difficultyLabel";
+import BuyCoffeeButton from "@/components/BuyCoffeeButton.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("piy");
@@ -54,6 +55,7 @@ const { Content } = await render(project);
               Repozytorium
             </a>
           )}
+          <BuyCoffeeButton />
         </div>
         <hr class="my-4 border-muted" />
         <div class="flex flex-wrap items-center justify-center gap-3">

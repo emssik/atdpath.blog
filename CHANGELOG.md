@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-03-10
+
+### Added
+- "Postaw mi kawę" (Buy Me a Coffee) button linking to buycoffee.to/emssik on blog post pages and PIY project detail pages
+
 ## [0.11.0] - 2026-03-09
 
 ### Added

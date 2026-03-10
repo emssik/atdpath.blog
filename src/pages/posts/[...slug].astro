@@ -9,6 +9,7 @@ import Layout from "@/layouts/Layout.astro";
 import ShareButtons from "@/components/ShareButtons.astro";
 import Tag from "@/components/Tag.astro";
 import NewsletterForm from "@/components/NewsletterForm.astro";
+import BuyCoffeeButton from "@/components/BuyCoffeeButton.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
 import { calculateReadingTime } from "@/utils/readingTime";
 
@@ -50,14 +51,17 @@ const nextPost = currentIndex < posts.length - 1 ? { slug: posts[currentIndex + 
       <PageHero kicker="Blog">
         {title}
       </PageHero>
-      <section class="flex items-center gap-3 mb-8">
-        <Datetime {pubDatetime} {modDatetime} size="lg" />
-        {readingTime && (
-          <>
-            <span class="text-foreground/30">&#183;</span>
-            <span class="text-sm opacity-60">{readingTime}</span>
-          </>
-        )}
+      <section class="flex items-center justify-between flex-wrap gap-3 mb-8">
+        <div class="flex items-center gap-3">
+          <Datetime {pubDatetime} {modDatetime} size="lg" />
+          {readingTime && (
+            <>
+              <span class="text-foreground/30">&#183;</span>
+              <span class="text-sm opacity-60">{readingTime}</span>
+            </>
+          )}
+        </div>
+        <BuyCoffeeButton />
       </section>
 
       <div id="article" class="prose">
