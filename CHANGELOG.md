@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-03-12
+
+### Added
+- New PIY project entry: Agent Search — a GrepRAG CLI tool in Rust for full-text search over local text corpora, designed as context retrieval for LLM agents (BM25 ranking, Polish Snowball stemmer, token-budget truncation, JSON output)
+
 ## [0.12.0] - 2026-03-10
 
 ### Added
