@@ -70,59 +70,67 @@ else
   echo "   CacheControlPublicMaxAgeOverride already 0"
 fi
 
-# Check if cache rules already exist
-EXISTING_RULES=$(echo "$PULL_ZONE_DATA" | python3 -c "
+# Helper: get existing edge rule Guid by description (empty if not found)
+get_rule_guid() {
+  local desc="$1"
+  echo "$PULL_ZONE_DATA" | python3 -c "
 import sys, json
 pz = json.load(sys.stdin)
 rules = pz.get('EdgeRules', [])
-descs = [r.get('Description','') for r in rules]
-print('|'.join(descs))
+matches = [r['Guid'] for r in rules if r.get('Description') == '$desc']
+print(matches[0] if matches else '')
+"
+}
+
+# Helper: upsert edge rule (always update, never skip)
+upsert_rule() {
+  local desc="$1" payload="$2"
+  local guid
+  guid=$(get_rule_guid "$desc")
+  if [ -n "$guid" ]; then
+    # Inject Guid into payload to update existing rule
+    payload=$(echo "$payload" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+d['Guid'] = '$guid'
+print(json.dumps(d))
 ")
+  fi
+  api POST "/pullzone/${PULL_ZONE_ID}/edgerules/addOrUpdate" -d "$payload" > /dev/null
+}
 
 # Rule 1: Long cache for hashed assets (_astro/*)
-if echo "$EXISTING_RULES" | grep -q "immutable-assets"; then
-  echo "   Edge rule 'immutable-assets' already exists, skipping"
-else
-  api POST "/pullzone/${PULL_ZONE_ID}/edgerules/addOrUpdate" -d '{
-    "ActionType": 5,
-    "ActionParameter1": "Cache-Control",
-    "ActionParameter2": "public, max-age=31536000, immutable",
-    "Triggers": [{"Type": 0, "PatternMatches": ["*/_astro/*"], "PatternMatchingType": 0}],
-    "TriggerMatchingType": 0,
-    "Description": "immutable-assets",
-    "Enabled": true
-  }' > /dev/null && echo "   Added edge rule: immutable-assets (_astro/* → long cache)" || \
-    echo "   ERROR: Failed to add immutable-assets rule" >&2
-fi
+upsert_rule "immutable-assets" '{
+  "ActionType": 5,
+  "ActionParameter1": "Cache-Control",
+  "ActionParameter2": "public, max-age=31536000, immutable",
+  "Triggers": [{"Type": 0, "PatternMatches": ["*/_astro/*"], "PatternMatchingType": 0}],
+  "TriggerMatchingType": 0,
+  "Description": "immutable-assets",
+  "Enabled": true
+}' && echo "   Edge rule: immutable-assets (_astro/* → long cache)" || \
+  echo "   ERROR: Failed to set immutable-assets rule" >&2
 
 # Rule 2: charset=utf-8 for .txt files (llms.txt, llms-full.txt)
-if echo "$EXISTING_RULES" | grep -q "charset-utf8-for-txt"; then
-  echo "   Edge rule 'charset-utf8-for-txt' already exists, skipping"
-else
-  api POST "/pullzone/${PULL_ZONE_ID}/edgerules/addOrUpdate" -d '{
-    "ActionType": 5,
-    "ActionParameter1": "Content-Type",
-    "ActionParameter2": "text/plain; charset=utf-8",
-    "Triggers": [{"Type": 0, "PatternMatches": ["*.txt"], "PatternMatchingType": 0}],
-    "TriggerMatchingType": 0,
-    "Description": "charset-utf8-for-txt",
-    "Enabled": true
-  }' > /dev/null && echo "   Added edge rule: charset-utf8-for-txt (*.txt → UTF-8)" || \
-    echo "   ERROR: Failed to add charset-utf8-for-txt rule" >&2
-fi
+upsert_rule "charset-utf8-for-txt" '{
+  "ActionType": 5,
+  "ActionParameter1": "Content-Type",
+  "ActionParameter2": "text/plain; charset=utf-8",
+  "Triggers": [{"Type": 0, "PatternMatches": ["*.txt"], "PatternMatchingType": 0}],
+  "TriggerMatchingType": 0,
+  "Description": "charset-utf8-for-txt",
+  "Enabled": true
+}' && echo "   Edge rule: charset-utf8-for-txt (*.txt → UTF-8)" || \
+  echo "   ERROR: Failed to set charset-utf8-for-txt rule" >&2
 
 # Rule 3: No browser cache for everything else (HTML pages, sitemap, etc.)
-if echo "$EXISTING_RULES" | grep -q "no-cache-html"; then
-  echo "   Edge rule 'no-cache-html' already exists, skipping"
-else
-  api POST "/pullzone/${PULL_ZONE_ID}/edgerules/addOrUpdate" -d '{
-    "ActionType": 5,
-    "ActionParameter1": "Cache-Control",
-    "ActionParameter2": "no-cache, must-revalidate",
-    "Triggers": [{"Type": 0, "PatternMatches": ["*/_astro/*"], "PatternMatchingType": 2}],
-    "TriggerMatchingType": 0,
-    "Description": "no-cache-html",
-    "Enabled": true
-  }' > /dev/null && echo "   Added edge rule: no-cache-html (non-asset files → revalidate)" || \
-    echo "   ERROR: Failed to add no-cache-html rule" >&2
-fi
+upsert_rule "no-cache-html" '{
+  "ActionType": 5,
+  "ActionParameter1": "Cache-Control",
+  "ActionParameter2": "no-cache, must-revalidate",
+  "Triggers": [{"Type": 0, "PatternMatches": ["*/_astro/*"], "PatternMatchingType": 2}],
+  "TriggerMatchingType": 0,
+  "Description": "no-cache-html",
+  "Enabled": true
+}' && echo "   Edge rule: no-cache-html (non-asset files → revalidate)" || \
+  echo "   ERROR: Failed to set no-cache-html rule" >&2

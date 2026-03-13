@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.1] - 2026-03-13
+
+### Changed
+- Build script CDN edge rule management refactored to always upsert rules by GUID, replacing skip-if-exists logic that prevented existing rules from being updated
+
 ## [0.14.0] - 2026-03-13
 
 ### Added
