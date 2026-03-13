@@ -53,7 +53,12 @@
 </div>
 
 <script is:inline>
-  document.getElementById('newsletter-form')?.addEventListener('submit', function () {
-    window.umami?.track('cta_mailing');
+  document.getElementById('newsletter-form')?.addEventListener('submit', function (e) {
+    if (window.umami) {
+      e.preventDefault();
+      var form = this;
+      window.umami.track('cta_mailing');
+      setTimeout(function () { form.submit(); }, 200);
+    }
   });
 </script>
