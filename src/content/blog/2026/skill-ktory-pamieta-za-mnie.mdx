@@ -1,0 +1,142 @@
+---
+title: "Skill, który pamięta za mnie"
+pubDatetime: 2026-03-13
+description: "Jak skille w Claude Code rozwiązały moje wieloletnie problemy z pamięcią i chaosem w infrastrukturze."
+featured: true
+tags:
+  - ai
+  - claude-code
+  - devops
+  - docker
+---
+
+import Callout from "@/components/Callout.astro";
+import ToolCard from "@/components/ToolCard.astro";
+import Ref from "@/components/Ref.astro";
+
+Ja i pamięć nie dogadujemy się najlepiej. Są rzeczy, które wpadają i zostają, a są takie... które mogę powtarzać setki razy i nic to nie zmieni. Powiem Wam, że to nie jest nic fajnego, jak przez dobre trzy dekady większą część życia spędza się na programowaniu.
+
+Gdy szukałem czegoś w kodzie, który napisałem wcześniej, nie "pamiętałem", gdzie ten kod jest dokładnie, albo jak się dokładnie nazywają klasy czy funkcje. Ja "szacowałem", na bazie systemu który przyjąłem.
+
+O co chodzi z tym systemem? Po prostu zawsze jak tworzyłem nową klasę, metodę, zmienną itp., przy nazywaniu ich bazowałem na określonych zasadach. Np. jak coś było stałą, to u mnie zawsze zaczynało się od `C_NAZWA_STAŁEJ` (co od const). Kilka prostych zasad i byłem w stanie funkcjonować.
+
+---
+
+### Rzadkie, ale ważne
+
+Niestety, nie zawsze da się tak łatwo. Najgorzej jest z czynnościami ważnymi, jednak takimi, które wykonuje się rzadko. Czymś takim jest dla mnie np. tworzenie środowiska pod nową aplikację. Jak ja tego nie lubiłem.
+
+Tym bardziej, że lubię eksperymentować, w efekcie każda instalacja wyglądała u mnie inaczej. A ponieważ lubiłem również eksperymentować z systemami todo oraz tymi do robienia notatek... no to masz już obraz kompletnego chaosu i tego, że nigdy nie potrafiłem niczego znaleźć, co wielokrotnie doprowadzało mnie do szału.
+
+Oczywiście z biegiem lat wiele elementów się wyklarowało, jednak wciąż, jak szukam jakichś informacji, zaglądam do:
+
+- Obsidiana
+- Evernote
+- Workflowy
+- Notion
+
+I niestety nadal zdarza się, że nie znajduję tego, czego potrzebuję.
+
+Zawsze obiecywałem sobie, że w końcu to uporządkuję i teraz, jak już mamy AI, zapewne to zrobię, jednak jeszcze nie dzisiaj. Zamiast tego, odnalazłem inne rozwiązanie.
+
+## Skill, który pamięta za mnie
+
+Zarządzaniem moimi usługami zajmuje się teraz skill `/devops`.
+
+Pierwsza rzecz, jakiej go "nauczyłem", to umiejętność katalogowania informacji o serwerach, które posiadam. Zbudowaliśmy wspólnie skrypty i gdy `/devops` pracuje z nową maszyną, najpierw pobiera wszystkie potrzebne informacje.
+
+Zarówno techniczne, jak i logiczne dotyczące tego, co i jak na niej działa. Czy są jakieś kontenery, jak wygląda sieć między nimi. To wszystko `/devops` pobiera i zapisuje w swoich plikach referencyjnych.
+
+> Dzięki temu, po raz pierwszy od dawna, byłem w stanie bezproblemowo poruszać się po całym gąszczu moich maszyn i usług. Wystarczyło poprosić `/devops` o podsumowanie albo zapytać go, gdzie co jest.
+
+Zbliża się moment, kiedy portal, na którym obecnie stoi kurs Claude Code, zostanie mocno zmodyfikowany:
+
+1. Rozbicie na front i back
+2. Możliwość obsługi więcej niż jednego kursu
+3. Możliwość obsługi nowych studentów (dotychczas ograniczało się to do osób zapisanych na listę przy starcie)
+
+I wiele innych elementów. No i przy okazji musi zostać przeniesiony z Netlify na mój własny hosting.
+
+To jak to zrobić najlepiej, też uzgodniłem z `/devops`em, a później dodałem mu jeszcze obsługę pamięci (też jako zwykłych plików tekstowych), gdzie mógł zapisać nasze ustalenia.
+
+W efekcie mam jednego skilla, który zna moją infrastrukturę, potrafi na niej pracować i pamięta, co mamy zaplanowane. I całe szczęście.
+
+Ponieważ rozmowa odbyła się dobry miesiąc temu, a dwa dni temu do niej wróciliśmy i `/devops` wszystko mi natychmiast przypomniał. Koniec z odkrywaniem koła od nowa, co niestety często mi się zdarzało wcześniej.
+
+## Czas na technikalia
+
+Po pierwsze, wykupiłem nowy, mocniejszy VPS na Hetznerze, ponieważ w ramach tej nowej infrastruktury chcę tam przenieść nie tylko portal, ale też wiele innych usług.
+
+No dobrze, ale jak to ma działać?
+
+Sprawa jest prosta. Elementem kluczowym i bezdyskusyjnym jest Ubuntu w ostatniej wersji LTS. Używam tej dystrybucji od bardzo dawna na wszystkich serwerach i jestem bardzo zadowolony.
+
+Gdy ktoś ma wiele różnych usług działających w ramach jednego serwera, pojawia się problem z ich udostępnianiem na świat. Przeważnie kończyło się to przy pomocy reverse proxy (najczęściej z Nginx — swoją drogą, ktoś jeszcze pamięta Apache???).
+
+Jednak to zawsze upierdliwe babranie się w konfiguracji, dodawanie certyfikatów przez Let's Encrypt, a jak coś się zrobiło źle, to nagle telefony, bo cała infrastruktura przestawała działać.
+
+Dlatego zamiast tego, tym razem centralnym punktem nowej maszyny jest **Docker z Traefik**<Ref n={1} to="tool-traefik" /> — takie połączenie reverse proxy z load balancerem, który automagicznie wykrywa nowe kontenery, ogarnia ich certyfikaty SSL i wypuszcza na świat.
+
+Kolejny klocek to Dockge<Ref n={2} to="tool-dockge" /> — nie jest konieczny, ale jest przydatny. To webowy manager stosów Docker Compose, który pozwala wygodnie zarządzać plikami `docker-compose.yaml` przez przeglądarkę.
+
+Poznaj też Uptime Kuma<Ref n={3} to="tool-kuma" /> — prosty, self hosted monitor usług. Wie, kiedy coś padło, zanim ktoś zadzwoni.
+
+Do kompletu Diun<Ref n={4} to="tool-diun" /> — który informuje, jeśli pojawi się nowa wersja któregoś z dockerowych kontenerów. Tylko info, bez samodzielnej akcji.
+
+### Bezpieczeństwo i backupy
+
+Przed nami dwa kolejne elementy — bezpieczny dostęp oraz backupy. Zacznę od tych drugich.
+
+Do tworzenia backupów zaprzęgnąłem (znaczy `/devops`) sprawdzony Restic<Ref n={5} to="tool-restic" />. Restic robi zaszyfrowane, zdeduplikowane archiwa w formacie snapshotów, które postanowiłem składować na Backblaze B2<Ref n={6} to="tool-backblaze" /> — to u mnie już sprawdzone rozwiązanie, które znam i polecam.
+
+A dostęp? Cóż, tutaj postanowiłem przetestować coś nowego. Dotychczas królował u mnie klasyczny SSH oraz WireGuard, jednak polecono mi ostatnio Tailscale<Ref n={7} to="tool-tailscale" />, które postanowiłem sprawdzić. Świat idzie do przodu, usługi też. Nie można tkwić ciągle w starych przyzwyczajeniach. Tym bardziej, że to WireGuard na sterydach.
+
+A żeby to wszystko lepiej zobrazować, przygotowałem schemat całej infrastruktury:
+
+![Schemat infrastruktury VPS na Hetznerze — Traefik, Docker, Tailscale, monitoring i backupy](https://emssimages.b-cdn.net/infra.png)
+
+## Efekt końcowy
+
+Postawienie wszystkiego od zera, na czystej maszynie z pomocą `/devops`, to była... po prostu czysta przyjemność.
+
+Mając infrastrukturę startową, mogłem równie lekko i przyjemnie przenieść na nową maszynę usługi rozrzucone "po świecie". I tak wylądowała tu strona "Wyzwania AI", serwis backupujący Airtable, n8n i jeszcze kilka innych.
+
+Jest jeszcze dużo miejsca na nową wersję portalu.
+
+<Callout variant="accent" title="Z chaosu do porządku">
+Coś, co zajmowało mi zawsze mnóstwo czasu i nerwów, nagle stało się prostą i przyjemną operacją. Wszystko działa tak dobrze, że postanowiłem, że w niedalekiej przyszłości podzielę się wszystkimi szczegółami z uczestnikami **AI Things Done** na jednym z kolejnych warsztatów.
+</Callout>
+
+---
+
+Przy okazji daję znaka, że w ramach PIY (Prompt It Yourself) udostępniłem kolejny [projekt — Agent Search — zapraszam](/piy/agent-search).
+
+## Narzędzia wspomniane w tekście
+
+<ToolCard title="Traefik" url="https://traefik.io/traefik" icon="🔀" id="tool-traefik">
+Traefik (czyt. "trafik") to nowoczesny, otwarto-źródłowy reverse proxy i load balancer do aplikacji webowych i mikroserwisów, zaprojektowany pod Dockera, Kubernetesa i środowiska cloud-native. Automatycznie wykrywa usługi (np. kontenery) i na podstawie reguł routingu (host, ścieżka, protokół) przekierowuje do nich ruch HTTP, TCP itp., często zastępując klasyczne Nginx/HAProxy. Ma wbudowany dashboard, integracje z Let's Encrypt, obsługę middlewares (rate limiting, nagłówki, redirecty) oraz bogatą dokumentację.
+</ToolCard>
+
+<ToolCard title="Dockge" url="https://dockge.kuma.pet" icon="📦" id="tool-dockge">
+Samohostowany, webowy manager stosów Docker Compose, który pozwala wygodnie zarządzać plikami `docker-compose.yaml` przez przeglądarkę. Służy do tworzenia, edycji, uruchamiania, zatrzymywania i aktualizowania całych stosów aplikacji opartych o Docker Compose, bez potrzeby klepania komend w terminalu. Ma interaktywny edytor `compose.yaml`, podgląd logów w czasie rzeczywistym i prosty panel do start/stop/restart/update — coś w rodzaju "Portainera skupionego na Compose".
+</ToolCard>
+
+<ToolCard title="Uptime Kuma" url="https://uptimekuma.org" icon="📊" id="tool-kuma">
+Samohostowane narzędzie do monitorowania dostępności usług (uptime monitor), alternatywa dla np. UptimeRobot, ale hostowana u siebie. Pozwala monitorować strony WWW (HTTP/HTTPS), API, porty TCP, ping, DNS, a nawet kontenery Dockera i na tej podstawie pokazywać status, wykresy czasu odpowiedzi oraz historię awarii. Ma ładny webowy panel (status page + dashboard) i obsługuje powiadomienia przez dziesiątki kanałów (Telegram, Discord, e-mail itd.).
+</ToolCard>
+
+<ToolCard title="Diun" url="https://github.com/crazy-max/diun" icon="🔔" id="tool-diun">
+Docker Image Update Notifier — małe narzędzie w Go, które monitoruje obrazy Dockera i wysyła powiadomienia, gdy pojawi się nowa wersja (nowy tag) w rejestrze. Najczęściej uruchamia się je jako kontener z dostępem do `docker.sock` — Diun skanuje używane obrazy, porównuje je z registry (np. Docker Hub, GHCR) i w razie aktualizacji wysyła alert (Slack, Telegram, e-mail itd.). Pomaga pilnować aktualności i stanu bezpieczeństwa kontenerów, ale sam nic nie aktualizuje — tylko informuje.
+</ToolCard>
+
+<ToolCard title="Restic" url="https://restic.net" icon="💾" id="tool-restic">
+Nowoczesne narzędzie do backupów, które robi zaszyfrowane, deduplikowane kopie danych w formie snapshotów. Działa z różnych systemów (Linux, macOS, Windows) i potrafi wysyłać backupy do wielu backendów: lokalny dysk, SFTP, S3, Backblaze B2, REST serwer itd. Każdy backup jest przyrostowy (zapisuje tylko zmienione bloki), dzięki czemu jest szybki i oszczędza miejsce, a wszystkie dane są domyślnie szyfrowane hasłem/kluczem.
+</ToolCard>
+
+<ToolCard title="Backblaze B2" url="https://www.backblaze.com/cloud-storage" icon="☁️" id="tool-backblaze">
+Tania, S3-kompatybilna pamięć obiektowa od Backblaze. "Surowy" storage pod API/CLI (jak S3), którego użyjesz np. z Restic, rclone czy Veeam jako tani backend do backupów, archiwizacji lub hostowania plików. Backblaze ma też produkt Personal Backup (automatyczny backup całego komputera), ale B2 to ich rozwiązanie chmurowe dla deweloperów i administratorów.
+</ToolCard>
+
+<ToolCard title="Tailscale" url="https://tailscale.com" icon="🔐" id="tool-tailscale">
+"Zero-config" VPN oparty na WireGuard, który tworzy prywatną sieć mesh między Twoimi urządzeniami (telefony, laptopy, serwery, homelab) przez internet. Zamiast stawiać własny serwer VPN, logujesz się kontem (Google, Microsoft, OIDC), a każde urządzenie dostaje prywatny adres IP w Twojej "tailnecie" i łączy się bezpośrednio z innymi (P2P, z NAT-traversalem, a w razie czego przez szyfrowane relaye). Prosty panel www do zarządzania ACL-kami (kto do czego ma dostęp), exit-nodami, subnet routerami — ogarnia zarówno proste "dostęp do NAS-a z telefonu", jak i bardziej złożone multi-cloud / firmowe sieci.
+</ToolCard>

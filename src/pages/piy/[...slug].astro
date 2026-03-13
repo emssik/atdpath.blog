@@ -26,9 +26,10 @@ type Props = { project: CollectionEntry<"piy"> };
 const { project } = Astro.props;
 const { title, description, pubDatetime, repo, tags, difficulty } = project.data;
 const { Content } = await render(project);
+const ogImage = `/piy/${project.id}.png`;
 ---
 
-<Layout title={`${title} | PIY`} description={description}>
+<Layout title={`${title} | PIY`} description={description} ogImage={ogImage}>
   <Header />
   <main id="main-content" class="mx-auto w-full max-w-3xl px-6 pb-12">
     <article>

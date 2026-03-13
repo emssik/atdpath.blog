@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-03-13
+
+### Added
+- New blog post: "Skill, który pamięta za mnie" — on using Claude Code `/devops` skill for server infrastructure management (Traefik, Docker, Tailscale, Restic, Backblaze B2)
+- `Callout`, `Ref`, and `ToolCard` MDX components for richer in-post content (callout boxes, footnote anchors, tool reference cards)
+- Dynamic Open Graph image generation for PIY project pages (`/piy/[...slug].png`) using Satori + Sharp, matching the existing blog post OG image style
+- Umami analytics event tracking on the Buy Me a Coffee button (`cta_coffee`) and newsletter form submission (`cta_mailing`)
+
+### Changed
+- PIY project detail page now passes a per-project OG image to the `<Layout>` component for correct social sharing previews
+- Prose typography improvements: styled lead paragraph, larger and bordered `h2` headings, accent-colored `h3`, colored list markers, and separated blockquote italic styling
+- `.claude/commands`: replaced `install.md` with `design.md`
+
 ## [0.13.0] - 2026-03-12
 
 ### Added

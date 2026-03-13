@@ -1,0 +1,27 @@
+---
+interface Props {
+  icon?: string;
+  title?: string;
+  variant?: "default" | "accent";
+}
+
+const { icon, title, variant = "default" } = Astro.props;
+---
+
+<aside
+  class:list={[
+    "my-8 rounded-lg border px-5 py-4 not-prose",
+    variant === "accent"
+      ? "border-accent/30 bg-accent/5"
+      : "border-border bg-muted/40",
+  ]}
+>
+  {title && (
+    <p class="mb-2 text-sm font-semibold tracking-wide uppercase text-subtle">
+      {icon && <span class="mr-1.5">{icon}</span>}{title}
+    </p>
+  )}
+  <div class="text-foreground leading-[1.8] text-base sm:text-lg [&_a]:text-accent [&_a]:underline [&_a]:decoration-accent/40 [&_a]:underline-offset-2 [&_strong]:font-semibold">
+    <slot />
+  </div>
+</aside>

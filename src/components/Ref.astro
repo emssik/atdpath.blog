@@ -1,0 +1,14 @@
+---
+interface Props {
+  n: number;
+  to: string;
+}
+
+const { n, to } = Astro.props;
+---
+
+<a
+  href={`#${to}`}
+  class="inline-flex items-center justify-center no-underline! ml-0.5 -top-2 relative size-5 rounded-full bg-accent/15 text-accent text-[11px] font-mono font-semibold transition-colors hover:bg-accent/30"
+  aria-label={`Przypis ${n}`}
+>{n}</a>
