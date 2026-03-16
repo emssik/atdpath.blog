@@ -67,6 +67,7 @@ Widok dnia to miejsce, w którym zaczyna się każdy poranek. Zadania ułożone 
 - **Limit projektów** — konfigurowalna górna granica aktywnych projektów (1-20), wymusza priorytetyzację
 - **Widok dnia** — strona startowa grupująca zadania w sekcje: skupienie, zaplanowane, w trakcie, następne, nadmiarowe, zrobione
 - **Tryb focus** — kompaktowy, zawsze-na-wierzchu pasek z timerem sesji i odpytkami co 15 minut, czy dalej pracujesz
+- **Strażnik focusa** — automatyczne przypomnienia co 15 minut, gdy system wykryje aktywność przy komputerze, brak ustawionego focusa i nieukończone zadania; szybki wybór zadania lub odroczenie (5m–1h)
 - **System 5 zwycięstw** — zablokuj dzisiejsze zadania, rozstrzygnij dzień jako wygrany lub przegrany, śledź serie
 - **Widok zeszytowy** — tryb bez rozpraszaczy z odręcznym fontem i kropkowaną siatką
 - **Szybkie dodawanie** — globalny skrót `Cmd+Shift+N` otwiera nakładkę do błyskawicznego tworzenia zadań
@@ -86,6 +87,10 @@ Pasek focus to małe okienko, które siedzi zawsze na wierzchu. Nazwa zadania, c
 ![Menu focus — szybkie akcje bez przełączania okien](/images/piy/top5/focus-menu.png)
 
 Z menu focus możesz otworzyć VS Code, notatki w Obsidianie, dodać czas ręcznie, zakończyć zadanie albo wyjść z trybu skupienia. Wszystko bez wracania do głównego okna — żeby nie tracić wątku.
+
+![Strażnik focusa — przypomnienie o wyborze zadania](/images/piy/top5/focus-reminder.png)
+
+Strażnik focusa wykrywa, że pracujesz przy komputerze bez ustawionego zadania. Co 15 minut podrzuca przypomnienie z listą dzisiejszych zadań do wyboru i opcją odroczenia — od 5 minut do godziny.
 
 ![Menu linków projektowych — prawy klik i jesteś w VS Code](/images/piy/top5/project-links.png)
 

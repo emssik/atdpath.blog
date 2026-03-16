@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-03-16
+
+### Added
+- New blog post: "Nie opierdalaj się" — on the TOP5 focus reminder feature that detects computer activity and prompts task selection every 15 minutes when no focus is set
+- "Strażnik focusa" feature description and screenshot added to the TOP5 PIY project page
+
 ## [0.14.2] - 2026-03-13
 
 ### Fixed
