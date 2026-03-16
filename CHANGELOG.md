@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.1] - 2026-03-16
+
+### Changed
+- Increased OG image font sizes across blog post and PIY project generators for better thumbnail readability (label 20→28px, title 52/40→64/48px, description 22→28px, author/domain 18→22px)
+
 ## [0.15.0] - 2026-03-16
 
 ### Added

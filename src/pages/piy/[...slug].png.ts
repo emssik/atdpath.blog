@@ -48,7 +48,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: "20px",
+                      fontSize: "28px",
                       color: "#e8915a",
                       letterSpacing: "2px",
                       textTransform: "uppercase" as const,
@@ -60,7 +60,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: title.length > 60 ? "40px" : "52px",
+                      fontSize: title.length > 60 ? "48px" : "64px",
                       fontFamily: "Playfair Display",
                       fontWeight: 700,
                       color: "#f0ede8",
@@ -74,7 +74,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: "22px",
+                      fontSize: "28px",
                       color: "#b0aaa4",
                       lineHeight: 1.5,
                       maxWidth: "900px",
@@ -103,7 +103,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: "18px",
+                      fontSize: "22px",
                       color: "#b0aaa4",
                     },
                     children: SITE.author,
@@ -113,7 +113,7 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: "18px",
+                      fontSize: "22px",
                       color: "#e8915a",
                     },
                     children: "blog.atdpath.com",
