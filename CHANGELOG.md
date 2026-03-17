@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-03-17
+
+### Changed
+- Search now covers both blog posts and PIY projects, with results sorted by date and `[PIY]` prefix on project titles; placeholder updated to "Search posts and projects..."
+
 ## [0.16.0] - 2026-03-17
 
 ### Added

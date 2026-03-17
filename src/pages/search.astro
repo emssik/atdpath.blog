@@ -4,16 +4,33 @@ import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import Layout from "@/layouts/Layout.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
+import getSortedProjects from "@/utils/getSortedProjects";
 
 const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
-const searchData = sortedPosts.map(({ id, data }) => ({
+const blogData = sortedPosts.map(({ id, data }) => ({
   slug: id,
   title: data.title,
   description: data.description,
   tags: data.tags,
   date: data.pubDatetime.toISOString(),
+  type: "post" as const,
 }));
+
+const projects = await getCollection("piy");
+const sortedProjects = getSortedProjects(projects);
+const piyData = sortedProjects.map(({ id, data }) => ({
+  slug: id,
+  title: data.title,
+  description: data.description,
+  tags: data.tags,
+  date: data.pubDatetime.toISOString(),
+  type: "piy" as const,
+}));
+
+const searchData = [...blogData, ...piyData].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
 ---
 
 <Layout title="Search" description="Search blog posts.">
@@ -29,7 +46,7 @@ const searchData = sortedPosts.map(({ id, data }) => ({
         <input
           id="search-input"
           type="text"
-          placeholder="Search posts..."
+          placeholder="Search posts and projects..."
           class="w-full rounded-lg border border-border bg-muted/50 py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-subtle outline-none focus:border-accent transition-colors"
           autofocus
         />
@@ -81,8 +98,8 @@ const searchData = sortedPosts.map(({ id, data }) => ({
       .map(
         (post) => `
       <li class="my-6">
-        <a href="/posts/${post.slug}" class="inline-block text-accent decoration-dashed underline-offset-4 focus-visible:no-underline">
-          <h3 class="text-base font-medium decoration-dashed hover:underline">${post.title}</h3>
+        <a href="${post.type === "piy" ? "/piy" : "/posts"}/${post.slug}" class="inline-block text-accent decoration-dashed underline-offset-4 focus-visible:no-underline">
+          <h3 class="text-base font-medium decoration-dashed hover:underline">${post.type === "piy" ? "[PIY] " : ""}${post.title}</h3>
         </a>
         <p class="mt-1 opacity-80">${post.description}</p>
       </li>
