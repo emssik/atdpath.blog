@@ -2,7 +2,6 @@
 title: "Nie opierdalaj się"
 pubDatetime: 2026-03-16
 description: "Jak TOP5 pilnuje, żebym nie tracił czasu — automatyczne przypomnienia o focusie."
-featured: true
 tags:
   - top5
   - produktywność

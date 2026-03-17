@@ -13,7 +13,7 @@ export const SITE = {
 };
 
 export const NAV_LINKS = [
-  { href: "/posts", label: "Posty" },
+  { href: "/posts", label: "Wpisy" },
   { href: "/piy", label: "PIY" },
   { href: "/atd", label: "ATD" },
   { href: "/about", label: "O mnie" },

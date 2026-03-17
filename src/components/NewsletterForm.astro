@@ -16,19 +16,23 @@
       class="flex flex-col sm:flex-row gap-3 mb-5"
       id="newsletter-form"
     >
+      <label for="name" class="sr-only">Imię</label>
       <input
         type="text"
         name="name"
         id="name"
         placeholder="Imię"
+        autocomplete="given-name"
         class="flex-1 min-w-0 rounded-lg border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-subtle/60 focus:outline-none focus:border-accent transition-colors"
       />
+      <label for="email" class="sr-only">Adres email</label>
       <input
         type="email"
         name="email"
         id="email"
         required
         placeholder="Adres email"
+        autocomplete="email"
         class="flex-1 min-w-0 rounded-lg border border-border bg-background px-4 py-2.5 text-foreground placeholder:text-subtle/60 focus:outline-none focus:border-accent transition-colors"
       />
       <div style="display:none;" aria-hidden="true">

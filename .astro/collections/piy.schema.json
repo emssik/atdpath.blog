@@ -56,6 +56,9 @@
             }
           ]
         },
+        "featured": {
+          "type": "boolean"
+        },
         "draft": {
           "type": "boolean"
         },

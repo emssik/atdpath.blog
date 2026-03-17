@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-03-17
+
+### Added
+- Unified content feed on home and posts index pages: blog posts and PIY projects appear together, sorted by date, each with a type label ("Post" / "PIY")
+- `featured` field added to PIY collection schema, allowing PIY projects to appear in the featured section on the home page; TOP5 marked as featured
+- JSON-LD structured data (WebSite schema on home page, BlogPosting schema on article pages) for improved search engine indexing
+- "Skip to content" accessibility link in the site header for keyboard navigation
+- `robots.txt` with sitemap reference
+- RSS feed items now include author and tag categories
+
+### Changed
+- Posts index page (`/posts`) relabeled "Wpisy" and now lists both blog posts and PIY projects together
+- Navigation label changed from "Posty" to "Wpisy"
+- PIY and blog post page titles no longer include the redundant site/section suffix (handled by the Layout component)
+- Newsletter form inputs now have screen-reader labels and `autocomplete` attributes
+- `theme-color` meta tag set to the correct light background color (`#faf9f7`)
+- Avatar image on About page loads lazily
+
 ## [0.17.0] - 2026-03-17
 
 ### Changed

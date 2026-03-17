@@ -6,20 +6,42 @@ import Header from "@/components/Header.astro";
 import PageHero from "@/components/PageHero.astro";
 import Layout from "@/layouts/Layout.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
+import getSortedProjects from "@/utils/getSortedProjects";
 
 const posts = await getCollection("blog");
+const projects = await getCollection("piy");
 const sortedPosts = getSortedPosts(posts);
+const sortedProjects = getSortedProjects(projects);
+
+type Entry =
+  | { type: "post"; entry: (typeof sortedPosts)[number]; date: Date }
+  | { type: "piy"; entry: (typeof sortedProjects)[number]; date: Date };
+
+const entries: Entry[] = [
+  ...sortedPosts.map(post => ({
+    type: "post" as const,
+    entry: post,
+    date: new Date(post.data.modDatetime ?? post.data.pubDatetime),
+  })),
+  ...sortedProjects.map(project => ({
+    type: "piy" as const,
+    entry: project,
+    date: new Date(project.data.modDatetime ?? project.data.pubDatetime),
+  })),
+].sort((a, b) => b.date.getTime() - a.date.getTime());
 ---
 
-<Layout title="All Posts" description="All blog posts.">
+<Layout title="Wpisy" description="Wszystkie wpisy - posty i projekty PIY.">
   <Header />
   <main id="main-content">
     <PageHero kicker="Blog">Wszystkie wpisy.</PageHero>
     <section class="pb-12">
       <ul>
-        {sortedPosts.map((post) => (
-          <Card {...post} />
-        ))}
+        {entries.map(entry =>
+          entry.type === "post"
+            ? <Card {...entry.entry} typeLabel="Post" />
+            : <Card {...entry.entry} typeLabel="PIY" href={`/piy/${entry.entry.id}`} />
+        )}
       </ul>
     </section>
   </main>

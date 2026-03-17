@@ -7,11 +7,32 @@ import Socials from "@/components/Socials.astro";
 import { SITE } from "@/config";
 import Layout from "@/layouts/Layout.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
+import getSortedProjects from "@/utils/getSortedProjects";
 
 const posts = await getCollection("blog");
+const projects = await getCollection("piy");
 const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const sortedProjects = getSortedProjects(projects);
+
+type Entry =
+  | { type: "post"; entry: (typeof sortedPosts)[number]; date: Date }
+  | { type: "piy"; entry: (typeof sortedProjects)[number]; date: Date };
+
+const allEntries: Entry[] = [
+  ...sortedPosts.map(post => ({
+    type: "post" as const,
+    entry: post,
+    date: new Date(post.data.modDatetime ?? post.data.pubDatetime),
+  })),
+  ...sortedProjects.map(project => ({
+    type: "piy" as const,
+    entry: project,
+    date: new Date(project.data.modDatetime ?? project.data.pubDatetime),
+  })),
+].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const featuredEntries = allEntries.filter(e => e.entry.data.featured);
+const recentEntries = allEntries.filter(e => !e.entry.data.featured).slice(0, 5);
 ---
 
 <Layout>
@@ -58,28 +79,34 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
     <hr class="mx-auto max-w-3xl border-border" />
 
-    {featuredPosts.length > 0 && (
+    {featuredEntries.length > 0 && (
       <>
         <section id="featured" class="pt-10 pb-4">
           <h2 class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-subtle mb-4">
-            Featured
+            Wyróżnione
           </h2>
           <ul>
-            {featuredPosts.map((post) => (
-              <Card variant="h3" {...post} />
-            ))}
+            {featuredEntries.map(e =>
+              e.type === "post"
+                ? <Card variant="h3" {...e.entry} typeLabel="Post" />
+                : <Card variant="h3" {...e.entry} typeLabel="PIY" href={`/piy/${e.entry.id}`} />
+            )}
           </ul>
         </section>
-        {recentPosts.length > 0 && <hr class="mx-auto max-w-3xl border-border" />}
+        {recentEntries.length > 0 && <hr class="mx-auto max-w-3xl border-border" />}
       </>
     )}
 
-    {recentPosts.length > 0 && (
+    {recentEntries.length > 0 && (
       <section id="recent-posts" class="pt-10 pb-6">
+        <h2 class="font-display text-xs font-semibold uppercase tracking-[0.2em] text-subtle mb-4">
+          Najnowsze
+        </h2>
         <ul>
-          {recentPosts.map(
-            (post, index) =>
-              index < SITE.postPerIndex && <Card variant="h3" {...post} />,
+          {recentEntries.map(e =>
+            e.type === "post"
+              ? <Card variant="h3" {...e.entry} typeLabel="Post" />
+              : <Card variant="h3" {...e.entry} typeLabel="PIY" href={`/piy/${e.entry.id}`} />
           )}
         </ul>
       </section>
@@ -90,7 +117,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
         href="/posts"
         class="inline-flex items-center gap-2 font-body text-sm transition-colors hover:text-accent"
       >
-        All Posts
+        Wszystkie wpisy
         <span aria-hidden="true">&rarr;</span>
       </a>
     </div>

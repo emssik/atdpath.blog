@@ -23,6 +23,36 @@ const {
 
 const socialImageURL = new URL(ogImage, Astro.url);
 const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`;
+
+const isArticle = !!pubDatetime;
+const isHomePage = Astro.url.pathname === "/";
+const personSchema = { "@type": "Person" as const, name: SITE.author, url: SITE.website };
+const canonicalStr = canonicalURL.toString();
+
+const websiteSchema = isHomePage ? {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE.title,
+  url: SITE.website,
+  description: SITE.desc,
+  inLanguage: SITE.lang,
+  author: personSchema,
+} : null;
+
+const articleSchema = isArticle ? {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  image: socialImageURL.href,
+  url: canonicalStr,
+  datePublished: pubDatetime.toISOString(),
+  ...(modDatetime ? { dateModified: modDatetime.toISOString() } : {}),
+  author: personSchema,
+  publisher: personSchema,
+  mainEntityOfPage: { "@type": "WebPage", "@id": canonicalStr },
+  inLanguage: SITE.lang,
+} : null;
 ---
 
 <!doctype html>
@@ -76,7 +106,14 @@ const fullTitle = title === SITE.title ? title : `${title} | ${SITE.title}`;
       href={`${SITE.website}rss.xml`}
     />
 
-    <meta name="theme-color" content="" />
+    <meta name="theme-color" content="#faf9f7" />
+
+    {websiteSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    )}
+    {articleSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+    )}
 
     <ViewTransitions />
 

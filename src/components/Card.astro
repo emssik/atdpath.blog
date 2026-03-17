@@ -1,22 +1,32 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import { calculateReadingTime } from "@/utils/readingTime";
 import Datetime from "./Datetime.astro";
 
-export interface Props extends CollectionEntry<"blog"> {
+interface Props {
   variant?: "h2" | "h3";
+  typeLabel?: string;
+  href?: string;
+  data: {
+    title: string;
+    description: string;
+    pubDatetime: Date;
+    modDatetime?: Date | null;
+  };
+  id: string;
+  body?: string;
 }
 
-const { variant = "h2", data, id, body } = Astro.props;
+const { variant = "h2", data, id, body, typeLabel, href } = Astro.props;
 const { title, description, pubDatetime, modDatetime } = data;
-const readingTime = calculateReadingTime(body ?? "");
+const readingTime = body ? calculateReadingTime(body) : null;
+const resolvedHref = href ?? `/posts/${id}`;
 
 const Tag = variant;
 ---
 
 <li class="group py-6 first:pt-0">
   <a
-    href={`/posts/${id}`}
+    href={resolvedHref}
     class="inline-block text-accent decoration-dashed underline-offset-4 focus-visible:no-underline"
   >
     <Tag class="font-display text-lg font-semibold tracking-tight decoration-dashed hover:underline">
@@ -24,8 +34,11 @@ const Tag = variant;
     </Tag>
   </a>
   <div class="flex items-center gap-2 mt-1.5">
+    {typeLabel && (
+      <span class="rounded-full bg-accent/10 text-accent px-2 py-0.5 text-xs font-medium uppercase tracking-wider">{typeLabel}</span>
+    )}
     <Datetime {pubDatetime} {modDatetime} />
-    <span class="text-subtle text-sm">&#183; {readingTime}</span>
+    {readingTime && <span class="text-subtle text-sm">&#183; {readingTime}</span>}
   </div>
   <p class="mt-2 text-subtle leading-relaxed line-clamp-2">{description}</p>
 </li>

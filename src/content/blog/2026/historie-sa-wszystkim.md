@@ -2,7 +2,6 @@
 title: "Historie są wszystkim"
 pubDatetime: 2026-03-09
 description: "Dlaczego każdy projekt w PIY ma swoją historię — i dlaczego to ważne."
-featured: true
 tags:
   - blog
   - piy

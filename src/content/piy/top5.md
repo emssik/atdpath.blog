@@ -2,6 +2,7 @@
 title: "Top5 — desktopowy menedżer uwagi"
 description: "Aplikacja Electron, która wymusza limit aktywnych projektów i pomaga skupić się na tym, co naprawdę ważne. Lokalny storage, synchronizacja przez iCloud, tryb focus z timerem."
 pubDatetime: 2026-03-07
+featured: true
 repo: "https://github.com/emssik/top5"
 tags:
   - electron
