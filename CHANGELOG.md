@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-03-17
+
+### Added
+- New PIY project entry: Airsync — a Python tool that syncs Airtable bases to PostgreSQL via UPSERT, with dry-run mode, exclusion lists, and Docker Compose production deploy
+
 ## [0.15.1] - 2026-03-16
 
 ### Changed
