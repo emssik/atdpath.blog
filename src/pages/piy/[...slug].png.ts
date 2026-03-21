@@ -11,6 +11,9 @@ const fontsDir = resolve(process.cwd(), "src/assets/fonts");
 const playfairBold = readFileSync(resolve(fontsDir, "PlayfairDisplay-Bold.ttf"));
 const sourceSerif = readFileSync(resolve(fontsDir, "SourceSerif4-Regular.ttf"));
 
+const avatarPath = resolve(process.cwd(), "public/avatar.jpg");
+const avatarBase64 = `data:image/jpeg;base64,${readFileSync(avatarPath).toString("base64")}`;
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const projects = await getCollection("piy");
   return projects
@@ -42,47 +45,27 @@ export const GET: APIRoute = async ({ props }) => {
           {
             type: "div",
             props: {
-              style: { display: "flex", flexDirection: "column", gap: "20px" },
+              style: {
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                flexGrow: 1,
+                paddingBottom: "40px",
+              },
               children: [
                 {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: "28px",
-                      color: "#e8915a",
-                      letterSpacing: "2px",
-                      textTransform: "uppercase" as const,
-                    },
-                    children: "PIY — Prompt It Yourself",
-                  },
-                },
-                {
-                  type: "div",
-                  props: {
-                    style: {
-                      fontSize: title.length > 60 ? "48px" : "64px",
+                      fontSize: title.length > 50 ? "52px" : "64px",
                       fontFamily: "Playfair Display",
                       fontWeight: 700,
                       color: "#f0ede8",
-                      lineHeight: 1.2,
+                      lineHeight: 1.25,
                       letterSpacing: "-0.5px",
+                      maxWidth: "1000px",
                     },
                     children: title,
-                  },
-                },
-                {
-                  type: "div",
-                  props: {
-                    style: {
-                      fontSize: "28px",
-                      color: "#b0aaa4",
-                      lineHeight: 1.5,
-                      maxWidth: "900px",
-                    },
-                    children:
-                      description.length > 140
-                        ? description.slice(0, 140) + "…"
-                        : description,
                   },
                 },
               ],
@@ -93,18 +76,28 @@ export const GET: APIRoute = async ({ props }) => {
             props: {
               style: {
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "flex-end",
                 alignItems: "center",
-                borderTop: "1px solid #3a3a3e",
-                paddingTop: "24px",
+                gap: "16px",
               },
               children: [
+                {
+                  type: "img",
+                  props: {
+                    src: avatarBase64,
+                    width: 56,
+                    height: 56,
+                    style: {
+                      borderRadius: "28px",
+                    },
+                  },
+                },
                 {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: "22px",
-                      color: "#b0aaa4",
+                      fontSize: "20px",
+                      color: "#706b65",
                     },
                     children: SITE.author,
                   },
@@ -113,7 +106,17 @@ export const GET: APIRoute = async ({ props }) => {
                   type: "div",
                   props: {
                     style: {
-                      fontSize: "22px",
+                      fontSize: "20px",
+                      color: "#706b65",
+                    },
+                    children: "·",
+                  },
+                },
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      fontSize: "20px",
                       color: "#e8915a",
                     },
                     children: "blog.atdpath.com",

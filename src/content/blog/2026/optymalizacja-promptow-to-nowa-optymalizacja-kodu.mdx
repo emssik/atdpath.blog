@@ -23,13 +23,19 @@ Nie chodzi tylko o wsteczną analizę potencjalnych błędów.
 
 Coś, co niemal zanikło w programistycznym świecie (taniej kupić mocniejszy serwer niż optymalizować kod), w przypadku modeli nabiera zupełnie nowego znaczenia. Staje się wręcz kluczowym punktem.
 
+Jasne, na start wystarczą zwykłe logi tekstowe. Serio. Zapisujesz prompt, odpowiedź, ile tokenów poszło, ile to kosztowało — i już masz z czym pracować. Nie trzeba od razu wskakiwać na głęboką wodę.
+
+Natomiast jak projekt rośnie, zaczynasz testować kilka modeli równolegle, masz setki zapytań dziennie i chcesz porównywać wersje promptów — wtedy zwykły plik tekstowy przestaje wystarczać. I tu wchodzą dedykowane narzędzia. [Langfuse](https://langfuse.com/) jest open source — stawiasz u siebie i masz pełne trace'y, wersjonowanie promptów, tracking kosztów. [Helicone](https://www.helicone.ai/) jest jeszcze prostsze — podmieniasz base URL w API callu i gotowe. Tokeny, koszty, latencja — wszystko leci na dashboard.
+
+Oba mają darmowe plany na start. Dopiero jak zaczniesz widzieć co się dzieje pod spodem, zyskujesz realną kontrolę nad zmianami i analizą. Bez tego jesteś po prostu ślepy.
+
 ---
 
 ### Jeden prompt, duża zmiana
 
 Podam Ci bardzo prosty przykład.
 
-Buduję agenta, który ma używać agent-search do wyszukiwania danych w plikach markdown.
+Buduję agenta, który ma używać [Agent Search](/piy/agent-search) do wyszukiwania danych w plikach markdown.
 
 Mam jeden prompt systemowy, ale testuję równolegle kilka modeli:
 
@@ -39,13 +45,27 @@ Mam jeden prompt systemowy, ale testuję równolegle kilka modeli:
 - Claude Haiku 4.5
 - GPT 5.4 Mini
 
-Wystarczył jeden prompt z prośbą o analizę poprzednich zapytań i wprowadzenie zmian w prompcie systemowym, aby uzyskać **znaczną poprawę** zarówno jakości odpowiedzi, jak i częstotliwości używania tooli (znaczne zmniejszenie) — co oznacza spore oszczędności (mniej wywołań, mniej tokenów, mniej spalonych $).
+Wystarczył jeden prompt: przeanalizuj poprzednie zapytania i zaproponuj zmiany w prompcie systemowym.
+
+Efekt? **Znacznie mniej tool calls** — a co za tym idzie, mniej tokenów i mniej spalonych $. Jakość odpowiedzi nie spadła. Momentami nawet wzrosła.
 
 ![Nowy ranking efektywności — średnia liczba tool calls po optymalizacji vs przed zmianami](/images/blog/optymalizacja-promptow/ranking.png)
 
 Gemini i GLM — największy skok poprawy. Claude minimalnie wzrósł (bo teraz czyta więcej plików na szerokie pytania — to pożądane).
 
 ![Tabela naprawionych problemów — 8 z 10 naprawionych po jednej iteracji](/images/blog/optymalizacja-promptow/tabela.png)
+
+## Nie tylko ja
+
+I tu ciekawostka. To podejście — pozwól modelowi optymalizować proces — nie jest moim wymysłem. Nabiera rozpędu.
+
+[DSPy](https://dspy.ai/) ze Stanford NLP robi dokładnie to, o czym piszę wyżej. Nie piszesz promptu ręcznie. Definiujesz co ma wejść i co ma wyjść, a framework sam generuje i optymalizuje prompt pod spodem. 160 tysięcy pobrań miesięcznie, więc to nie jest żaden eksperyment — ludzie używają tego w produkcji.
+
+Andrej Karpathy (tak, ten od Tesla AI i OpenAI) poszedł jeszcze dalej ze swoim [Autoresearch](https://github.com/karpathy/autoresearch). Dajesz agentowi AI setup treningowy modelu, idziesz spać, a rano masz wyniki ze stu automatycznych eksperymentów. Agent sam modyfikuje kod, odpala trening, ocenia wyniki i decyduje co zostawić, a co wyrzucić.
+
+Widzisz schemat?
+
+Ja optymalizuję prompty systemowe. DSPy optymalizuje prompty automatycznie. Karpathy optymalizuje cały kod treningowy. Wspólny mianownik: **człowiek definiuje cel, model szuka drogi**.
 
 ---
 

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-03-21
+
+### Changed
+- OG image layout redesigned for blog posts and PIY pages: category label, description, and separator line removed; title is now vertically centered with more breathing room
+- Author info moved to bottom-right corner with a round avatar photo, smaller subdued font, and site domain
+
 ## [0.19.0] - 2026-03-21
 
 ### Added
