@@ -77,7 +77,7 @@ html[data-theme="dark"] {
   }
 
   .prose h2 {
-    @apply mt-16 mb-5 pt-8 text-xl sm:text-2xl font-display font-bold border-t border-border;
+    @apply mt-12 mb-5 pt-12 text-xl sm:text-2xl font-display font-bold border-t border-border;
   }
 
   .prose h2:first-of-type {

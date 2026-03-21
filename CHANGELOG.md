@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-03-21
+
+### Added
+- New blog post: "Czy nauka programowania wciąż ma sens?" — honest, point-by-point answer on whether learning to code is worthwhile in the AI era
+- New blog post: "Optymalizacja promptów to nowa optymalizacja kodu" — on why logging, testing, and continuous prompt optimization are essential when building AI-powered tools
+- GitHub repository link added to the site footer
+
+### Changed
+- Prose `h2` heading vertical spacing adjusted for better visual rhythm
+
+### Removed
+- Google site verification HTML file removed from repository; added to `.gitignore`
+
 ## [0.18.0] - 2026-03-17
 
 ### Added

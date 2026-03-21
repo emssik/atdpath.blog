@@ -1,0 +1,54 @@
+---
+title: "Optymalizacja promptów to nowa optymalizacja kodu"
+pubDatetime: 2026-03-21
+description: "Dlaczego logi, testy i ciągła optymalizacja promptów to kluczowy element budowania narzędzi opartych na modelach AI."
+tags:
+  - ai
+  - prompt-engineering
+---
+
+import Callout from "@/components/Callout.astro";
+
+Praca z modelami, np. w celu budowania oprogramowania, to zupełnie co innego niż budowanie narzędzi, które modeli używają jako elementu procesu.
+
+Tutaj pojęcie wewnętrznych testów i ciągłej optymalizacji nabiera zupełnie nowego znaczenia.
+
+## Logi to fundament
+
+Szczegółowe logi każdej wykonanej operacji, włącznie z użyciem tooli, ilością tokenów, czasem wykonania, kosztami — to kluczowe elementy całego procesu.
+
+Nie chodzi tylko o wsteczną analizę potencjalnych błędów.
+
+> O wiele ważniejsza jest rozbudowana baza wiedzy pod optymalizowanie procesu.
+
+Coś, co niemal zanikło w programistycznym świecie (taniej kupić mocniejszy serwer niż optymalizować kod), w przypadku modeli nabiera zupełnie nowego znaczenia. Staje się wręcz kluczowym punktem.
+
+---
+
+### Jeden prompt, duża zmiana
+
+Podam Ci bardzo prosty przykład.
+
+Buduję agenta, który ma używać agent-search do wyszukiwania danych w plikach markdown.
+
+Mam jeden prompt systemowy, ale testuję równolegle kilka modeli:
+
+- MiniMax M2.7
+- Gemini 3 Flash Preview
+- GLM 5 Turbo
+- Claude Haiku 4.5
+- GPT 5.4 Mini
+
+Wystarczył jeden prompt z prośbą o analizę poprzednich zapytań i wprowadzenie zmian w prompcie systemowym, aby uzyskać **znaczną poprawę** zarówno jakości odpowiedzi, jak i częstotliwości używania tooli (znaczne zmniejszenie) — co oznacza spore oszczędności (mniej wywołań, mniej tokenów, mniej spalonych $).
+
+![Nowy ranking efektywności — średnia liczba tool calls po optymalizacji vs przed zmianami](/images/blog/optymalizacja-promptow/ranking.png)
+
+Gemini i GLM — największy skok poprawy. Claude minimalnie wzrósł (bo teraz czyta więcej plików na szerokie pytania — to pożądane).
+
+![Tabela naprawionych problemów — 8 z 10 naprawionych po jednej iteracji](/images/blog/optymalizacja-promptow/tabela.png)
+
+---
+
+<Callout variant="accent" title="Wniosek">
+Osobiście nie specjalnie wierzę już w ręczne pisanie promptów systemowych. Jasne, od czegoś trzeba zacząć, jednak ich późniejsza obserwacja i ciągła optymalizacja powoduje, że w pewnym momencie są 100% generowane przez modele.
+</Callout>
