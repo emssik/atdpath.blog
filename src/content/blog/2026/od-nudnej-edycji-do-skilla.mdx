@@ -1,0 +1,293 @@
+---
+title: "Od nudnej edycji wideo do skilla, który robi to za mnie"
+pubDatetime: 2026-04-10
+description: "Jak w 7 etapach zbudowałem skilla do edycji wideo — od 'nie chce mi się' po gotowe narzędzie, które robi brudną robotę za mnie."
+tags:
+  - ai
+  - claude-code
+  - automation
+  - video
+---
+
+import Callout from "@/components/Callout.astro";
+import ToolCard from "@/components/ToolCard.astro";
+import Ref from "@/components/Ref.astro";
+
+Na jednej z „piątkowych kawek w samo południe" ktoś zaproponował, żebym podzielił się frameworkiem rozwiązania konkretnego problemu, z jakim ostatnio się zmagałem.
+
+I nie chodziło tylko o sam końcowy rezultat działań, ale przede wszystkim o proces, w jakim do tego rezultatu doszedłem, ponieważ to, co wydaje mi się zupełnie proste i trywialne, wcale takie nie jest dla osób, które nie spędziły połowy życia na tematach programistyczno-administracyjnych ;)
+
+Zatem do dzieła, mam nadzieję, że Ci się to przyda. I nawet jeśli samo techniczne rozwiązanie nie jest Ci do niczego potrzebne, to potraktujesz to jako inspirację do rozwiązywania własnych problemów z pomocą AI, ponieważ do tego się to przecież sprowadza.
+
+## Setki filmów i zero motywacji
+
+Przez ostatnie ± 8 lat miałem okazję nagrać i edytować w sumie kilkaset filmów. Na YouTube, szkolenia, live'y, webinary... Nazabierało się tego. I choć narzędzia są coraz lepsze, coraz mniej mam na to ochotę, zwłaszcza, że jeśli to prosta edycja np. warsztatów w celu udostępnienia nagrania uczestnikom, to nie ma w tym żadnej magii, wielkiego montażu, tylko kilka kroków, które trzeba wykonać.
+
+Dotychczas wykonywałem je przy pomocy Descript (ale to wtedy, kiedy chciałem mocniej pobawić się z nagraniem), albo DaVinci Resolve, gdy zależało mi na błyskawicznej edycji i wygodnym edytorze. Tutaj też podbijałem dźwięk, dodawałem filtry itp.
+
+W każdym razie — nudna, powtarzalna, klikalna praca.
+
+## Etap 1: „Nie chce mi się"
+
+W końcu wczoraj powiedziałem dosyć. Nie chce mi się.
+
+Mam nagranie wstępne... Na nagraniu mam około 10 minut rozbiegówki do usunięcia. O rany, znowu odpalać wielki kombajn, wrzucać plik, ręcznie ciąć... Potem robić eksport przez kilkanaście minut... No naprawdę... Nie tylko nie chce mi się, ale przecież to na pewno można zrobić lepiej, a gdyby tak...
+
+```
+Claude > Jestem na macOS, czy możesz wyciąć pierwsze 10 minut 40s 
+z tego filmu? '/Users/daniel/Downloads/Recording Apr 8 2026.mp4'
+```
+
+**5 sekund (PIĘĆ SEKUND) później:**
+
+```
+Claude: Gotowe. Plik video_trimmed.mp4 — ~1h53m
+(oryginał 2h04m minus pierwsze 10:40).
+Leży w /Users/daniel/00_work/mycc/video_trimmed.mp4
+```
+
+Ale WTF, jak?
+
+No prosto — Claude po prostu użył kombajnu CLI o nazwie **ffmpeg**<Ref n={1} to="tool-ffmpeg" />, który właśnie do takich operacji służy... I choć o tym wiedziałem, nigdy nie miałem czasu, żeby w temat wchodzić głębiej.
+
+No dobrze... To jak on taki mądry... to może...
+
+## Etap 2: „A skoro jesteś taki mądry..."
+
+```
+Claude > Ok, to teraz inne pytanie — czy jesteśmy w stanie 
+podbić jakość i siłę dźwięku na tym nagraniu?
+```
+
+```
+Claude: Sprawdzę najpierw poziomy audio.
+```
+
+Model odpalił analizę przez ffmpeg i stwierdził:
+
+> Audio jest dość ciche: -25.26 LUFS (standard to -14 do -16 LUFS), a true peak już na 0.07 dBTP — więc zwykłe podbicie głośności by przycinało. Potrzebna normalizacja + kompresja.
+>
+> Zastosuję:
+> - **loudnorm** (two-pass) → cel -14 LUFS (standard YouTube/podcast)
+> - **highpass** → odcięcie szumu poniżej 80Hz
+> - **acompressor** → wyrównanie dynamiki głosu
+
+```
+Claude: Gotowe. Plik video_enhanced.mp4 (238 MB) z ulepszonym dźwiękiem:
+
+- Głośność podbita z -25 do -14 LUFS (standard YouTube)
+- Kompresja dynamiki — głos bardziej równomierny 
+  (ciche fragmenty podciągnięte, głośne lekko ściszone)
+- Highpass 80Hz — wycięty niski szum/rumble
+- Audio 192 kbps AAC (oryginał miał 82 kbps)
+- Wideo bez zmian (stream copy)
+
+Odsłuchaj kawałek i daj znać czy efekt jest ok 
+— mogę jeszcze dostroić parametry.
+```
+
+So far... So zajebiście... Zatem... Skoro jest i działa i na pewno będę tego używał częściej, to...
+
+## Etap 3: zróbmy z tego trwałe narzędzie
+
+```
+Claude > Ok, bardzo fajnie to poszło. Użyj /skill-creator 
+i w projekcie cc.skills utwórz skilla ems-video-editor, 
+który na dzień dobry będzie w stanie podbijać dźwięk. 
+Czy poza ffmpeg mogę użyć innych (najlepiej darmowych) 
+narzędzi do takich operacji, które dadzą lepszy rezultat?
+```
+
+```
+Claude: Oprócz ffmpeg warto rozważyć:
+
+- SoX (brew install sox) — świetny do noise reduction, EQ, 
+  kompresji; lepszy niż ffmpeg do samego audio
+- DeepFilterNet (pip install deepfilternet) — ML-based 
+  usuwanie szumu/pogłosu, daje świetne wyniki 
+  na nagraniach ze spotkań
+- RNNoise — lekki ML denoiser (Mozilla), 
+  można użyć przez ffmpeg plugin
+
+DeepFilterNet dałby prawdopodobnie najlepszy efekt na nagraniach 
+Zoom/Meet — usuwa szum tła i pogłos z pomocą sieci neuronowej.
+```
+
+Tak oto po chwili miałem gotową pierwszą wersję skilla:
+
+```
+Claude: ems-video-editor gotowy. Oto co zostało zrobione:
+
+Utworzono: /Users/daniel/00_work/projects/cc/cc.skills/
+           ems-video-editor/SKILL.md
+
+Funkcjonalności na dzień dobry:
+1. Audio enhancement — dwuetapowy (analiza + przetwarzanie), 
+   łańcuch: highpass → acompressor → loudnorm, 
+   3 presety głośności (gentle/standard/loud)
+2. Noise removal — DeepFilterNet (ML) jako primary, 
+   SoX noisered jako fallback
+3. Video trimming — wycinanie początku/końca/fragmentu, 
+   stream copy
+4. Łączenie operacji — trim + enhance w jednym przejściu
+```
+
+## Etap 4: testy i iteracja
+
+Potem ściągnąłem krótkie nagranie wideo w celu przeprowadzenia testów. Poprosiłem model o wykonanie procesu na pliku. Jak się spodziewałem, nie wszystko przeszło gładko, ale problemy zostały rozwiązane w locie.
+
+Wnioski, które się pojawiły:
+
+- SoX nie obsługuje mp4 bezpośrednio — wymaga wyekstrahowania audio do WAV (tak jak **DeepFilterNet**<Ref n={2} to="tool-deepfilternet" />)
+- DeepFilterNet — 30s audio przetworzył w 2.5s (RT factor 0.085 = ~12x realtime). Dla 2h to ~10 min.
+
+### Automatyczna aktualizacja
+
+Bazując na testach, model od razu dokonał aktualizacji skilla (sam z siebie, bez konieczności proszenia go o to):
+
+```
+Claude: Gotowe. Zaktualizowałem skilla:
+
+- Ścieżki narzędzi — konkretne paths zamiast "opcjonalny"
+- SoX — dodałem uwagę że nie czyta mp4, zawsze extract do wav
+- DeepFilterNet — dodałem benchmarki wydajności 
+  (~12x realtime, v0.5.6)
+- Nowy pipeline denoise + enhance w jednym kroku 
+  (mux back + loudnorm chain razem)
+- SoX noise reduction — rozpisany pełny workflow 
+  z wyjaśnieniem sensitivity
+```
+
+## Etap 5: a co z Audacity?
+
+No to idziemy za ciosem. Dawniej często używałem Audacity do przetwarzania co bardziej istotnych nagrań. Miałem gotowe własne skrypty i kilka komercyjnych pluginów. Pytanie, czy model może coś z tego wyciągnąć?
+
+```
+Claude > Mam jeszcze zainstalowane Audacity — 
+czy to też się może do czegoś przydać?
+```
+
+```
+Claude: Nie bardzo. Audacity to narzędzie GUI — nie ma sensownego 
+trybu CLI do automatyzacji. Wszystko co Audacity robi w kontekście 
+tego skilla (noise reduction, EQ, kompresja, normalizacja) jest 
+już pokryte przez ffmpeg + SoX + DeepFilterNet, które działają 
+w terminalu.
+
+Audacity przydaje się gdy chcesz ręcznie obejrzeć spektrogram 
+albo precyzyjnie zaznaczyć fragment szumu — ale to praca manualna, 
+nie do zautomatyzowania w skillu.
+```
+
+Niestety spodziewałem się czegoś takiego.
+
+> Idealny przykład, że narzędzia, które NIE mają opcji CLI / API, są skazane na wymarcie. Zapamiętaj to.
+
+## Etap 6: auto-editor — wycinanie ciszy
+
+No dobrze, ale może Claude ma jeszcze jakieś pomysły?
+
+```
+Claude > Ok, a jakieś dodatkowe narzędzia do np. automatycznych 
+operacji na całym video? Np. wycinanie okresów ciszy?
+```
+
+```
+Claude: Tak, jest świetne narzędzie: auto-editor.
+
+pip install auto-editor
+
+Co potrafi:
+- Wycinanie ciszy — automatycznie usuwa fragmenty bez mowy
+- Motion detection — wycina fragmenty bez ruchu na ekranie
+- Konfigurowalny próg — jak cicho = cisza, ile padding zostawić
+- Speed up zamiast cut — np. ciszę przyspiesza 8x zamiast wycinać
+```
+
+No to instalujemy **auto-editor**<Ref n={3} to="tool-auto-editor" /> i sprawdzamy.
+
+```
+Claude: Gotowe. Skill zaktualizowany o auto-editor:
+
+- Tabela narzędzi — dodany auto-editor v29.3.1
+- Sekcja 4 — automatyczne wycinanie ciszy z przykładami 
+  (cut, speed-up, motion, threshold, margin)
+- Description — rozszerzona o triggery: "wytnij ciszę", 
+  "cut silence", "auto-edit" itd.
+- Nazewnictwo — _autocut.mp4 dla auto-editowanych plików
+```
+
+Najwyższy czas, żeby przetestować ponownie cały proces ze wszystkimi dodatkami:
+
+```
+Claude: Gotowe. Porównanie:
+
+┌─────────┬──────────┬────────────────┐
+│         │  Przed   │   Po autocut   │
+├─────────┼──────────┼────────────────┤
+│ Czas    │ 1h53m28s │ 1h44m24s       │
+├─────────┼──────────┼────────────────┤
+│ Rozmiar │ 238 MB   │ 193 MB         │
+├─────────┼──────────┼────────────────┤
+│ Wycięto │ —        │ ~9 minut ciszy │
+└─────────┴──────────┴────────────────┘
+
+Auto-editor wyciął ~9 minut martwych fragmentów z marginesem 0.3s 
+wokół mowy. Odsłuchaj czy przejścia brzmią naturalnie — jeśli zbyt 
+agresywne, mogę zwiększyć margin albo użyć speed-up zamiast cięcia.
+```
+
+Poprosiłem model o podanie konkretnych momentów na nagraniu — przygotował mi listę. Wyszło genialnie. Rany, że ja o tym wcześniej nie pomyślałem.
+
+## Etap 7: deep research na deser
+
+Nie będę Cię już zanudzał dalszą konwersacją. Zrobiłem to specjalnie, żeby pokazać Ci, że w tym naprawdę nie ma żadnej magii. Tylko chęć rozwiązania konkretnego problemu.
+
+Gdy ta wersja skilla była już gotowa, uruchomiłem NotebookLM. Poprosiłem w ramach deep research o znalezienie wszystkich najlepszych (darmowych) narzędzi CLI, które model może użyć do operacji edycyjnych na audio/video.
+
+Dostałem około 50 wyników, zatem poprosiłem o przygotowanie listy najlepiej ocenianych narzędzi.
+
+---
+
+Skopiowałem listę, ponownie wrzuciłem do Claude'a z prośbą o analizę, czy któreś z tych narzędzi dobrze się sprawdzi w naszym przypadku.
+
+Podekscytował się znajdując na liście **whisper.cpp**<Ref n={4} to="tool-whisper" /> oraz narzędzie do odszumiania, które uznał za dużo lepsze od aktualnie używanego.
+
+Dzięki whisper możemy:
+
+- Tworzyć automatyczne transkrypcje
+- Dodawać napisy
+- Dzielić materiał na rozdziały
+- Ulepszyć proces wycinania zbędnych fragmentów
+
+<Callout variant="accent" title="3 godziny. Tyle to zajęło.">
+W jakieś 3 godziny (z czego większość to testy — bo te operacje nie należą do najszybszych) mam skilla, który robi za mnie całą brudną robotę. Jeszcze potem dodam do tego automatyczną wysyłkę na Vimeo i problem całościowo rozwiązany :)
+
+Jak widzisz, to nie jest żadna wiedza tajemna. To po prostu **luźna rozmowa**, w ramach której model buduje rozwiązanie skrojone idealnie pod Ciebie i Twoje potrzeby. Nie musisz znać ffmpeg, SoX ani DeepFilterNet. Musisz wiedzieć, czego chcesz, i umieć to opisać.
+</Callout>
+
+---
+
+Na tej samej zasadzie udostępniam moje projekty w ramach akcji Prompt It Yourself, by służyły Ci za źródło inspiracji.
+
+[Prompt It Yourself — zobacz projekty](/piy)
+
+Mam nadzieję, że choć trochę ułatwi to Twoją zabawę z modelami.
+
+## Narzędzia wspomniane w tekście
+
+<ToolCard title="ffmpeg" url="https://ffmpeg.org" icon="🎬" id="tool-ffmpeg">
+Wszechstronny kombajn CLI do przetwarzania audio i wideo. Trimowanie, konwersja formatów, normalizacja dźwięku (loudnorm), kompresja, nakładanie filtrów — wszystko z terminala, bez GUI. De facto standard w automatyzacji operacji na multimediach. Dostępny przez `brew install ffmpeg`.
+</ToolCard>
+
+<ToolCard title="DeepFilterNet" url="https://github.com/Rikorose/DeepFilterNet" icon="🧠" id="tool-deepfilternet">
+Oparty na sieciach neuronowych denoiser audio — usuwa szum tła i pogłos z nagrań. Świetnie sprawdza się na nagraniach ze spotkań (Zoom, Meet). Przetwarza ~12x szybciej niż realtime. Instalacja: `pip install deepfilternet`.
+</ToolCard>
+
+<ToolCard title="auto-editor" url="https://github.com/WyattBlue/auto-editor" icon="✂️" id="tool-auto-editor">
+Automatyczne wycinanie ciszy i martwych fragmentów z nagrań wideo. Wykrywa fragmenty bez mowy lub ruchu i je wycina (albo przyspiesza). Konfigurowalny próg czułości i margines wokół mowy. Instalacja: `pip install auto-editor`.
+</ToolCard>
+
+<ToolCard title="whisper.cpp" url="https://github.com/ggerganov/whisper.cpp" icon="🗣️" id="tool-whisper">
+Wydajna implementacja OpenAI Whisper w C/C++ — rozpoznawanie mowy i transkrypcja audio. Działa lokalnie, bez chmury. Umożliwia automatyczne tworzenie transkrypcji, napisów (SRT/VTT), podziału na rozdziały i lepsze wycinanie zbędnych fragmentów na podstawie treści mowy.
+</ToolCard>

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- New blog post: "Od nudnej edycji wideo do skilla, który robi to za mnie" — a step-by-step account of building an AI-assisted video editing skill using ffmpeg, DeepFilterNet, auto-editor, and whisper.cpp; adapted from a newsletter email
+
 ## [0.20.0] - 2026-03-21
 
 ### Changed
