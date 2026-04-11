@@ -37,4 +37,5 @@ dist/
 build/
 target/
 *.egg-info/
+.astro/
 google3c4dd3675d0edc38.html
