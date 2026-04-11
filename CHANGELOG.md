@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - New blog post: "Od nudnej edycji wideo do skilla, który robi to za mnie" — a step-by-step account of building an AI-assisted video editing skill using ffmpeg, DeepFilterNet, auto-editor, and whisper.cpp; adapted from a newsletter email
 
+### Security
+- Resolved 9 npm audit vulnerabilities (6 HIGH, 2 MODERATE, 1 LOW) via in-range patch bumps; affected packages include vite, h3, fast-xml-parser, defu, picomatch, devalue, smol-toml, and astro; no breaking changes, `npm audit` now reports zero findings
+
 ## [0.20.0] - 2026-03-21
 
 ### Changed
