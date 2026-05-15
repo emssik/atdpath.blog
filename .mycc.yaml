@@ -1,0 +1,66 @@
+actions:
+  - name: dev
+    cmd: "npm run dev"
+    pane: 4
+    daemon: true
+
+  - name: build
+    cmd: "npm run build"
+    pane: 3
+
+  - name: deploy
+    cmd: "bash build.sh"
+    pane: 3
+
+  - name: push
+    cmd: "git push origin HEAD"
+    pane: 3
+
+  - name: commit
+    cmd: "/c.commit"
+    pane: 1
+    type: claude
+
+context:
+  stack: typescript, astro, tailwind, mdx
+  structure: |
+    Content-driven blog. Posts in src/content/blog/<year>/*.md(x).
+    PIY section in src/content/piy/.
+    Deploy via build.sh → Bunny CDN (static).
+  exclude_paths:
+    - "src/content/blog/**"
+    - "src/content/piy/**"
+    - "docs/**"
+    - "ai_docs/**"
+    - "specs/**"
+    - "working/**"
+  review_guide: |
+    Deployment model: static build → Bunny CDN. No SSR, no Node runtime in production,
+    no public-facing dev server. This dramatically changes how to weigh dependency CVEs:
+
+    - Dev-server and build-time vulnerabilities (vite/h3 path traversal, picomatch ReDoS,
+      defu prototype pollution, fast-xml-parser DoS, smol-toml DoS, devalue proto pollution)
+      have near-zero real impact here. The dev server is never exposed publicly, and the
+      build pipeline consumes trusted local markdown only. Do NOT escalate these as
+      "critical" — flag them as hygiene items ("run `npm audit fix` — it fixes everything
+      within current semver range, no --force needed") and move on. Avoid padding reports
+      with multiple HIGH severity entries that are not reachable in production.
+    - Transitive dep bumps almost always resolve via plain `npm audit fix`. Only recommend
+      editing `package.json` version constraints when the floor genuinely needs lifting.
+    - Two vite trees coexist (`node_modules/astro/node_modules/vite` and
+      `node_modules/@tailwindcss/vite`'s own vite). A single `npm update astro` does not
+      cover both — prefer `npm audit fix` for transitive chains.
+
+    What DOES matter for this project and deserves real attention:
+      * Content sanitization — anything that renders user-supplied or third-party HTML/MDX
+        without escaping (XSS in rendered posts, unsafe rehype plugins).
+      * Client-side JS shipped to readers — Astro hydration islands, inline scripts,
+        third-party widgets. Runtime JS in the built output is the actual attack surface.
+      * Remote content fetching during build — if the pipeline ever starts consuming
+        remote RSS/images/URLs, fast-xml-parser and allowlist-bypass findings become real.
+      * Secrets accidentally committed or leaking into the built static bundle.
+      * Build pipeline integrity (build.sh → Bunny) — credentials, upload scope, cache
+        invalidation correctness.
+
+    Blog content lives under paths already in `exclude_paths`. Never review content files
+    for code quality — they are prose, not code.
