@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.1] - 2026-05-15
+
 ### Added
 - New blog post: "Od nudnej edycji wideo do skilla, który robi to za mnie" — a step-by-step account of building an AI-assisted video editing skill using ffmpeg, DeepFilterNet, auto-editor, and whisper.cpp; adapted from a newsletter email
 
+### Changed
+- Bumped patch/minor dependencies: `tailwindcss` and `@tailwindcss/vite` 4.2.1 → 4.3.0, `@astrojs/mdx` 4.3.13 → 4.3.14, `@astrojs/sitemap` 3.7.1 → 3.7.2
+- Bumped `satori` constraint 0.25.0 → ^0.26.0 (closes 3-month version drift); OG image generation verified
+
 ### Security
-- Resolved 9 npm audit vulnerabilities (6 HIGH, 2 MODERATE, 1 LOW) via in-range patch bumps; affected packages include vite, h3, fast-xml-parser, defu, picomatch, devalue, smol-toml, and astro; no breaking changes, `npm audit` now reports zero findings
+- Hardened search page (`src/pages/search.astro`): replaced `innerHTML` string interpolation with safe DOM APIs (`createElement` + `textContent`) — defense-in-depth against future XSS via collection metadata
+- Resolved 9 npm audit vulnerabilities (6 HIGH, 2 MODERATE, 1 LOW) via in-range patch bumps; affected packages include vite, h3, fast-xml-parser, defu, picomatch, devalue, smol-toml, and astro; no breaking changes
+- Additional `npm audit fix` round closed 4 transitive advisories (devalue DoS, fast-xml-builder attribute injection, fast-xml-parser CDATA injection, postcss CSS stringify XSS)
 
 ## [0.20.0] - 2026-03-21
 

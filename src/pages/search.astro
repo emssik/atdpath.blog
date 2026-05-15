@@ -72,9 +72,38 @@ const searchData = [...blogData, ...piyData].sort(
     _tags: post.tags.map((t) => t.toLowerCase()),
   }));
 
+  function clearResults() {
+    while (resultsList.firstChild) {
+      resultsList.removeChild(resultsList.firstChild);
+    }
+  }
+
+  function renderResult(post) {
+    const li = document.createElement("li");
+    li.className = "my-6";
+
+    const a = document.createElement("a");
+    a.href = `${post.type === "piy" ? "/piy" : "/posts"}/${post.slug}`;
+    a.className =
+      "inline-block text-accent decoration-dashed underline-offset-4 focus-visible:no-underline";
+
+    const h3 = document.createElement("h3");
+    h3.className = "text-base font-medium decoration-dashed hover:underline";
+    h3.textContent = `${post.type === "piy" ? "[PIY] " : ""}${post.title}`;
+    a.appendChild(h3);
+
+    const p = document.createElement("p");
+    p.className = "mt-1 opacity-80";
+    p.textContent = post.description;
+
+    li.appendChild(a);
+    li.appendChild(p);
+    return li;
+  }
+
   function search(query) {
     if (!query || query.length < 2) {
-      resultsList.innerHTML = "";
+      clearResults();
       emptyMsg.classList.add("hidden");
       return;
     }
@@ -87,25 +116,17 @@ const searchData = [...blogData, ...piyData].sort(
         post._tags.some((tag) => tag.includes(q))
     );
 
+    clearResults();
+
     if (results.length === 0) {
-      resultsList.innerHTML = "";
       emptyMsg.classList.remove("hidden");
       return;
     }
 
     emptyMsg.classList.add("hidden");
-    resultsList.innerHTML = results
-      .map(
-        (post) => `
-      <li class="my-6">
-        <a href="${post.type === "piy" ? "/piy" : "/posts"}/${post.slug}" class="inline-block text-accent decoration-dashed underline-offset-4 focus-visible:no-underline">
-          <h3 class="text-base font-medium decoration-dashed hover:underline">${post.type === "piy" ? "[PIY] " : ""}${post.title}</h3>
-        </a>
-        <p class="mt-1 opacity-80">${post.description}</p>
-      </li>
-    `
-      )
-      .join("");
+    for (const post of results) {
+      resultsList.appendChild(renderResult(post));
+    }
   }
 
   input?.addEventListener("input", (e) => search(e.target.value));
