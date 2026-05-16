@@ -27,6 +27,7 @@ context:
     Content-driven blog. Posts in src/content/blog/<year>/*.md(x).
     PIY section in src/content/piy/.
     Deploy via build.sh → Bunny CDN (static).
+    Deploy preflight: .dev/check-projects.sh validates PIY entries before build.
   exclude_paths:
     - "src/content/blog/**"
     - "src/content/piy/**"

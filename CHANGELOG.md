@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.2] - 2026-05-16
+
 ### Added
-- Project-level `.mycc.yaml` tracked in repo: declares dev/build/deploy/push/commit actions and review context (static-to-Bunny deploy model, so dev-server CVEs are weighted as hygiene)
+- Project-level `.mycc.yaml` tracked in repo: declares dev/build/deploy/push/commit actions and review context (static-to-Bunny deploy model, so dev-server CVEs are weighted as hygiene); `context.structure` now documents the `.dev/check-projects.sh` deploy preflight check
 
 ### Changed
 - `working/` (local post drafts) added to `.gitignore` to reflect the existing `exclude_paths` intent from `.mycc.yaml`
+- Search page (`src/pages/search.astro`): replaced manual `while`/`removeChild` loop with `replaceChildren()` for clearing results
 
 ## [0.20.1] - 2026-05-15
 

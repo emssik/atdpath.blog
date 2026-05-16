@@ -73,9 +73,7 @@ const searchData = [...blogData, ...piyData].sort(
   }));
 
   function clearResults() {
-    while (resultsList.firstChild) {
-      resultsList.removeChild(resultsList.firstChild);
-    }
+    resultsList.replaceChildren();
   }
 
   function renderResult(post) {
