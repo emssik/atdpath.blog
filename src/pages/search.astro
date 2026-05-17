@@ -28,9 +28,18 @@ const piyData = sortedProjects.map(({ id, data }) => ({
   type: "piy" as const,
 }));
 
-const searchData = [...blogData, ...piyData].sort(
-  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-);
+// Workaround for GHSA-j687-52p2-xcff (astro < 6.1.6 define:vars XSS).
+// Remove after the Astro 6.x upgrade (top5 ATD-27 / ATD-28).
+const escapeForInlineScript = (s: string) => s.replace(/<\/(script)/gi, "<\\/$1");
+
+const searchData = [...blogData, ...piyData]
+  .map((item) => ({
+    ...item,
+    title: escapeForInlineScript(item.title),
+    description: escapeForInlineScript(item.description),
+    tags: item.tags.map(escapeForInlineScript),
+  }))
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
 <Layout title="Search" description="Search blog posts.">

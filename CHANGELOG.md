@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.3] - 2026-05-17
+
+### Security
+- Search page (`src/pages/search.astro`): sanitize `</script>` sequences in inline `define:vars` payload (title/description/tags) — workaround for GHSA-j687-52p2-xcff (XSS in `define:vars` on Astro < 6.1.6) until the Astro 6.x upgrade lands
+
 ## [0.20.2] - 2026-05-16
 
 ### Added
