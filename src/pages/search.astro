@@ -30,7 +30,8 @@ const piyData = sortedProjects.map(({ id, data }) => ({
 
 // Workaround for GHSA-j687-52p2-xcff (astro < 6.1.6 define:vars XSS).
 // Remove after the Astro 6.x upgrade (top5 ATD-27 / ATD-28).
-const escapeForInlineScript = (s: string) => s.replace(/<\/(script)/gi, "<\\/$1");
+const escapeForInlineScript = (s: string) =>
+  s.replace(/<\/script(?=[\s/>])/gi, "<\\/script");
 
 const searchData = [...blogData, ...piyData]
   .map((item) => ({

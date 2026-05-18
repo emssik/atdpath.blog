@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.4] - 2026-05-18
+
+### Security
+- Search page (`src/pages/search.astro`): tighten `</script>` sanitizer regex to HTML5 script-end triggers (`</script` followed by whitespace, `/`, or `>`) — avoids spurious matches like `</scripttag` while keeping the GHSA-j687-52p2-xcff workaround intact
+
 ## [0.20.3] - 2026-05-17
 
 ### Security
