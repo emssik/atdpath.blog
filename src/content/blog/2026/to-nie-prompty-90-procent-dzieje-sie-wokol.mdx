@@ -1,0 +1,196 @@
+---
+title: "To nie prompty. 90% pracy z Claude Code dzieje się wokół nich"
+pubDatetime: 2026-05-25
+description: "Pętla zwrotna, kontekst, plan i własne narzędzia — cztery klocki, które dzielą traktowanie modelu jak chat od używania go jak narzędzia, które wykonuje za Ciebie realną robotę."
+tags:
+  - ai
+  - claude-code
+  - context-engineering
+  - automation
+---
+
+import Callout from "@/components/Callout.astro";
+
+Często dostaję od Was wiadomości, w których piszecie, że niby już sobie z Claude Code radzicie, ale i tak czujecie, że stoicie w miejscu.
+
+To są właśnie te 10%, o których piszę w tytule.
+
+A 90% to NIE są kolejne prompty. Nie więcej kombinowania ze slash commandami. Nie znajomość ukrytych ficzerów.
+
+90% to wszystko, co dzieje się WOKÓŁ Twojego polecenia. Co dajesz modelowi na wejściu i co robisz z tym, co Ci zwraca. O tym jest cały ten tekst.
+
+---
+
+Być może z jednej strony słyszysz, ile ta cała AI i Claude Code może dla Ciebie zrobić, ale z drugiej — po prostu tego nie czujesz.
+
+Tak, przydaje się. Pozwala rozwiązać pewne problemy, przyspieszyć niektóre operacje. Ale czujesz niedosyt. Chcesz coś z tym zrobić, tylko nie bardzo wiesz co.
+
+W większości przypadków problem jest jeden: wciąż traktujesz Claude Code bardziej jak chat, a mniej jak narzędzie, które potrafi wykonywać za Ciebie kawał pracy.
+
+Żeby zacząć wyciągać z CC (i każdego podobnego rozwiązania) coraz więcej, musisz się troszkę bardziej postarać. I zrozumieć, jak naprawdę powinien wyglądać taki proces.
+
+## Pętla zwrotna
+
+Znasz pewnie pierwszy istotny element pracy z modelem — "pętlę zwrotną". Prosisz o coś model, model to robi, Ty sprawdzasz, prosisz o poprawki, i tak w kółko. Dajesz modelowi feedback, dzięki któremu poprawia swoje wyniki.
+
+To jeden z czterech klocków, o których chcę dziś z Tobą porozmawiać. Pętla zwrotna jest najbardziej oczywista, dlatego zaczynam właśnie od niej — żeby nie umknęła. Trzy kolejne klocki niżej.
+
+## Kontekst
+
+Kolejny bardzo ważny element to kontekst. Model musi mieć wszystkie potrzebne dane, żeby poprawnie wykonać Twoje zadanie.
+
+Najgorsze, co możesz zrobić, to pozwolić mu zgadywać. Albo pracować w sytuacji, w której nie jest pewny, czy na pewno robi to, czego od niego oczekujesz.
+
+Możesz oczywiście podchodzić do modelu jak do encyklopedii, która powinna mieć w sobie całą wiedzę. Da się tak pracować. Ale to najprostsza droga do halucynacji — model zacznie zgadywać i z pełnym przekonaniem podawać Ci rzeczy, których nie wie.
+
+> Największa siła modelu to umiejętność pracy na **dostarczonych danych**.
+
+Dokumenty do analizy, kod do poprawienia, zadanie do sprawdzenia. Model lubi dostawać dane, na których pracuje.
+
+Jest w tym dużo lepszy niż w tworzeniu czegoś od zera.
+
+Spójrz na to głębiej.
+
+A teraz krótki przykład. Wyobraź sobie, że prowadzisz hurtownię chemikaliów samochodowych. Chcesz, żeby model pomagał Ci odpowiadać na pytania klientów. Wrzucasz treść maila i piszesz "odpowiedz grzecznie". Dostajesz takiego maila:
+
+> Od: Marek Kowalski &lt;m.kowalski@example.pl&gt;
+> Do: support@firma.pl
+> Temat: Pytanie o S10
+>
+> Dzień dobry,
+>
+> czy S10 nadaje się do mojego zastosowania? Prowadzę warsztat samochodowy i potrzebuję czegoś, czym wyczyszczę zabrudzone felgi po zimie — głównie osad z soli drogowej i resztki klocków hamulcowych. Pracujemy na 5-7 kompletów dziennie, więc środek musi być wydajny i bezpieczny dla aluminium.
+>
+> Pozdrawiam,
+> Marek
+
+Prosisz model, żeby grzecznie odpowiedział, że tak, nadaje się.
+
+> Od: support@firma.pl
+> Do: Marek Kowalski &lt;m.kowalski@example.pl&gt;
+> Temat: Re: Pytanie o S10
+>
+> Dzień dobry Panie Marku,
+>
+> tak, S10 nadaje się do tego zastosowania.
+>
+> Pozdrawiam,
+> Zespół wsparcia
+
+Niby temat zamknięty.
+
+A jakby tak model miał dostęp do Twojej bazy danych i szablonów odpowiedzi?
+
+> Od: support@firma.pl
+> Do: Marek Kowalski &lt;m.kowalski@example.pl&gt;
+> Temat: Re: Pytanie o S10
+>
+> Dzień dobry Panie Marku,
+>
+> dziękuję za pytanie. S10 sprawdzi się w tym zastosowaniu — usuwa osad z soli drogowej i pył z klocków hamulcowych, jest bezpieczny dla aluminium.
+>
+> Pozwolę sobie jednak zasugerować alternatywę. Przy 5-7 kompletach felg dziennie warto rozważyć **S10 Pro Concentrate** — ten sam skład aktywny, ale w koncentracie 1:4. W przeliczeniu na komplet felg wychodzi ok. 38% taniej niż wersja gotowa do użycia, a wydajność jest praktycznie identyczna (testy własne na felgach po zimie — czas działania 2-3 min).
+>
+> Stan magazynowy na dziś:
+> - S10 Pro Concentrate 5L — 24 szt., cena 189 zł netto
+> - S10 gotowy 5L — 41 szt., cena 124 zł netto
+>
+> Przy zużyciu typowym dla warsztatu (5-7 kompletów dziennie) jeden 5L koncentratu starcza na ok. 3 tygodnie pracy. Mogę zarezerwować 2 sztuki na Pana magazyn — proszę o sygnał, czy mam to zrobić.
+>
+> Pozdrawiam,
+> Zespół wsparcia
+
+Dostarczony do modelu kontekst potrafi zrobić OGROMNĄ różnicę.
+
+Bo kontekst to nie tylko to, co wpisujesz ręcznie. To wszystkie dane, do których Twój model ma dostęp. Dokumentacja frameworka albo biblioteki, której chcesz użyć. Opis strategii marketingowej Twojej firmy (jeśli prosisz model o przygotowanie postów na media społecznościowe). Dane do analizy. Wszystko, co da się dostarczyć modelowi w trakcie pracy.
+
+Zresztą Anthropic ma na ten temat świetny tekst, [*Effective context engineering for AI agents*](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents). Nazywają rzecz po imieniu: prompt engineering przestał wystarczać. Liczy się **context engineering**, czyli to, co konkretnie wepchniesz modelowi do tej krótkiej pamięci, którą ma. Brzmi znajomo? :)
+
+Zostawmy to.
+
+## Plan
+
+Teraz czas na... plan.
+
+Jeśli robisz drobne operacje, nie ma sensu marnować na to czasu. Ale jeśli planujesz coś dłuższego, wymagającego — to zamiast wrzucać te popularne w sieci "one-shotowce", które mają rozwiązać Twój problem (a tak naprawdę częściej dowalają Ci więcej zmartwień), postaraj się bardziej.
+
+Zacznij od przedyskutowania z modelem problemu. Potem zaproponuj, żeby przygotował plan rozwiązania. Możesz użyć komendy `/plan` w Claude Code, ale nie musisz.
+
+Gdy plan będzie gotowy, poproś, żeby model zapisał go do pliku. U mnie takie plany zawsze trafiają do katalogu `/specs`.
+
+Zanim jednak rozpocznę realizację, wrzucam modelowi mniej więcej coś takiego:
+
+<Callout title="Prompt do autorefleksji nad planem">
+Przeanalizuj ten plan i oceń w skali od 1 do 10, jak bardzo jesteś pewny zaproponowanych rozwiązań. Zwróć szczególną uwagę na te aspekty planu, które stworzyłeś, bazując na założeniach, a nie na konkretnej wiedzy.
+
+Jeśli jakiś punkt oceniasz na poniżej 7, zadaj pytania uzupełniające i popraw plan.
+</Callout>
+
+To coś w stylu autorefleksji. I robi OGROMNĄ robotę.
+
+Model często nie pyta, tylko zakłada Twoją odpowiedź. Wtedy jest 50/50, że jego założenie było poprawne. Co za tym idzie — jest też 50% szans, że było błędne. Ten prompt rozwiązuje problem.
+
+Jakość planów, jakie dostaję od modelu, odkąd zacząłem stosować to rozwiązanie, zauważalnie wzrosła. Model dużo częściej dopytuje o rzeczy, które wcześniej sobie zakładał. A to daje gwarancję, że ostateczna wersja planu jest faktycznie zgodna z Twoim życzeniem.
+
+## Narzędzia
+
+Masz już kontekst i plan. Co dalej?
+
+Kolejny element to... narzędzia.
+
+Podzielę je na trzy grupy.
+
+**Grupa pierwsza** — narzędzia wbudowane w Claude Code. Edit, fetch i reszta. W kursie Claude Code poświęcam im sporo uwagi, bo ich znajomość i zrozumienie pozwala używać narzędzia świadomie. A co za tym idzie — uzyskiwać lepsze rezultaty mniejszym nakładem pracy.
+
+**Grupa druga** — narzędzia zewnętrzne, dostępne np. przez serwery MCP.
+
+**Grupa trzecia** — i tu zaczyna się różnica. Bo jeśli zaczniesz z niej korzystać, zrobi NAJWIĘKSZĄ różnicę.
+
+To **TWOJE narzędzia**. Te, które możesz z pomocą modelu zbudować samodzielnie, do rozwiązywania Twoich najczęstszych problemów.
+
+---
+
+A, jeszcze jedno.
+
+To nie jest historia tylko dla programistów.
+
+"Nie, nie, nie", jak śpiewa bohaterka bajki "Życzenie" — piosenki, której wysłuchuję kilkanaście razy dziennie z pokoju mojej 8-latki ;)
+
+Znam osoby, które kodu nie tykają, a z modelem zbudowały sobie mały skrypt wyciągający im co tydzień dane z kilku Exceli i sklejający to w raport. Inni mają toola, który z surowych notatek ze spotkania robi konkretne wiadomości follow-up dla każdego uczestnika osobno. Jeszcze inni — mały programik, który raz w miesiącu robi porządek w katalogu z plikami klientów.
+
+Nikt z nich nie został programistą. Nikt nie zaczął od "muszę się nauczyć Pythona". Wszyscy zaczęli od pytania:
+
+> co konkretnie robię co tydzień po raz dwudziesty z rzędu?
+
+I o to chodzi. Narzędzie samo z siebie nie ma znaczenia. Znaczenie ma to, że WIESZ, co Ci jest potrzebne. A model resztę zrobi razem z Tobą.
+
+To dlatego na początku, po wejściu na drugi poziom ATD, tak wiele czasu poświęcam budowaniu narzędzi CLI (konsolowych). Bo to najprostsza metoda zbudowania bazy własnych narzędzi.
+
+Mam już ich kilkadziesiąt i stale przybywa.
+
+### 🛠️ Przykład z mojego biurka
+
+Ten tekst piszę we **własnym narzędziu**. Zadania do Claude Code przesyłam w ramach kolejnego własnego toola, który pozwala mi pracować równolegle z wieloma sesjami, tworzyć notatki, listy zadań, wyszukiwać we wcześniejszych rozmowach. Informuje mnie też głosowo, że jakieś zadanie się skończyło albo że model czeka na odpowiedź na pytanie.
+
+Gdy draft tego maila będzie gotowy, uruchomię skilla `/mailing`. On dokona korekty, poprawek, wzbogaci treść o linki, a potem — używając mojego toola `md2email` (w oparciu o moje autorskie szablony) — błyskawicznie przerobi markdown na HTML. Później wyśle mi go przy pomocy toola `gmailer`, żebym mógł zobaczyć, jak wygląda w Gmailu. Gdy uznam, że wszystko jest w porządku, skill kontynuuje pracę i przy pomocy kolejnego toola, `sendy`, utworzy kampanię w aplikacji Sendy gotową do wysłania.
+
+Czyli mój wkład to przygotowanie draftu i wywołanie skilla.
+
+No i odpowiadanie na pytania modelu, gdy zajdzie taka potrzeba.
+
+## Spójrz teraz na to z dystansu
+
+To proces, o którym Ci dzisiaj pisałem:
+
+- **kontekst** — draft maila
+- **plan** — wbudowany jako proces w gotowy skill
+- **narzędzia** — stworzone przeze mnie + te wbudowane w Claude Code
+- **pętla zwrotna** — moja reakcja na to, co robi model
+
+A jak chcesz pociągnąć temat dalej, zerknij sobie na [*Best practices for Claude Code*](https://code.claude.com/docs/en/best-practices). Sami inżynierowie Anthropic spisali to samo, o czym dziś czytasz. Kontekst, weryfikacja, plan, narzędzia. Krótko i konkretnie :)
+
+<Callout variant="accent">
+Pomyśl teraz, o ile więcej jest Ci w stanie zaoferować Claude Code (czy podobne narzędzie), jeśli postarasz się trochę bardziej. Zaczniesz używać go świadomie i budować własną bazę narzędzi.
+</Callout>
+
+Powodzenia.

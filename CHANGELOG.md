@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-05-25
+
+### Added
+- Blog post "To nie prompty. 90% pracy z Claude Code dzieje się wokół nich" — adapted from a newsletter, covering the four building blocks of effective AI work (feedback loop, context, plan, custom tools)
+
 ## [0.20.4] - 2026-05-18
 
 ### Security
