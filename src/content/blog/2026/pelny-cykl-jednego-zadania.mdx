@@ -1,0 +1,186 @@
+---
+title: "Zadanie, plan, wykonanie, dokumentacja, debug. Pełny cykl jednego zadania"
+pubDatetime: 2026-06-05
+description: "Pięć etapów, przez które model sam się nie poprowadzi: zadanie, plan, wykonanie, dokumentacja, debug. Plus twarde dane o tym, jak modele oszukują na testach."
+tags:
+  - ai
+  - claude-code
+  - tdd
+  - debugging
+---
+
+import Callout from "@/components/Callout.astro";
+
+Tydzień temu pisałem o tym, że 90% możliwości, jakie da się wyciągnąć z Claude Code, leży POZA samym promptem. Jeśli nie udało Ci się z tamtym tekstem zapoznać, możesz to nadrobić tutaj:
+
+→ [To nie prompty. 90% dzieje się wokół](/posts/2026/to-nie-prompty-90-procent-dzieje-sie-wokol)
+
+Dzisiaj wejdziemy jeszcze głębiej.
+
+Myślę, że doskonale zdajesz sobie sprawę z tego, że im głębiej wchodzimy, tym więcej pojawia się elementów, o które trzeba zadbać. Po to, żeby to, co ostatecznie zbudujesz, miało ręce i nogi. I jeszcze potrafiło nie tylko stać, ale też skakać i tańczyć ;)
+
+Bo tak. Prompt trzeba umieć napisać. Kontekst? Cóż, urosła wokół tego cała gałąź, nazywana Inżynierią Kontekstu. Plan przy prostych zadaniach nie ma w sobie filozofii, ale kiedy chodzi Ci po głowie coś większego, przestaje być trywialny. I co ważne, bo umyka to większości: plan INACZEJ tworzy się dla człowieka, a INACZEJ dla modelu. No i na końcu feedback, o którym pisałem ostatnio.
+
+Tylko że to ogromne uproszczenie.
+
+Bo implementowanie planu potrafi być bardzo, bardzo rozbudowanym zajęciem i też trzeba wiedzieć, jak się za to zabrać.
+
+Ktoś kiedyś napisał mi, że chce, żebym opisał „pełen framework": zadanie → plan → wykonanie → dokumentacja, i jeszcze czy da się do tego sensownie wcisnąć TDD (Test Driven Development, o tym za chwilę).
+
+To oczywiście kolejne uproszczenie i pewnie zaczynasz już rozumieć, że każdy z tych punktów może mieć wiele pułapek. Ale przejdźmy dzisiaj przez podstawy.
+
+Bo po pierwsze od czegoś trzeba zacząć. A po drugie, podobno nawet Wiecznego Miasta nie zbudowano od razu, czy jakoś tak ;)
+
+### Czy plan jest w ogóle potrzebny?
+
+Dwa lata temu zacząłbym od tego, że AI samo nie potrafi się zorganizować. Ale dzisiaj, kiedy pracujesz z narzędziem jak Claude Code, widać różnicę. Zawarte w nim prompty systemowe dbają o to, żeby przy bardziej rozbudowanych problemach najpierw powstał plan.
+
+I teraz uwaga. Możesz spotkać się z opiniami, żeby planu nie używać. To też jest jakieś podejście, ale dotyczy zdecydowanie zaawansowanych osób, które pracują z tymi narzędziami inaczej.
+
+To na przykład zawodowi programiści, którzy dokładnie wiedzą, czego chcą, a model jest u nich tylko wykonawcą.
+
+Sama praca z modelem wygląda wtedy inaczej. To bardziej seria pytań i odpowiedzi, które naprowadzają model na właściwe rozwiązanie. Po drodze robi się kilka eksperymentów myślowych, żeby znaleźć najlepsze wyjście, a potem pyta się model, czy dokładnie rozumie problem. Jeśli potwierdzi, prosisz go o krótkie i proste przedstawienie proponowanego rozwiązania.
+
+To pozwala zobaczyć, czy model faktycznie wie, co ma zrobić.
+
+Dopiero wtedy prosisz o realizację zadania, często z dokładnym wskazaniem plików do zmiany, klas do użycia i tak dalej.
+
+To bardzo świadoma forma profesjonalnego rozwoju kodu z modelem.
+
+Ty raczej nie jesteś na tym etapie i być może nigdy nie będzie Ci to potrzebne. Ale teraz przynajmniej rozumiesz, dlaczego ktoś może powiedzieć, że używanie planu nie ma sensu.
+
+> **Dla niego nie ma. Dla Ciebie ma.**
+
+Co jednak warto z tego profesjonalnego podejścia wyciągnąć, to właśnie ten element dialogu. Najpierw tłumaczysz, o co Ci chodzi. Prosisz model o propozycje rozwiązań, dyskutujesz z nim, podrzucasz własne pomysły, wybieracie ostateczne. Potem prosisz o krótkie podsumowanie i jeśli wszystko się zgadza, dopiero teraz prosisz o utworzenie planu realizacji.
+
+Tutaj krótki przykład takiej prostej dyskusji, jednej z setek, jakie odbywam każdego dnia.
+
+→ [przykładowa dyskusja z modelem (gist)](https://gist.github.com/emssik/8c874a04ef465d1024db68a84b0dc5fe)
+
+## Etap 1. Zadanie
+
+No dobrze. A co właściwie znaczy, że masz napisać modelowi zadanie? To mocno zależy od tego, jakiego modelu i narzędzia używasz. Dostałem już za to po głowie od kilku osób, ale nie lubię poprawności politycznej, więc zamiast teorii pokażę Ci praktykę.
+
+Prawda jest taka, że pracując z najnowszym Claude Code i najnowszym Opusem, wcale nie musisz pisać wielkich elaboratów. Czasem wystarczy kilka konkretnych zdań i model dokładnie wie, co robić.
+
+Potrafi samodzielnie przeanalizować kod projektu i zaproponować sensowne rozwiązanie.
+
+Kilka przykładów.
+
+> „Chcę, żeby okno contentu (WriterView) w Clean UI zapamiętywało położenie kursora dla każdego edytowanego pliku. Po ponownym otwarciu okna kursor i widok powinny automatycznie skakać dokładnie do miejsca, w którym skończyłem pisać."
+
+> „Dodaj do głównego Composera w Desk obsługę prefiksu `!`. Jeśli wpiszę na początku wykrzyknik, np. `!git status` lub `!npm run test`, wykonaj to polecenie bezpośrednio w katalogu roboczym (CWD) aktywnego projektu i wyrenderuj surowy wynik jako dymek (bubble) w historii."
+
+> „Zrób tak, aby lista komend wywoływana za pomocą ukośnika (`/`) w Desk dynamicznie zaczytywała i podpowiadała również moje lokalne skille Claude Code jako alternatywę dla standardowych poleceń."
+
+> „Proponuję, żeby w blokach contentu w Clean UI przycisk akcji automatycznie znikał lub stawał się nieaktywny, jeśli powiązane z nim zadanie zostało już oznaczone jako zrealizowane. Zapobiegnie to przypadkowemu, ponownemu klikaniu gotowych zadań."
+
+> „Zaimplementuj w Desk globalne przeszukiwanie historii pod skrótem `⌘F`. Chcę, aby po naciśnięciu skrótu pojawiał się mały popup z wyszukiwarką, która przeszukuje całą historię bloków (prompty, odpowiedzi i narzędzia) przy użyciu SQLite FTS5 z obsługą polskich znaków."
+
+Widzisz? Nic przesadnie skomplikowanego. Po prostu opis tego, czego oczekuję. A niektóre z tych zadań są całkiem złożone. Co prawda trochę oszukuję: Claude Code u mnie wie (dzięki globalnemu claude.md), że jeśli zadanie jest bardziej rozbudowane, ma użyć do jego zaplanowania mojego skilla ems-plan. Ale to temat na zupełnie inną rozmowę.
+
+Żadne z powyższych zadań tego nie wymagało.
+
+Prawda jest taka, że przed Opusem 4.5 by to nie przeszło. Wcześniejsze modele wymagały dużo więcej szczegółów. Dziś jest po prostu łatwiej. Owszem, im więcej szczegółów podasz, tym lepiej zadanie zostanie zrobione. Ale z praktyką sam wyczujesz, ile tych danych model naprawdę potrzebuje.
+
+## Etap 2. Plan
+
+No dobrze. O tworzeniu planu i ocenie pewności pisałem w poprzednim tekście, dziś nie będę się powtarzał.
+
+<Callout title="Ważna uwaga">
+Jeśli model napisze Ci, że większość planu to domysły, cofnij się na początek i przemyśl wszystko od nowa. Zwłaszcza to, w jaki sposób zlecasz zadanie. Bo to znaczy, że do sensownego zaplanowania potrzebuje dużo więcej danych. Danych, których mu nie dałeś.
+</Callout>
+
+Warto to przedyskutować, nim ruszysz dalej.
+
+## Etap 3. Wykonanie
+
+Dzisiaj koncentrujemy się na pisaniu kodu.
+
+Pamiętasz, jak mówiłem, że tworzenie planu dla modelu to coś innego niż tworzenie planu dla człowieka?
+
+Model musi dokładnie wiedzieć, czego od niego oczekujesz i jak ma to sprawdzić. Inaczej znowu zacznie zgadywać i znowu coś pomiesza.
+
+### TDD, czyli najpierw testy
+
+A teraz od strony czysto technicznej. Czy warto używać TDD przy generowaniu kodu?
+
+Co to takiego TDD? Test Driven Development. Najpierw piszesz testy, a dopiero potem implementację. Tak długo, aż testy zaczną przechodzić. Na końcu robisz refaktoryzację, żeby kod był „czysty".
+
+Kiedy się to świetnie sprawdza? Na przykład przy tworzeniu skryptów albo pisaniu backendu. Przy frontendzie jest już dużo trudniej.
+
+Dlaczego to świetne połączenie z modelami? Bo wymusza na modelu rozwiązywanie precyzyjnie zdefiniowanych problemów.
+
+Jason Gorman, który uczy TDD od kilkunastu lat, tłumaczy to prosto: test to przykład, a przykład zawęża modelowi pole do popisu. Zamiast pisać „ma działać dobrze", pokazujesz konkretnie, co ma wejść i co ma wyjść. Jest i drugi powód. Małe kroki trzymają kontekst w ryzach. Jeśli pierwsza zmiana modelu psuje kod, ten zepsuty kod siedzi już w jego kontekście i model przestaje odróżniać, co działa, a co nie. Test po każdym kroku ucina to w zarodku.
+
+→ [Jason Gorman: dlaczego TDD działa z AI](https://codemanship.wordpress.com/2026/01/09/why-does-test-driven-development-work-so-well-in-ai-assisted-programming/)
+
+Tylko tutaj uwaga...
+
+### Modele mają awersję do testów
+
+Myślę, że dlatego, że programiści ich nie lubią, a modele przejęły tę postawę.
+
+Często tworzą bardzo słabe, nieprzemyślane testy. Wydmuszki, które tak naprawdę nie sprawdzają, jak kod się zachowuje. A mimo wymogu „wszystkie testy na zielono, zanim ruszysz dalej" potrafią ten wymóg po prostu zignorować.
+
+Można trafić nawet na sytuacje, gdy model kasuje testy, z którymi nie umie sobie poradzić. Albo wchodzi w ton „to już wcześniej nie działało"...
+
+Naprawdę, jeśli chodzi o modele i testy, przygotuj się na wszystko.
+
+I nie, to nie jest moje czepianie się. Jest na to twarde badanie, ImpossibleBench. Autorzy spreparowali zadania tak, że testów NIE DA się przejść uczciwie, więc każde „zielone" to z definicji oszustwo. I co? GPT-5 „zdawał" takie niemożliwe testy w 76% przypadków. Jak? Modele OpenAI kombinują finezyjnie, na przykład przeładowują operator porównania, żeby wszystko zwracało „prawda". Anthropic i Qwen idą prościej, po prostu edytują plik z testami. Czyli dokładnie to, o czym piszę wyżej, tylko policzone na liczbach.
+
+→ [ImpossibleBench: jak modele oszukują na testach](https://www.lesswrong.com/posts/qJYMbrabcQqCZ7iqm/impossiblebench-measuring-reward-hacking-in-llm-coding-1)
+
+## Etap 4. Dokumentacja
+
+No dobrze. Powiedzmy, że kod działa, testy są zielone, model się nie wymigał. Zostają jeszcze dwie rzeczy, o których prawie wszyscy zapominają. Pierwsza to dokumentacja.
+
+I od razu, jak jej NIE robić: kazać modelowi „napisz dokumentację" i wkleić wynik bez czytania. Bo dostaniesz ładny tekst opisujący kod, którego nigdy nie napisałeś. Model lubi koloryzować, potrafi napisać „obsłużono wszystkie przypadki brzegowe", choć obsłużył jeden na pięć ;)
+
+U mnie dokumentacja to rozmowa PO fakcie. Pytam, co właściwie zmieniliśmy i dlaczego akurat tak, czytam i sprawdzam, czy się nie rozpędził.
+
+Addy Osmani, inżynier z Google, który sporo pisze o pracy z AI, ujmuje to jednym zdaniem: model z radością wypluje kod wyglądający wiarygodnie, ale to TY odpowiadasz za jakość, więc zawsze czytaj i sprawdzaj. Traktuje model jak zdolnego juniora i nigdy nie ufa mu na ślepo. Ta sama zasada działa przy dokumentacji.
+
+→ [Addy Osmani: mój workflow pracy z LLM](https://addyosmani.com/blog/ai-coding-workflow/)
+
+I jedno rozróżnienie, które oszczędzi Ci nerwów. Decyzje nie idą do README. README mówi, jak czegoś używać. To, dlaczego coś wygląda tak, a nie inaczej, idzie do ADR (osobny plik z historią decyzji). Inaczej za pół roku otworzysz projekt i nie będziesz wiedział, czemu zrobiłeś coś w tak dziwny sposób. U mnie taki wpis powstaje sam, przy commicie, z naszej rozmowy o zmianach.
+
+## Etap 5. Debug
+
+Bo coś i tak nie zadziała, prędzej czy później :)
+
+I największy grzech: wpisujesz modelowi „popraw to" i liczysz, że się domyśli. Nie domyśli się. Zacznie zgadywać, spróbuje pięciu losowych rzeczy, a każda popsuje dwie kolejne. Po godzinie masz większy bałagan niż na starcie.
+
+Debug nie zaczyna się od zgadywanej przyczyny, tylko od dobrego opisu objawu. Trzy rzeczy:
+
+- co miało się wydarzyć,
+- co wydarzyło się naprawdę (najlepiej z konkretnym błędem albo stacktrace'em),
+- co już wykluczyłeś.
+
+Dopiero z tym model ma czego się chwycić.
+
+Ludzie z Neona poukładali to w trzy poziomy debugowania z AI. Pierwszy to „debug na czuja", czyli wklejasz sam komunikat błędu i liczysz, że model zgadnie. Drugi to właśnie porządny opis: czego się spodziewałeś, a co dostałeś (ich przykład: „oczekiwałem [3,2,1], dostałem [1,2,3]"). Brzmi banalnie, a robi całą różnicę.
+
+→ [Neon: trzy poziomy debugowania z AI](https://neon.com/blog/the-3-levels-of-debugging-with-ai)
+
+Pamiętam sesję nad portalem kursowym, gdzie siedziałem nad jednym błędem grubo ponad godzinę. Przełom nie przyszedł, gdy model wpadł na genialny pomysł. Nie przyszedł nawet wtedy, gdy opisałem mu dokładnie, co widzę na ekranie, zamiast kazać „naprawić". Przyszedł dopiero (i to jest kolejna wskazówka), kiedy poprosiłem model, żeby w newralgicznych miejscach kodu wstawił debug logi pokazujące, co program faktycznie robi i jakie ma wartości poszczególne zmienne. Dopiero to pozwoliło nam rozwiązać problem.
+
+<Callout variant="accent" title="Pięć etapów, jedna struktura" icon="🎯">
+Zadanie, plan, wykonanie, dokumentacja, debug. To nie pięć osobnych pytań do modelu, tylko jeden proces, którego on sam z siebie nie poprowadzi. Musisz go poprowadzić Ty. Przy drobnicy odpuść (przetłumacz plik, sklej dwa skrypty, nie ma o co kruszyć kopii). Ale gdy zadanie ciągnie się dłużej niż pół godziny, ten proces decyduje, czy zostajesz z kodem, który „działa", czy z kodem, który „działał, dopóki czegoś nie dotknąłeś".
+</Callout>
+
+Tydzień temu pokazałem Ci, co dzieje się WOKÓŁ promptu. Dziś, co dzieje się w pełnym cyklu jednego zadania. A to dopiero rozgrzewka, bo wkrótce zejdziemy głębiej: duże projekty, architektura współpracujących agentów i to, jak ruszyć z miejsca, nie umiejąc programować.
+
+Zostań ze mną, bo robi się coraz ciekawiej :)
+
+---
+
+Na koniec, gdybyś chciał(a) podrążyć temat:
+
+→ Anthropic o dobrych praktykach pracy z Claude Code: [code.claude.com/docs](https://code.claude.com/docs/en/best-practices) (było w poprzednim tekście, ale powtarzam dla tych, co wtedy nie zajrzeli)
+
+→ jeśli pracujesz w Claude Code, zerknij sobie na wbudowaną komendę `/plan`. Dobry punkt startu, zanim sięgniesz po coś bardziej rozbudowanego.
+
+Napisz mi, który z tych pięciu etapów kuleje u Ciebie najbardziej, najzwyczajniej w świecie jestem ciekaw :)
+
+Miłego dnia.

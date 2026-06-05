@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-06-05
+
+### Added
+- Blog post "Zadanie, plan, wykonanie, dokumentacja, debug. Pełny cykl jednego zadania" — adapted from a newsletter, walking through the five stages of a single AI coding task, with TDD caveats (ImpossibleBench) and debugging levels
+
 ## [0.21.0] - 2026-05-25
 
 ### Added
