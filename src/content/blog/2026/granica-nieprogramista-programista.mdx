@@ -1,0 +1,132 @@
+---
+title: "Granica między nieprogramistą a programistą istnieje. Ale się przesuwa"
+pubDatetime: 2026-06-12
+description: "Sześć podstaw, które oddzielają Cię od budowania własnych narzędzi z AI. Żadna nie wymaga bootcampu. I dlaczego bez nich nawet najlepszy model zostawia Cię z działającą plątaniną."
+tags:
+  - ai
+  - vibe-coding
+  - claude-code
+  - programowanie
+---
+
+import Callout from "@/components/Callout.astro";
+
+Przez ostatnie dwa tygodnie pisałem o rzeczach, które brzmią technicznie. Kontekst, plan, TDD, debugowanie. Dziś robię zwrot. Bo ten tekst jest dla osób, które nigdy nie napisały ani jednej linijki kodu.
+
+Jeśli choć raz pomyślałeś(aś) o sobie "to nie dla mnie, ja nie programuję", zostań ze mną do końca.
+
+W ankiecie, którą wypełniacie po zapisaniu się na mailing, jedna wiadomość powtarzała się częściej niż jakakolwiek inna:
+
+> „Chcę stworzyć swoją pierwszą aplikację, a nie potrafię programować"
+
+I to nie był jeden głos. Pisaliście:
+
+> „Jestem inżynierem mechanikiem i robię obliczenia wytrzymałościowe, czasem coś skryptuję dla optymalizacji w Pythonie. Interesuję się wspomaganiem programowania przez AI, żeby ułatwić sobie dzisiejsze zadania i robić lepsze narzędzia."
+
+> „Jako właściciel małej firmy chcę szybciej i samodzielnie weryfikować pomysły, wykorzystując vibe coding."
+
+> „Jestem performance marketerem i chcę stworzyć swój pierwszy mikrosaas."
+
+PM-ki, projektanci, analitycy, prawnicy, właściciele małych firm. Różne światy, jedno pytanie: czy da się budować, nie będąc programistą?
+
+---
+
+Najpierw coś, czego raczej nie usłyszysz od ludzi sprzedających kursy AI: granica między nieprogramistą a programistą istnieje. Naprawdę. Nie znika od tego, że ktoś nagrał rolkę "zbudowałem aplikację w 20 minut bez znajomości kodu".
+
+Zresztą posłuchaj ludzi, którzy widzą to z bliska. W Y Combinatorze (najsłynniejszy inkubator startupów na świecie) policzyli, że w zimowym naborze 2025 jedna czwarta startupów miała 95% kodu napisane przez AI. Brzmi jak koniec granicy? To posłuchaj, co dopowiedział Jared Friedman, partner YC: wszyscy ci założyciele to osoby na wskroś techniczne. Rok wcześniej napisaliby ten kod sami, ręcznie. AI pisze, ale oni wiedzą, co czytają.
+
+→ [TechCrunch: jedna czwarta startupów YC z kodem niemal w całości od AI](https://techcrunch.com/2025/03/06/a-quarter-of-startups-in-ycs-current-cohort-have-codebases-that-are-almost-entirely-ai-generated/)
+
+Ale ta granica jest dużo węższa, niż myślisz. I właśnie się przesuwa.
+
+Mój ulubiony przykład pochodzi z samego Anthropic, firmy od Claude. Mark Pike, jeden z ich prawników, mówi o sobie wprost, że nie umie programować. A zbudował z Claude'em między innymi narzędzie, które porównuje wersje umów i podpowiada poprawki, oraz system kierujący pytania pracowników do właściwego prawnika. Prawnik. Bez napisania ani jednej linijki kodu samodzielnie.
+
+→ [jak zespół prawny Anthropic buduje z Claude](https://claude.com/blog/how-anthropic-uses-claude-legal)
+
+Od razu wyjaśnijmy jedno: nie namawiam Cię na zostanie programistą. Chodzi o coś innego, o autonomię. O to, żeby narzędzie, którego potrzebujesz w pracy, powstało w tym tygodniu, a nie za pół roku, kiedy dział IT znajdzie okienko w backlogu. Żeby Twój własny projekt ruszył bez zbierania pięciocyfrowej kwoty na dewelopera.
+
+## Sześć rzeczy po drugiej stronie granicy
+
+Co oddziela Cię od tej autonomii? Z mojego doświadczenia: sześć podstaw. Żadna nie wymaga studiów ani bootcampu. Przy każdej napiszę, ile naprawdę trzeba.
+
+### 1. Terminal
+
+To czarne okno, w którym każda komenda budzi napięcie, że zaraz coś zepsujesz. Znam to napięcie i nie będę go lekceważył. Prawda jest taka, że do pracy nad własnym projektem wystarczy garść komend, dosłownie kilkanaście. Resztę podpowiada model.
+
+### 2. Git
+
+Każdy tutorial zakłada, że wiesz, czym jest commit i branch. A to dosłownie: "zapisz stan projektu, do którego możesz wrócić". Punkt zapisu jak w grze. Trzy komendy na start wystarczą.
+
+### 3. Planowanie
+
+Zanim poprosisz model o zbudowanie czegokolwiek, ustalcie razem, co dokładnie ma powstać. Tydzień temu opisałem ten proces krok po kroku, na dole zostawiam link. Na start wystarczy jedna zasada: najpierw rozmowa o problemie, potem prośba o kod.
+
+### 4. Debugowanie
+
+Czyli: co robić, gdy coś nie działa, a Ty nie wiesz dlaczego. To normalny etap KAŻDEGO projektu, nie dowód, że się nie nadajesz. Cała sztuka sprowadza się do opisania modelowi objawu: co miało się stać i co stało się naprawdę. Zgadywać nie musisz, od tego masz model.
+
+### 5. Dokumentacja
+
+Parę notatek o tym, co powstało i dlaczego tak. Po to, żeby za miesiąc wciąż rozumieć własny projekt. Model napisze je za Ciebie, Ty tylko sprawdzasz, czy się nie rozpędził.
+
+### 6. Wdrożenie
+
+Czyli sprawienie, żeby to, co zbudujesz, nie żyło wyłącznie na Twoim laptopie. Brzmi groźnie, a dziś to często kilka komend i podpięcie darmowego konta. Wystarczy ogólnie rozumieć, co gdzie mieszka.
+
+---
+
+I tyle. W żadnej z tych rzeczy nie musisz być ekspertem. Wystarczająca samodzielność, nie mistrzostwo.
+
+To zresztą nie jest moja prywatna lista. Simon Willison, współtwórca frameworka Django, nazywa taki zestaw "vibe engineering". Wymienia niemal to samo: plan, testy, dokumentacja, kontrola wersji, przegląd kodu. I dodaje wniosek z dwóch lat pracy z agentami: AI wzmacnia umiejętności, które już masz. Dlatego te podstawy, nawet w małej dawce, robią tak dużą różnicę.
+
+→ [Simon Willison: vibe engineering](https://simonwillison.net/2025/Oct/7/vibe-engineering/)
+
+## Czego AI za Ciebie nie zrobi
+
+Może już próbowałeś(aś). Cursor, ChatGPT, może Claude. Model wygenerował coś, co działało przez chwilę, a potem się posypało. I nie było wiadomo dlaczego.
+
+To nie Twoja wina. I, co ciekawe, nie wina modelu.
+
+Tak po prostu kończy się budowanie bez tych sześciu podstaw. Model pisze kod szybciej niż jakikolwiek człowiek, ale sam z siebie nie zapyta, czy projekt ma plan, czy istnieje punkt zapisu, do którego można wrócić, czy ktokolwiek wie, dlaczego coś zostało zrobione tak, a nie inaczej. Bez tego dostajesz ślepą, działającą plątaninę. Działa, dopóki nikt jej nie dotknie.
+
+W marcu 2025 głośno przekonał się o tym twórca o nicku leojr94. Pochwalił się na X, że jego płatna aplikacja powstała w całości w Cursorze, zero ręcznie napisanego kodu, ludzie płacą. Dwa dni później pisał: "guys, I'm under attack". Klucze API trzymał w kodzie na widoku, użytkownicy omijali płatności, baza zapełniała się śmieciami. Skończyło się zamknięciem aplikacji. I zaznaczę od razu: to nie jest historia o tym, że nieprogramiści nie powinni budować. Jemu zabrakło dokładnie tych podstaw z listy wyżej. Nie talentu. Nie pomysłu. Podstaw.
+
+→ [wpis "guys, I'm under attack"](https://x.com/leojr94_/status/1901560276488511759)
+
+Sam Andrej Karpathy, współzałożyciel OpenAI, który w lutym 2025 wymyślił pojęcie "vibe coding" (budowanie na czuja, bez czytania kodu, który generuje model), od razu dodał zastrzeżenie: świetna zabawa, ale do jednorazowych weekendowych projektów. Nie do rzeczy, z których ktoś ma korzystać na co dzień.
+
+→ [oryginalny wpis Karpathy'ego o vibe codingu](https://x.com/karpathy/status/1886192184808149383)
+
+> AI to dźwignia. Potężna. Ale dźwignia potrzebuje punktu podparcia, a tym punktem są właśnie te podstawy.
+
+## Jak to wygląda w praktyce
+
+<Callout title="Dzwonek, czyli z Excela do aplikacji" icon="🔔">
+Bartek, jeden z kursantów ATD, miał w pracy problem stary jak świat: grafiki dyżurów przychodzące w Excelu, które trzeba było ręcznie śledzić, żeby nie przegapić zmiany. Zbudował Dzwonek, aplikację, która sama przetwarza te grafiki i wysyła przypomnienia.
+</Callout>
+
+Nie czekał na dział IT. Nie wynajął dewelopera. Wziął codzienny, realny problem i domknął go w działające narzędzie.
+
+## Ile to naprawdę kosztuje czasu
+
+Uczciwie: nie zrobisz tego w jeden weekend (na początku ;)). Ale to też nie są dwa lata bootcampu.
+
+Te sześć podstaw, na poziomie wystarczającym, to kilka tygodni nauki po parę godzin tygodniowo. Jeśli działasz po godzinach, z etatem i domem na głowie, licz w tygodniach, nie w dniach. I to jest w porządku. Zresztą pierwsze małe narzędzie zbudujesz dużo wcześniej, bo tych rzeczy uczysz się przy okazji budowania, nie przed nim.
+
+<Callout variant="accent" title="Tytuł czy wolność?" icon="🎯">
+Granica między nieprogramistą a programistą istnieje. Ale przesuwa się. I to nie przez magię, tylko przez te podstawy.
+
+Nie obiecam Ci, że zostaniesz programistą (zresztą na tym etapie po co?). Obiecam za to, że możesz zostać osobą, która buduje to, czego dziś potrzebuje. To dwie różne rzeczy. Pierwsza to tytuł. Druga to wolność.
+</Callout>
+
+Na koniec jeszcze jedno zdanie z ankiety, które nie daje mi spokoju:
+
+> „Wykorzystuję AI, jednakże nie potrafię kończyć projektów z jego pomocą. Zakopuję się po drodze i błądzę."
+
+O tym będzie następny tekst. Bo zacząć to jedno, a nie zakopać się po drodze to zupełnie inna historia :)
+
+→ [Pełny cykl jednego zadania z AI: plan, wykonanie, debug](/posts/2026/pelny-cykl-jednego-zadania) (zeszłotygodniowy tekst, dla tych, którzy chcą zejść głębiej)
+
+Napisz mi, proszę, która z tych sześciu rzeczy brzmi dla Ciebie najgroźniej. Terminal? Git? Jestem ciekaw, gdzie jest najwyższy próg :)
+
+Miłego dnia.

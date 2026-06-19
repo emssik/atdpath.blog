@@ -27,7 +27,7 @@ Create `src/content/piy/<slug>.md` in the blog repo with the format below.
 
 ### Phase 3: Ensure deploy checks will pass
 
-The blog's `build.sh` runs `.dev/check-projects.sh` before every deploy. It verifies three things for each PIY project. The skill MUST ensure all three are satisfied:
+The blog's `deploy.sh` runs `.dev/check-projects.sh` before every deploy. It verifies three things for each PIY project. The skill MUST ensure all three are satisfied:
 
 #### Check 1: License
 

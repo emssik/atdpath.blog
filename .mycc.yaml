@@ -9,7 +9,7 @@ actions:
     pane: 3
 
   - name: deploy
-    cmd: "bash build.sh"
+    cmd: "bash deploy.sh"
     pane: 3
 
   - name: push
@@ -26,7 +26,7 @@ context:
   structure: |
     Content-driven blog. Posts in src/content/blog/<year>/*.md(x).
     PIY section in src/content/piy/.
-    Deploy via build.sh → Bunny CDN (static).
+    Deploy via deploy.sh → Bunny CDN (static).
     Deploy preflight: .dev/check-projects.sh validates PIY entries before build.
   exclude_paths:
     - "src/content/blog/**"
@@ -60,7 +60,7 @@ context:
       * Remote content fetching during build — if the pipeline ever starts consuming
         remote RSS/images/URLs, fast-xml-parser and allowlist-bypass findings become real.
       * Secrets accidentally committed or leaking into the built static bundle.
-      * Build pipeline integrity (build.sh → Bunny) — credentials, upload scope, cache
+      * Build pipeline integrity (deploy.sh → Bunny) — credentials, upload scope, cache
         invalidation correctness.
 
     Blog content lives under paths already in `exclude_paths`. Never review content files
